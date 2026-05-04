@@ -103,6 +103,12 @@
     min-height: 1.2em;
   }
   .calc-result .formula:empty { display: none; }
+  /* Mini-table for the RR-by-I:E ceiling card */
+  .calc-result .rr-mini { width: 100%; border-collapse: collapse; margin-top: 3px; font-size: 12.5px; }
+  .calc-result .rr-mini td { padding: 1px 4px; border: none; vertical-align: middle; }
+  .calc-result .rr-mini td.r { text-align: right; font-weight: 700; color: var(--ink); }
+  .calc-result .rr-mini td.l { color: var(--ink-soft); }
+  .calc-result.rr-card .val { font-size: 12px; color: var(--muted); font-weight: 400; }
   .calc-note { font-size: 12px; color: var(--muted); font-style: italic; margin-top: 8px; line-height: 1.5; }
   .calc-note strong { color: var(--ink-soft); }
 
@@ -209,6 +215,15 @@
       <div class="calc-result"><span class="lbl">Driving pressure (ΔP)</span><span class="val" id="r-dp">—<span class="unit"> cmH₂O</span></span><span class="formula-base">Pplat − PEEP</span><span class="formula" id="f-dp"></span></div>
       <div class="calc-result"><span class="lbl">Raw</span><span class="val" id="r-raw">—<span class="unit"> cmH₂O·s/L</span></span><span class="formula-base">(PIP − Pplat) / V̇    (V̇ = peak flow, L/s)</span><span class="formula" id="f-raw"></span></div>
       <div class="calc-result"><span class="lbl">Time constant (τ)</span><span class="val" id="r-tau">—<span class="unit"> s</span></span><span class="formula-base">τ = Raw × Cstat   (Te ≥ 3τ to avoid air-trapping)</span><span class="formula" id="f-tau"></span></div>
+      <div class="calc-result rr-card"><span class="lbl">Max RR by I:E (Te ≥ 3τ)</span>
+        <table class="rr-mini" aria-label="Maximum respiratory rate by inspiratory-to-expiratory ratio">
+          <tr><td class="l">I:E 1:1</td><td class="r" id="r-rr-11">—</td><td class="l">I:E 1:3</td><td class="r" id="r-rr-13">—</td></tr>
+          <tr><td class="l">I:E 1:2</td><td class="r" id="r-rr-12">—</td><td class="l">I:E 1:4</td><td class="r" id="r-rr-14">—</td></tr>
+          <tr><td class="l">&nbsp;</td><td class="r"></td><td class="l">I:E 1:5</td><td class="r" id="r-rr-15">—</td></tr>
+        </table>
+        <span class="formula-base">RR_max = 60·n / [(1+n)·3τ] bpm   (n = E:I ratio)</span>
+        <span class="formula" id="f-rrmax"></span>
+      </div>
       <div class="calc-result"><span class="lbl">Mechanical power</span><span class="val" id="r-mp">—<span class="unit"> J/min</span></span><span class="formula-base">MP = 0.098 × RR × VT × (PIP − ½ΔP)</span><span class="formula" id="f-mp"></span></div>
       <div class="calc-result"><span class="lbl">CaO₂ (oxygen content)</span><span class="val" id="r-cao2">—<span class="unit"> mL/dL</span></span><span class="formula-base">CaO₂ = 1.34 × Hb × SaO₂ + 0.003 × PaO₂</span><span class="formula" id="f-cao2"></span></div>
     </div>
@@ -346,6 +361,20 @@
           setHTML('r-tau', fmt(tau, 2) + '<span class="unit"> s</span>');
           setFormula('f-tau', isFinite(tau)
             ? `= ${f(raw,1)} × ${f(cstat/1000,3)} = ${f(tau,2)}  (Te ≥ 3τ = ${f(3*tau,2)} s)` : '');
+
+          // Max RR per I:E ratio constrained by Te ≥ 3τ
+          // RR_max = 60n / [(1+n)·3τ] bpm   (n = E:I ratio)
+          [1, 2, 3, 4, 5].forEach(n => {
+            const cellId = 'r-rr-1' + n;
+            if (isFinite(tau) && tau > 0) {
+              const rrMax = (60 * n) / ((1 + n) * 3 * tau);
+              setText(cellId, '≤ ' + Math.floor(rrMax));
+            } else {
+              setText(cellId, '—');
+            }
+          });
+          setFormula('f-rrmax', isFinite(tau)
+            ? `with τ = ${f(tau,2)} s and Te = 3τ = ${f(3*tau,2)} s` : '');
 
           // MP
           const mp = (isFinite(rr) && isFinite(vt) && isFinite(pip) && isFinite(dp)) ? 0.098 * rr * (vt / 1000) * (pip - 0.5 * dp) : NaN;
