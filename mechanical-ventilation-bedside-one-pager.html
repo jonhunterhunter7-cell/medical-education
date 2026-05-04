@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Mechanical Ventilation — Bedside One-Pager</title>
+<style>
+  :root {
+    color-scheme: light;
+    --ink: #111827;
+    --ink-soft: #374151;
+    --muted: #6b7280;
+    --rule: #d1d5db;
+    --accent: #1e40af;
+    --accent-soft: #eff6ff;
+    --warn: #92400e;
+    --warn-soft: #fef3c7;
+    --danger: #991b1b;
+    --danger-soft: #fee2e2;
+    --good: #166534;
+    --good-soft: #dcfce7;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #fafafa; color: var(--ink); }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 9.4px;
+    line-height: 1.32;
+  }
+  .sheet { width: 8.5in; min-height: 11in; margin: 16px auto; padding: 0.30in 0.32in; background: white; box-shadow: 0 2px 14px rgba(0,0,0,0.08); border-radius: 4px; }
+  header.title { border-bottom: 1.5px solid var(--ink); padding-bottom: 4px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: baseline; }
+  header.title h1 { font-size: 14.5px; margin: 0; letter-spacing: -0.01em; }
+  header.title .sub { font-size: 8.4px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .cols { column-count: 2; column-gap: 12px; }
+  @media (max-width: 720px) { .sheet { width: auto; padding: 12px; } .cols { column-count: 1; } body { font-size: 12px; } }
+  section.box { break-inside: avoid; border: 1px solid var(--rule); border-radius: 3px; padding: 4px 6px 5px; margin-bottom: 5px; background: white; }
+  section.box h2 { font-size: 9.6px; margin: 0 0 3px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--rule); padding-bottom: 1px; }
+  section.box h2 .num { color: var(--muted); margin-right: 4px; }
+  section.accent { background: var(--accent-soft); border-color: var(--accent); }
+  section.warn { background: var(--warn-soft); border-color: var(--warn); }
+  section.warn h2 { color: var(--warn); }
+  section.danger { background: var(--danger-soft); border-color: var(--danger); }
+  section.danger h2 { color: var(--danger); }
+  section.good { background: var(--good-soft); border-color: var(--good); }
+  section.good h2 { color: var(--good); }
+  p { margin: 2px 0; }
+  ul, ol { padding-left: 14px; margin: 1px 0 2px; }
+  ul li, ol li { margin: 0.5px 0; }
+  table { width: 100%; border-collapse: collapse; margin: 2px 0; font-size: 8.9px; }
+  th, td { border: 1px solid var(--rule); padding: 2px 4px; vertical-align: top; text-align: left; }
+  th { background: #f3f4f6; font-weight: 600; }
+  strong.k { color: var(--accent); }
+  strong.d { color: var(--danger); }
+  strong.g { color: var(--good); }
+  .abbr-grid { column-count: 3; column-gap: 10px; font-size: 8.4px; line-height: 1.35; }
+  .abbr-grid div { break-inside: avoid; margin-bottom: 1px; }
+  .abbr-grid b { color: var(--accent); margin-right: 3px; }
+  .footer { margin-top: 4px; font-size: 7.8px; color: var(--muted); text-align: center; border-top: 1px solid var(--rule); padding-top: 3px; }
+  @media print {
+    body { background: white; font-size: 8.6px; line-height: 1.28; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .sheet { box-shadow: none; margin: 0; width: auto; min-height: auto; padding: 0.28in 0.30in; border-radius: 0; }
+    section.box { margin-bottom: 4px; padding: 3px 5px 4px; }
+    section.box h2 { font-size: 9px; }
+    table { font-size: 8.4px; }
+    th, td { padding: 1.5px 3px; }
+    .abbr-grid { font-size: 7.8px; column-count: 4; }
+    @page { size: letter portrait; margin: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<header class="title">
+  <h1>Mechanical Ventilation — Bedside One-Pager</h1>
+  <span class="sub">PCCM bedside reference · Last reviewed May 2026 · Print one page</span>
+</header>
+
+<div class="cols">
+
+<section class="box accent">
+  <h2><span class="num">1</span>Day-1 setup (defensible defaults)</h2>
+  <table>
+    <tr><th>Parameter</th><th>Default</th></tr>
+    <tr><td>Mode</td><td>VC-A/C (or PC-A/C)</td></tr>
+    <tr><td>VT</td><td><strong class="k">6 mL/kg PBW</strong> (range 4–8)</td></tr>
+    <tr><td>RR</td><td>14–20 (titrate to pH 7.30–7.45)</td></tr>
+    <tr><td>PEEP</td><td>5 cmH₂O start; ladder for hypoxemia</td></tr>
+    <tr><td>FiO₂</td><td>1.0 → wean to SpO₂ 92–96%</td></tr>
+    <tr><td>I:E</td><td>1:2 (Ti ~ 1.0 s)</td></tr>
+    <tr><td>Trigger</td><td>Flow 1–3 L/min</td></tr>
+    <tr><td>Pplat goal</td><td>≤ <strong class="k">30</strong> cmH₂O</td></tr>
+    <tr><td>ΔP goal (Pplat−PEEP)</td><td>≤ <strong class="k">15</strong> cmH₂O</td></tr>
+  </table>
+  <p><strong class="k">PBW (men)</strong> 50 + 2.3 (ht-in − 60); <strong class="k">PBW (women)</strong> 45.5 + 2.3 (ht-in − 60).</p>
+</section>
+
+<section class="box good">
+  <h2><span class="num">2</span>Lung-protective bundle (every patient)</h2>
+  <ul>
+    <li>VT 4–8 mL/kg PBW · Pplat ≤ 30 · ΔP ≤ 15 · <strong class="k">MP ≤ 17 J/min</strong></li>
+    <li>SpO₂ 88–96% (avoid hyperoxia)</li>
+    <li>HOB 30°, oral care, sedation light (RASS 0 to −1) when safe</li>
+    <li>Daily SBT readiness · DVT &amp; stress-ulcer ppx · early mobility</li>
+    <li>Permissive hypercapnia (pH ≥ 7.20) when needed</li>
+  </ul>
+</section>
+
+<section class="box">
+  <h2><span class="num">3</span>Modes — when to pick each</h2>
+  <table>
+    <tr><th>Mode</th><th>Best for</th></tr>
+    <tr><td>VC-A/C</td><td>Need guaranteed VE: ARDS, asthma, brain injury, post-arrest</td></tr>
+    <tr><td>PC-A/C</td><td>Comfort + pressure ceiling; awake patient</td></tr>
+    <tr><td>PRVC / VC+</td><td>VT guarantee with decel flow; awake patient</td></tr>
+    <tr><td>PSV</td><td>SBT, weaning, day 2+ in cooperative patient</td></tr>
+    <tr><td>SIMV</td><td>Largely obsolete; prolongs weaning</td></tr>
+    <tr><td>APRV</td><td>Refractory ARDS rescue at experienced centers</td></tr>
+  </table>
+</section>
+
+<section class="box">
+  <h2><span class="num">4</span>Pressures — read q4h &amp; on every change</h2>
+  <table>
+    <tr><th>Quantity</th><th>How</th><th>Target</th></tr>
+    <tr><td>PIP</td><td>End-insufflation</td><td>tracks airway/ETT</td></tr>
+    <tr><td>Pplat</td><td>0.5-s end-insp hold (square flow VC)</td><td>≤ 30</td></tr>
+    <tr><td>ΔP</td><td>Pplat − PEEP</td><td>≤ <strong class="k">15</strong></td></tr>
+    <tr><td>PIP − Pplat</td><td>Resistive component</td><td>&lt; 5 (clean airway)</td></tr>
+    <tr><td>Auto-PEEP</td><td>End-exp hold; total PEEP − set</td><td>0 ideal</td></tr>
+    <tr><td>τ (time constant)</td><td>Raw × Cstat (Cstat in L/cmH₂O)</td><td>Te ≥ 3τ to avoid air-trapping</td></tr>
+  </table>
+  <p><strong class="k">2-question dx algorithm:</strong> PIP↑ + Pplat normal → resistance (ETT, bronchospasm, bite, secretions). PIP↑ + Pplat↑ → compliance (ARDS, edema, PTX, atelectasis, ↑ IAP).</p>
+</section>
+
+<section class="box accent">
+  <h2><span class="num">5</span>ARDS bundle (Berlin / Global 2023)</h2>
+  <ul>
+    <li><strong class="k">VT 4–6 mL/kg PBW</strong> (ARMA)</li>
+    <li>Pplat ≤ 30 · ΔP ≤ 15 (Amato)</li>
+    <li>PEEP/FiO₂ ladder: high-PEEP table for P/F &lt; 200</li>
+    <li>SpO₂ 88–95% · permissive hypercapnia pH ≥ 7.20</li>
+    <li><strong class="k">Prone ≥ 16 h/day</strong> if P/F &lt; 150 (PROSEVA)</li>
+    <li>NMB only for refractory dyssynchrony / ΔP &gt; 15 (ROSE neutral)</li>
+    <li>Conservative fluid balance once shock resolved (FACTT)</li>
+    <li>VV-ECMO if P/F &lt; 80 despite optimization (EOLIA)</li>
+  </ul>
+  <p><strong class="k">PEEP ladder (high):</strong> FiO₂ .3→.5→.7→.9→1.0 with PEEP 5→14→16→20→24.</p>
+</section>
+
+<section class="box warn">
+  <h2><span class="num">6</span>Obstructive (asthma / COPD)</h2>
+  <ul>
+    <li><strong class="d">Let them exhale</strong> — RR 10–14, I:E 1:3–1:5, peak flow 60–80 L/min</li>
+    <li>VT 6 mL/kg PBW; permit hypercapnia (pH ≥ 7.15)</li>
+    <li>PEEP 0–5; match ~80% of auto-PEEP if patient triggering</li>
+    <li>Adjuncts: continuous β₂, IV steroid, IV Mg 2 g, ketamine sedation, heliox</li>
+    <li><strong class="d">Sudden hemodynamic collapse:</strong> disconnect from vent → let chest empty → bag with prolonged exhalation; rule out PTX</li>
+  </ul>
+</section>
+
+<section class="box">
+  <h2><span class="num">7</span>Auto-PEEP &amp; asynchrony</h2>
+  <p><strong class="k">Auto-PEEP:</strong> flow trace not returning to zero; end-exp hold to quantify. Fix: ↓ RR, ↓ VT, ↑ Te (↑ peak flow / ↓ Ti), bronchodilators, treat cause.</p>
+  <table>
+    <tr><th>Asynchrony</th><th>Fix</th></tr>
+    <tr><td>Ineffective trigger (dip without breath)</td><td>↓ trigger threshold; ↓ auto-PEEP; ↓ sedation</td></tr>
+    <tr><td>Double trigger (stacked breaths)</td><td>↑ Ti, ↑ VT, treat anxiety/pain; sedate; NMB if severe ARDS</td></tr>
+    <tr><td>Reverse triggering</td><td>Recognize; deepen sedation or NMB in severe ARDS</td></tr>
+    <tr><td>Flow starvation (scooped P-trace)</td><td>↑ peak flow (VC) or PS; switch to decel flow</td></tr>
+    <tr><td>Cycle (early/late)</td><td>Adjust expiratory cycle threshold (default 25%; → 10–15% in COPD; → 35–40% in stiff lungs)</td></tr>
+  </table>
+</section>
+
+<section class="box danger">
+  <h2><span class="num">8</span>Acute deterioration — DOPES / DOTTS</h2>
+  <p><strong class="d">DOPES:</strong> Displaced ETT · Obstruction · Pneumothorax · Equipment · Stacked breaths.</p>
+  <p><strong class="d">DOTTS (do):</strong> Disconnect (bag w/ PEEP valve, FiO₂ 1.0) · Oxygenate · Tube position (capno + auscultation) · Tweak vent · Sonography (PoCUS for PTX, sliding, ETT depth).</p>
+  <ol>
+    <li>PIP↑ Pplat normal → resistance (suction, bronchodilator, kink, bite, cuff over-inflation).</li>
+    <li>PIP↑ Pplat↑ → compliance (PTX, atelectasis, edema, ↑ IAP).</li>
+    <li>Sudden ↓SpO₂: tube/PTX/atelectasis/PE/edema/asynchrony.</li>
+    <li>Sudden ↑PaCO₂: ↑ production (fever, sepsis, shivering, RQ), ↑ Vd (PE, low CO), ↓ VA (auto-PEEP, leak, sedation, weakness).</li>
+  </ol>
+</section>
+
+<section class="box">
+  <h2><span class="num">9</span>Liberation — daily SBT</h2>
+  <p><strong class="k">Readiness:</strong> cause improving · FiO₂ ≤ 0.4 · PEEP ≤ 5–8 · stable hemodynamics · adequate cough · awake (RASS −1 to 0) · no active ICP/ischemia.</p>
+  <p><strong class="k">SBT:</strong> PSV 5–8 / PEEP 5 × 30–120 min (or T-piece).</p>
+  <p><strong class="k">Pass criteria:</strong> RR &lt; 35 · VT &gt; 5 mL/kg PBW · <strong>RSBI &lt; 105</strong> · NIF &lt; −20 to −25 · SpO₂ ≥ 90% · stable HR/BP · no diaphoresis or accessory-muscle use.</p>
+  <p><strong class="k">Extubation gates:</strong> mental status (follows commands) · adequate cough · manageable secretions · cuff-leak present (≥ 110 mL) — give IV steroid 4 h prior if leak absent and risk factors.</p>
+  <p><strong class="k">Post-extubation:</strong> HFNC default. <strong class="k">High-risk (HF, COPD, age &gt; 65, ≥ 7 days vent):</strong> HFNC + intermittent BiPAP 10/5 ≥ 4 h/day × 48 h (Thille 2019: ↓ reintubation, ↓ 90-day mortality).</p>
+</section>
+
+<section class="box">
+  <h2><span class="num">10</span>Equations &amp; numbers</h2>
+  <table>
+    <tr><td>Eq of motion</td><td>P_aw = V/C + V̇R + PEEP</td></tr>
+    <tr><td><em>variables</em></td><td><strong class="k">P_aw</strong> airway pressure · <strong class="k">V</strong> volume above FRC · <strong class="k">C</strong> compliance · <strong class="k">V̇</strong> flow · <strong class="k">R</strong> resistance · <strong class="k">PEEP</strong> baseline</td></tr>
+    <tr><td>Cstat</td><td>VT / (Pplat − PEEP); ARDS 20–40; normal 60–100</td></tr>
+    <tr><td>Raw</td><td>(PIP − Pplat) / V̇; normal &lt; 5</td></tr>
+    <tr><td>ΔP</td><td>Pplat − PEEP; ≤ 15 (Amato)</td></tr>
+    <tr><td>τ (time constant)</td><td>Raw × Cstat (L/cmH₂O); Te ≥ 3τ avoids air-trapping</td></tr>
+    <tr><td>MP (J/min)</td><td>0.098 × RR × VT × (PIP − ½ΔP); concerning &gt; 17</td></tr>
+    <tr><td>RSBI</td><td>RR / VT(L); &lt; 105 predicts SBT success</td></tr>
+    <tr><td>Vd/Vt</td><td>(PaCO₂ − PECO₂) / PaCO₂; &gt; 0.6 hard wean</td></tr>
+    <tr><td>S/F vs P/F</td><td>S/F ≈ 0.5 × P/F + 100</td></tr>
+    <tr><td>A–a (room air)</td><td>age/4 + 4</td></tr>
+    <tr><td>P_L (transpulmonary)</td><td>P_aw − P_es; end-exp 0–5; end-insp &lt; 25</td></tr>
+  </table>
+</section>
+
+<section class="box accent">
+  <h2><span class="num">11</span>Top PCCM pearls</h2>
+  <ul>
+    <li>Track <strong>ΔP and Pplat</strong>, not just FiO₂/PEEP — they're the mortality-correlated variables.</li>
+    <li>The <em>two-pressure</em> question: PIP and Pplat tell you resistance vs compliance.</li>
+    <li>Auto-PEEP makes triggering hard — match ~80% of total PEEP. <strong>Te ≥ 3τ</strong> avoids trapping.</li>
+    <li>Permissive hypercapnia is fine; pH 7.20 (ARDS) / 7.15 (asthma) is the floor.</li>
+    <li>Prone for &lt; 150 P/F — early; &gt; 16 h/day.</li>
+    <li>Don't routinely paralyze; do paralyze if ΔP &gt; 15 despite optimization, refractory dyssynchrony, or while establishing prone/ECMO.</li>
+    <li>Conservative oxygenation: SpO₂ 88–96%; hyperoxia is harmful.</li>
+    <li><strong class="k">Fluid responsiveness:</strong> PPV &gt; 13% (controlled mode, sinus rhythm, VT ≥ 8 only); otherwise <strong>PLR ≥ 10%</strong> (works in any rhythm/mode); EEO ≥ 5%.</li>
+    <li><strong class="k">Helmet NIV</strong> (HENIVOT) for de novo hypoxemia — PEEP 10–12 with flow ≥ 50 L/min; reduces intubation vs HFNC.</li>
+    <li>Esophageal manometry rescues the chest-wall problem in obesity / pregnancy / abdominal hypertension.</li>
+    <li>P-SILI is real — large spontaneous efforts in early ARDS can worsen lung injury.</li>
+    <li><strong class="k">Bronchoscopy through ETT:</strong> 5.7 mm scope in 7.5 ETT fills 64% lumen → switch to PCV; FiO₂ 1.0 × 5 min before, hold elevated FiO₂ × 1 h after.</li>
+    <li>VV-ECMO refer EARLY when P/F &lt; 80 despite optimal management — transport mortality is high otherwise.</li>
+    <li>Tracheostomy timing doesn't change mortality; pick on day 10–14 if &gt; 7 more vent-days expected.</li>
+  </ul>
+</section>
+
+</div>
+
+<section class="box" style="margin-top:2px;">
+  <h2><span class="num">12</span>Abbreviations</h2>
+  <div class="abbr-grid">
+    <div><b>A/C</b>assist-control</div>
+    <div><b>APRV</b>airway pressure release ventilation</div>
+    <div><b>ARDS</b>acute respiratory distress syndrome</div>
+    <div><b>ATC</b>automatic tube compensation</div>
+    <div><b>BiPAP</b>bilevel positive airway pressure</div>
+    <div><b>CPAP</b>continuous positive airway pressure</div>
+    <div><b>Cstat</b>static compliance</div>
+    <div><b>CXR</b>chest X-ray</div>
+    <div><b>DOPES/DOTTS</b>vent-troubleshooting mnemonics</div>
+    <div><b>ΔP</b>driving pressure</div>
+    <div><b>EIT</b>electrical impedance tomography</div>
+    <div><b>ETT</b>endotracheal tube</div>
+    <div><b>FiO₂</b>fraction of inspired oxygen</div>
+    <div><b>FRC</b>functional residual capacity</div>
+    <div><b>HFNC</b>high-flow nasal cannula</div>
+    <div><b>HFOV</b>high-frequency oscillatory ventilation</div>
+    <div><b>HOB</b>head of bed</div>
+    <div><b>IAP</b>intra-abdominal pressure</div>
+    <div><b>I:E</b>inspiratory:expiratory ratio</div>
+    <div><b>LIP/UIP</b>lower/upper inflection point</div>
+    <div><b>MP</b>mechanical power</div>
+    <div><b>NAVA</b>neurally adjusted ventilatory assist</div>
+    <div><b>NIV</b>non-invasive ventilation</div>
+    <div><b>NMB</b>neuromuscular blockade</div>
+    <div><b>P_aw / P_alv</b>airway / alveolar pressure</div>
+    <div><b>PBW</b>predicted body weight</div>
+    <div><b>PC</b>pressure control</div>
+    <div><b>PEEP</b>positive end-expiratory pressure</div>
+    <div><b>PEEPi</b>intrinsic PEEP (auto-PEEP)</div>
+    <div><b>P_es</b>esophageal pressure</div>
+    <div><b>P/F</b>PaO₂ / FiO₂</div>
+    <div><b>PIP</b>peak inspiratory pressure</div>
+    <div><b>P_L</b>transpulmonary pressure</div>
+    <div><b>Pplat</b>plateau pressure</div>
+    <div><b>PRVC</b>pressure-regulated volume control</div>
+    <div><b>PSV</b>pressure support ventilation</div>
+    <div><b>P-SILI</b>patient self-inflicted lung injury</div>
+    <div><b>PTX</b>pneumothorax</div>
+    <div><b>RASS</b>Richmond Agitation–Sedation Scale</div>
+    <div><b>Raw</b>airway resistance</div>
+    <div><b>RSBI</b>rapid shallow breathing index (f/Vt)</div>
+    <div><b>S/F</b>SpO₂ / FiO₂</div>
+    <div><b>SBT</b>spontaneous breathing trial</div>
+    <div><b>SIMV</b>synchronized intermittent mandatory ventilation</div>
+    <div><b>Te / Ti</b>expiratory / inspiratory time</div>
+    <div><b>VC</b>volume control</div>
+    <div><b>Vd / Vt</b>dead-space fraction</div>
+    <div><b>VE / VA</b>minute / alveolar ventilation</div>
+    <div><b>VILI</b>ventilator-induced lung injury</div>
+    <div><b>VV-ECMO</b>veno-venous extracorporeal membrane oxygenation</div>
+    <div><b>VT</b>tidal volume</div>
+  </div>
+  <p style="font-size:7.8px;color:var(--muted);margin-top:2px;">Companion full PCCM teaching reference + interactive calculator: <a href="https://jonhunterhunter7-cell.github.io/medical-education/mechanical-ventilation-teaching-reference.html">teaching reference</a> · <a href="https://jonhunterhunter7-cell.github.io/medical-education/bedside-calculator.html">bedside calculator</a>.</p>
+</section>
+
+<div class="footer">
+  Anchored to ATS/ESICM/SCCM ARDS guideline 2024 · Global Definition of ARDS 2023 · Berlin 2012 · ARMA · ARDSNet PEEP/FiO₂ tables · PROSEVA · ROSE · ACURASYS · EOLIA · FACTT · Amato 2015 · EPVent · HENIVOT · Thille 2019. Educational use; defer to local protocols at the bedside.
+</div>
+
+</div>
+</body>
+</html>
