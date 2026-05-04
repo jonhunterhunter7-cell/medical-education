@@ -485,9 +485,6 @@
     min-height: 1.2em;
   }
   .calc-result .formula:empty { display: none; }
-  /* The print-only header (created on demand by the calculator's Print button) is
-     hidden on screen and in default print, only displayed when body has .printing-calc */
-  .calc-print-header { display: none; }
   .calc-actions { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
   .calc-actions button {
     padding: 6px 12px; font-size: 13px;
@@ -521,41 +518,38 @@
     .pearl, .pitfall, .note, .phys, .takeaways { background: #f8f8f8 !important; border-color: #888 !important; }
     table { font-size: 9pt; }
     /* Hide the calculator widget on default print (interactive only). The
-       calculator's own Print button switches body into 'printing-calc' mode,
-       which inverts this and hides everything ELSE instead. */
+       calculator's own Print button uses a temporary cloned widget appended
+       directly to <body>; in that mode we hide every other body child. */
     body:not(.printing-calc) .calc { display: none !important; }
     /* Show drug appendix as printable card */
     #drugs h3 { font-size: 14pt; }
     #drugs table { page-break-inside: auto; }
-    /* ===== Calculator-only print mode (triggered by calc-btn-print) ===== */
-    body.printing-calc * { visibility: hidden !important; }
-    body.printing-calc #calcWidget,
-    body.printing-calc #calcWidget *,
-    body.printing-calc .calc-print-header,
-    body.printing-calc .calc-print-header * { visibility: visible !important; }
-    body.printing-calc #calcWidget {
-      position: absolute !important;
-      left: 0 !important; top: 0.6in !important;
-      width: 100% !important;
-      max-width: none !important;
-      margin: 0 !important;
-      padding: 0.25in 0.5in !important;
+    /* ===== Calculator-only print mode (triggered by calc-btn-print) =====
+       The Print button creates a `<div class="calc-print-wrap">` containing
+       a clone of the calculator and appends it to <body>, then adds the
+       'printing-calc' class to body. We hide every OTHER direct child of
+       body — that physically removes them from the printed page flow,
+       so total print length collapses to just the calculator. */
+    body.printing-calc > *:not(.calc-print-wrap) { display: none !important; }
+    body.printing-calc .calc-print-wrap { display: block !important; padding: 0.4in 0.5in 0; }
+    body.printing-calc .calc-print-wrap .calc-print-header {
+      display: block !important;
+      font-size: 12pt;
+      font-weight: 600;
+      border-bottom: 1px solid #888;
+      padding-bottom: 6pt;
+      margin-bottom: 10pt;
+    }
+    body.printing-calc .calc-print-wrap .calc {
+      display: block !important;
       border: none !important;
       background: #fff !important;
+      padding: 0 !important;
+      margin: 0 !important;
     }
-    body.printing-calc .calc-print-header {
-      display: block !important;
-      position: absolute !important;
-      left: 0 !important; top: 0 !important;
-      width: 100% !important;
-      padding: 0 0.5in 6pt !important;
-      font-size: 12pt !important;
-      font-weight: 600 !important;
-      border-bottom: 1px solid #888 !important;
-    }
-    body.printing-calc .calc-actions { display: none !important; }
-    body.printing-calc .calc-grid input,
-    body.printing-calc .calc-grid select {
+    body.printing-calc .calc-print-wrap .calc-actions { display: none !important; }
+    body.printing-calc .calc-print-wrap .calc-grid input,
+    body.printing-calc .calc-print-wrap .calc-grid select {
       border: none !important;
       padding: 0 !important;
       background: transparent !important;
@@ -564,9 +558,15 @@
       font-weight: 600;
       color: #000;
     }
-    body.printing-calc .calc-result { background: #f8f8f8 !important; border: 1px solid #ccc !important; page-break-inside: avoid; }
-    body.printing-calc .formula-base, body.printing-calc .formula { color: #555 !important; }
+    body.printing-calc .calc-print-wrap .calc-result {
+      background: #f8f8f8 !important;
+      border: 1px solid #ccc !important;
+      page-break-inside: avoid;
+    }
+    body.printing-calc .calc-print-wrap .formula-base,
+    body.printing-calc .calc-print-wrap .formula { color: #555 !important; }
   }
+  .calc-print-wrap { display: none; }
   /* KaTeX equation styling — wrap display equations in subtle background card */
   .eq { position: relative; background: #fafbfc; border-left: 3px solid #d0d7de; padding: 12px 16px; margin: 12px 0; border-radius: 0 4px 4px 0; overflow-x: auto; }
   .eq .katex-display { margin: 0; }
@@ -4899,31 +4899,64 @@
         calc();
       });
 
-      // Calculator-only print: temporarily switch the body into a print mode
-      // that hides everything except the calculator widget, prints, then restores.
+      // Calculator-only print: clone the calculator widget out of its deep
+      // chapter nesting into a body-level wrapper, hide every other body child,
+      // print, then clean up. The clone-based approach is required because
+      // visibility:hidden does NOT remove elements from the printed page flow
+      // — only display:none does. We can't display:none the calculator's
+      // ancestors (that would hide the calculator too), so we extract a clone.
       const btnCalcPrint = document.getElementById('calc-btn-print');
       if (btnCalcPrint) btnCalcPrint.addEventListener('click', () => {
-        // Inject a small header above the calculator for the printout
-        let header = document.querySelector('.calc-print-header');
-        if (!header) {
-          header = document.createElement('div');
-          header.className = 'calc-print-header';
-          const date = new Date().toLocaleDateString();
-          header.textContent = `Bedside Mechanical Ventilation Calculator — printed ${date}`;
-          document.body.appendChild(header);
-        } else {
-          // Refresh date on subsequent prints
-          const date = new Date().toLocaleDateString();
-          header.textContent = `Bedside Mechanical Ventilation Calculator — printed ${date}`;
-        }
+        // Build the print wrapper
+        const wrap = document.createElement('div');
+        wrap.className = 'calc-print-wrap';
+
+        // Header line
+        const header = document.createElement('div');
+        header.className = 'calc-print-header';
+        header.textContent = `Bedside Mechanical Ventilation Calculator — printed ${new Date().toLocaleDateString()}`;
+        wrap.appendChild(header);
+
+        // Deep-clone the calculator widget
+        const clone = calcWidget.cloneNode(true);
+        // Strip ids from the clone to avoid duplicates in the DOM
+        clone.removeAttribute('id');
+        clone.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+        // Remove the action buttons from the clone (no point printing them)
+        const cloneActions = clone.querySelector('.calc-actions');
+        if (cloneActions) cloneActions.remove();
+        // Copy live values from each input/select in the original to the clone.
+        // (cloneNode doesn't copy live .value, only the original `value` attribute.)
+        const origFields = calcWidget.querySelectorAll('input, select');
+        const cloneFields = clone.querySelectorAll('input, select');
+        origFields.forEach((orig, i) => {
+          const c = cloneFields[i];
+          if (!c) return;
+          if (orig.tagName === 'SELECT') {
+            // Reflect selected option in the clone
+            for (let opt of c.options) opt.removeAttribute('selected');
+            const idx = orig.selectedIndex;
+            if (idx >= 0 && c.options[idx]) c.options[idx].setAttribute('selected', 'selected');
+            c.value = orig.value;
+          } else {
+            c.setAttribute('value', orig.value || '');
+            c.value = orig.value || '';
+          }
+        });
+        wrap.appendChild(clone);
+        document.body.appendChild(wrap);
+
         const cleanup = () => {
           document.body.classList.remove('printing-calc');
+          if (wrap.parentNode) wrap.parentNode.removeChild(wrap);
           window.removeEventListener('afterprint', cleanup);
         };
         document.body.classList.add('printing-calc');
         window.addEventListener('afterprint', cleanup);
-        // setTimeout ensures the body class is applied before the print dialog opens
-        setTimeout(() => window.print(), 50);
+        // Fallback cleanup in case afterprint doesn't fire (some older browsers)
+        setTimeout(() => { if (document.body.classList.contains('printing-calc')) cleanup(); }, 30000);
+        // Tiny delay so the body class & DOM mutation settle before the dialog opens
+        setTimeout(() => window.print(), 80);
       });
     }
   } catch (err) {
