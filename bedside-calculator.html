@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<!--
+  Standalone Bedside Mechanical Ventilation Calculator
+  ─────────────────────────────────────────────────────
+  • Open the file directly in any modern browser, or host on GitHub Pages.
+  • All inputs are stored in memory only — no data leaves the page.
+  • Real-time worked steps show the formula and substituted values for each result.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bedside Mechanical Ventilation Calculator</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #fbfbfa;
+    --ink: #1f2328;
+    --ink-soft: #424a53;
+    --muted: #6e7781;
+    --rule: #d0d7de;
+    --accent: #1f5f99;
+    --accent-soft: #eef5fb;
+    --warn-soft: #fff8e1;
+    --warn-rule: #f0c674;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1419;
+      --surface: #161b22;
+      --ink: #e6edf3;
+      --ink-soft: #c9d1d9;
+      --muted: #8b949e;
+      --rule: #30363d;
+      --accent: #58a6ff;
+      --accent-soft: #122036;
+      --warn-soft: #2a2110;
+      --warn-rule: #6b4f12;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 18px 40px;
+  }
+  header {
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 14px;
+    margin-bottom: 18px;
+  }
+  header h1 { margin: 0 0 4px; font-size: 22px; font-weight: 600; }
+  header .sub { color: var(--muted); font-size: 13.5px; }
+  header .meta { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  details.help { margin: 14px 0 18px; padding: 10px 14px; background: var(--accent-soft); border-radius: 6px; }
+  details.help summary { cursor: pointer; font-weight: 600; color: var(--accent); }
+  details.help p, details.help li { font-size: 13.5px; color: var(--ink-soft); }
+  details.help ul { margin: 6px 0 4px 18px; padding: 0; }
+
+  /* ========== CALCULATOR WIDGET ========== */
+  .calc {
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 8px;
+    padding: 14px 18px; margin: 14px 0;
+  }
+  .calc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px 18px; margin: 8px 0; }
+  .calc-grid label { display: flex; flex-direction: column; font-size: 12.5px; color: var(--ink-soft); gap: 2px; }
+  .calc-grid input, .calc-grid select { padding: 5px 8px; border: 1px solid var(--rule); border-radius: 4px; background: var(--bg); color: var(--ink); font-size: 14px; font-family: inherit; }
+  .calc-grid input:focus, .calc-grid select:focus { outline: none; border-color: var(--accent); }
+  .calc-results { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--rule); }
+  .calc-result { padding: 7px 11px; background: var(--accent-soft); border-radius: 5px; }
+  .calc-result .lbl { display: block; font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.06em; }
+  .calc-result .val { display: block; font-size: 17px; font-weight: 600; color: var(--ink); margin-top: 1px; }
+  .calc-result .unit { font-size: 11.5px; color: var(--muted); font-weight: 400; }
+  /* Symbolic baseline formula — always visible, italic */
+  .calc-result .formula-base {
+    display: block;
+    font-family: ui-monospace, "SF Mono", Consolas, "Liberation Mono", monospace;
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    line-height: 1.45;
+    font-style: italic;
+  }
+  /* Worked-substitution formula — visible once inputs are filled */
+  .calc-result .formula {
+    display: block;
+    font-family: ui-monospace, "SF Mono", Consolas, "Liberation Mono", monospace;
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-top: 1px;
+    line-height: 1.45;
+    word-spacing: 1px;
+    white-space: normal;
+    min-height: 1.2em;
+  }
+  .calc-result .formula:empty { display: none; }
+  .calc-note { font-size: 12px; color: var(--muted); font-style: italic; margin-top: 8px; line-height: 1.5; }
+  .calc-note strong { color: var(--ink-soft); }
+
+  .actions { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .actions button {
+    padding: 6px 12px; font-size: 13px;
+    background: var(--bg); color: var(--ink-soft);
+    border: 1px solid var(--rule); border-radius: 5px;
+    cursor: pointer; font-family: inherit;
+  }
+  .actions button:hover { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+
+  footer { margin-top: 28px; padding-top: 12px; border-top: 1px solid var(--rule); font-size: 12px; color: var(--muted); }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  @media print {
+    .actions, details.help { display: none; }
+    .calc { border-color: #999; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Bedside Mechanical Ventilation Calculator</h1>
+    <div class="sub">Real-time PBW, gas-exchange, mechanics, and lung-protective metrics with worked formula steps.</div>
+    <div class="meta">All calculations run locally in your browser — nothing is uploaded.</div>
+  </header>
+
+  <details class="help">
+    <summary>How to use</summary>
+    <p>Enter values for any subset of inputs. Results update live. Each card shows three things:</p>
+    <ul>
+      <li><strong>The result</strong> with its unit (large, bold).</li>
+      <li><strong>The baseline formula</strong> in symbolic form (italic) — always visible so you see what the equation looks like even before filling anything in.</li>
+      <li><strong>The worked substitution</strong> (monospace) — the formula with your literal values plugged in, plus the answer. Hidden until inputs are populated.</li>
+    </ul>
+    <p>Ranges and defaults are conservative; placeholder text shows a typical adult value. PBW switches between the men/women formulas when you change the Sex dropdown.</p>
+  </details>
+
+  <div class="calc" id="calcWidget" role="region" aria-label="Bedside calculator">
+    <div class="calc-grid">
+      <label>Sex
+        <select id="c-sex">
+          <option value="m">Male</option>
+          <option value="f">Female</option>
+        </select>
+      </label>
+      <label>Height (inches)
+        <input type="number" id="c-ht" min="48" max="84" step="1" placeholder="69"/>
+      </label>
+      <label>Age (years)
+        <input type="number" id="c-age" min="0" max="120" step="1" placeholder="55"/>
+      </label>
+      <label>Hb (g/dL)
+        <input type="number" id="c-hb" min="3" max="20" step="0.1" placeholder="13"/>
+      </label>
+      <label>FiO₂ (decimal, e.g. 0.5)
+        <input type="number" id="c-fio2" min="0.21" max="1" step="0.01" placeholder="0.4"/>
+      </label>
+      <label>PaO₂ (mmHg)
+        <input type="number" id="c-pao2" min="20" max="600" step="1" placeholder="80"/>
+      </label>
+      <label>PaCO₂ (mmHg)
+        <input type="number" id="c-paco2" min="10" max="120" step="1" placeholder="40"/>
+      </label>
+      <label>SpO₂ (%)
+        <input type="number" id="c-spo2" min="50" max="100" step="1" placeholder="95"/>
+      </label>
+      <label>SaO₂ (decimal, e.g. 0.97)
+        <input type="number" id="c-sao2" min="0.5" max="1" step="0.01" placeholder="0.97"/>
+      </label>
+      <label>VT (mL)
+        <input type="number" id="c-vt" min="100" max="1500" step="10" placeholder="450"/>
+      </label>
+      <label>RR (breaths/min)
+        <input type="number" id="c-rr" min="4" max="60" step="1" placeholder="20"/>
+      </label>
+      <label>PIP (cmH₂O)
+        <input type="number" id="c-pip" min="0" max="80" step="1" placeholder="32"/>
+      </label>
+      <label>Pplat (cmH₂O)
+        <input type="number" id="c-pplat" min="0" max="60" step="1" placeholder="24"/>
+      </label>
+      <label>PEEP (cmH₂O)
+        <input type="number" id="c-peep" min="0" max="30" step="1" placeholder="8"/>
+      </label>
+      <label>Peak inspiratory flow (L/min)
+        <input type="number" id="c-flow" min="0" max="200" step="1" placeholder="60"/>
+      </label>
+    </div>
+    <div class="calc-results" id="calcResults" role="region" aria-label="Calculator results" aria-live="polite">
+      <div class="calc-result"><span class="lbl">PBW</span><span class="val" id="r-pbw">—<span class="unit"> kg</span></span><span class="formula-base" id="fb-pbw">PBW = base + 2.3 × (ht_in − 60)</span><span class="formula" id="f-pbw"></span></div>
+      <div class="calc-result"><span class="lbl">VT/PBW</span><span class="val" id="r-vtpbw">—<span class="unit"> mL/kg</span></span><span class="formula-base">VT / PBW</span><span class="formula" id="f-vtpbw"></span></div>
+      <div class="calc-result"><span class="lbl">A–a gradient</span><span class="val" id="r-aa">—<span class="unit"> mmHg</span></span><span class="formula-base">A−a = PAO₂ − PaO₂;  PAO₂ = FiO₂(P_atm − P_H₂O) − PaCO₂/R</span><span class="formula" id="f-aa"></span></div>
+      <div class="calc-result"><span class="lbl">A–a (predicted normal)</span><span class="val" id="r-aanorm">—<span class="unit"> mmHg</span></span><span class="formula-base">age/4 + 4   (room air)</span><span class="formula" id="f-aanorm"></span></div>
+      <div class="calc-result"><span class="lbl">P/F ratio</span><span class="val" id="r-pf">—</span><span class="formula-base">PaO₂ / FiO₂</span><span class="formula" id="f-pf"></span></div>
+      <div class="calc-result"><span class="lbl">S/F ratio</span><span class="val" id="r-sf">—</span><span class="formula-base">SpO₂ / FiO₂</span><span class="formula" id="f-sf"></span></div>
+      <div class="calc-result"><span class="lbl">ROX index</span><span class="val" id="r-rox">—</span><span class="formula-base">(SpO₂ / FiO₂) / RR</span><span class="formula" id="f-rox"></span></div>
+      <div class="calc-result"><span class="lbl">RSBI</span><span class="val" id="r-rsbi">—</span><span class="formula-base">RR / VT (L)</span><span class="formula" id="f-rsbi"></span></div>
+      <div class="calc-result"><span class="lbl">Cstat</span><span class="val" id="r-cstat">—<span class="unit"> mL/cmH₂O</span></span><span class="formula-base">VT / ΔP</span><span class="formula" id="f-cstat"></span></div>
+      <div class="calc-result"><span class="lbl">Driving pressure (ΔP)</span><span class="val" id="r-dp">—<span class="unit"> cmH₂O</span></span><span class="formula-base">Pplat − PEEP</span><span class="formula" id="f-dp"></span></div>
+      <div class="calc-result"><span class="lbl">Raw</span><span class="val" id="r-raw">—<span class="unit"> cmH₂O·s/L</span></span><span class="formula-base">(PIP − Pplat) / V̇    (V̇ = peak flow, L/s)</span><span class="formula" id="f-raw"></span></div>
+      <div class="calc-result"><span class="lbl">Time constant (τ)</span><span class="val" id="r-tau">—<span class="unit"> s</span></span><span class="formula-base">τ = Raw × Cstat   (Te ≥ 3τ to avoid air-trapping)</span><span class="formula" id="f-tau"></span></div>
+      <div class="calc-result"><span class="lbl">Mechanical power</span><span class="val" id="r-mp">—<span class="unit"> J/min</span></span><span class="formula-base">MP = 0.098 × RR × VT × (PIP − ½ΔP)</span><span class="formula" id="f-mp"></span></div>
+      <div class="calc-result"><span class="lbl">CaO₂ (oxygen content)</span><span class="val" id="r-cao2">—<span class="unit"> mL/dL</span></span><span class="formula-base">CaO₂ = 1.34 × Hb × SaO₂ + 0.003 × PaO₂</span><span class="formula" id="f-cao2"></span></div>
+    </div>
+    <p class="calc-note">
+      <strong>Reference values.</strong>
+      PBW (men) = 50 + 2.3·(ht in − 60); women = 45.5 + 2.3·(ht in − 60).
+      A–a normal = age/4 + 4 (room air).
+      MP = 0.098 × RR × VT × (PIP − ½ ΔP).
+      CaO₂ = 1.34·Hb·SaO₂ + 0.003·PaO₂.
+      ROX = (SpO₂/FiO₂)/RR.
+      <strong>Raw = (PIP − Pplat) / flow_L/s</strong> (constant-flow VC).
+      <strong>τ = Raw × Cstat (in L/cmH₂O)</strong>; expiratory T<sub>e</sub> ≥ 3τ to avoid air-trapping.
+    </p>
+    <div class="actions">
+      <button id="btn-clear" type="button" title="Clear all input fields">Clear all</button>
+      <button id="btn-example" type="button" title="Load Case A: mild ARDS (68F, 64in, FiO₂ 0.5, ...)">Load example (Case A)</button>
+      <button id="btn-print" type="button" title="Print this page">Print</button>
+    </div>
+  </div>
+
+  <footer>
+    Companion to the
+    <a href="mechanical-ventilation-teaching-reference.html">Mechanical Ventilation Teaching Reference</a>
+    · All formulas referenced in §A · Equations of the parent doc.
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  // ============== BEDSIDE CALCULATOR ==============
+  try {
+    const calcWidget = document.getElementById('calcWidget');
+    if (calcWidget) {
+      const $ = (id) => document.getElementById(id);
+      const inputs = ['c-sex', 'c-ht', 'c-age', 'c-hb', 'c-fio2', 'c-pao2', 'c-paco2', 'c-spo2', 'c-sao2', 'c-vt', 'c-rr', 'c-pip', 'c-pplat', 'c-peep', 'c-flow'];
+      const num = (id) => {
+        const el = $(id);
+        if (!el) return NaN;
+        const v = parseFloat(el.value);
+        return isFinite(v) ? v : NaN;
+      };
+      const fmt = (v, dp = 1) => isFinite(v) ? v.toFixed(dp) : '—';
+      const setHTML = (id, html) => { const el = $(id); if (el) el.innerHTML = html; };
+      const setText = (id, txt) => { const el = $(id); if (el) el.textContent = txt; };
+      const f = (v, dp = 1) => isFinite(v) ? (Number.isInteger(v) ? String(v) : v.toFixed(dp)) : '?';
+      const setFormula = (id, text) => { const el = $(id); if (el) el.textContent = text || ''; };
+
+      function calc() {
+        try {
+          const sexEl = $('c-sex');
+          const sex = sexEl ? sexEl.value : 'm';
+          const ht = num('c-ht');
+          const age = num('c-age');
+          const hb = num('c-hb');
+          const fio2 = num('c-fio2');
+          const pao2 = num('c-pao2');
+          const paco2 = num('c-paco2');
+          const spo2 = num('c-spo2');
+          const sao2 = num('c-sao2');
+          const vt = num('c-vt');
+          const rr = num('c-rr');
+          const pip = num('c-pip');
+          const pplat = num('c-pplat');
+          const peep = num('c-peep');
+          const flow = num('c-flow');
+
+          // PBW
+          const baseW = sex === 'm' ? 50 : 45.5;
+          const pbw = isFinite(ht) ? (baseW + 2.3 * (ht - 60)) : NaN;
+          setHTML('r-pbw', fmt(pbw, 1) + '<span class="unit"> kg</span>');
+          const fbPbw = $('fb-pbw');
+          if (fbPbw) fbPbw.textContent = `PBW = ${baseW} + 2.3 × (ht_in − 60)   (${sex === 'm' ? 'men' : 'women'})`;
+          setFormula('f-pbw', isFinite(pbw)
+            ? `= ${baseW} + 2.3 × (${f(ht,0)} − 60) = ${f(pbw,1)}` : '');
+
+          // VT / PBW
+          const vtpbw = (isFinite(vt) && isFinite(pbw) && pbw > 0) ? vt / pbw : NaN;
+          setHTML('r-vtpbw', fmt(vtpbw, 1) + '<span class="unit"> mL/kg</span>');
+          setFormula('f-vtpbw', isFinite(vtpbw)
+            ? `= ${f(vt,0)} / ${f(pbw,1)} = ${f(vtpbw,1)}` : '');
+
+          // A-a gradient
+          const PAO2 = (isFinite(fio2) && isFinite(paco2)) ? (fio2 * 713 - paco2 / 0.8) : NaN;
+          const aa = (isFinite(PAO2) && isFinite(pao2)) ? (PAO2 - pao2) : NaN;
+          setHTML('r-aa', fmt(aa, 1) + '<span class="unit"> mmHg</span>');
+          setFormula('f-aa', isFinite(aa)
+            ? `PAO₂ = ${f(fio2,2)} × 713 − ${f(paco2,0)}/0.8 = ${f(PAO2,0)};  A−a = ${f(PAO2,0)} − ${f(pao2,0)} = ${f(aa,1)}` : '');
+
+          // A-a normal
+          const aaNorm = isFinite(age) ? (age / 4 + 4) : NaN;
+          setHTML('r-aanorm', fmt(aaNorm, 1) + '<span class="unit"> mmHg</span>');
+          setFormula('f-aanorm', isFinite(aaNorm)
+            ? `= ${f(age,0)}/4 + 4 = ${f(aaNorm,1)}` : '');
+
+          // P/F
+          const pf = (isFinite(pao2) && isFinite(fio2) && fio2 > 0) ? pao2 / fio2 : NaN;
+          setText('r-pf', fmt(pf, 0));
+          setFormula('f-pf', isFinite(pf) ? `= ${f(pao2,0)} / ${f(fio2,2)} = ${f(pf,0)}` : '');
+
+          // S/F
+          const sf = (isFinite(spo2) && isFinite(fio2) && fio2 > 0) ? spo2 / fio2 : NaN;
+          setText('r-sf', fmt(sf, 0));
+          setFormula('f-sf', isFinite(sf) ? `= ${f(spo2,0)} / ${f(fio2,2)} = ${f(sf,0)}` : '');
+
+          // ROX
+          const rox = (isFinite(sf) && isFinite(rr) && rr > 0) ? sf / rr : NaN;
+          setText('r-rox', fmt(rox, 2));
+          setFormula('f-rox', isFinite(rox) ? `= (${f(spo2,0)}/${f(fio2,2)}) / ${f(rr,0)} = ${f(sf,0)}/${f(rr,0)} = ${f(rox,2)}` : '');
+
+          // RSBI
+          const rsbi = (isFinite(rr) && isFinite(vt) && vt > 0) ? rr / (vt / 1000) : NaN;
+          setText('r-rsbi', fmt(rsbi, 0));
+          setFormula('f-rsbi', isFinite(rsbi) ? `= ${f(rr,0)} / ${f(vt/1000,2)} = ${f(rsbi,0)}` : '');
+
+          // ΔP
+          const dp = (isFinite(pplat) && isFinite(peep)) ? pplat - peep : NaN;
+          setHTML('r-dp', fmt(dp, 1) + '<span class="unit"> cmH₂O</span>');
+          setFormula('f-dp', isFinite(dp) ? `= ${f(pplat,0)} − ${f(peep,0)} = ${f(dp,1)}` : '');
+
+          // Cstat
+          const cstat = (isFinite(vt) && isFinite(dp) && dp > 0) ? vt / dp : NaN;
+          setHTML('r-cstat', fmt(cstat, 1) + '<span class="unit"> mL/cmH₂O</span>');
+          setFormula('f-cstat', isFinite(cstat) ? `= ${f(vt,0)} / ${f(dp,1)} = ${f(cstat,1)}` : '');
+
+          // Raw
+          const flowLps = (isFinite(flow) && flow > 0) ? flow / 60 : NaN;
+          const raw = (isFinite(pip) && isFinite(pplat) && isFinite(flowLps)) ? (pip - pplat) / flowLps : NaN;
+          setHTML('r-raw', fmt(raw, 1) + '<span class="unit"> cmH₂O·s/L</span>');
+          setFormula('f-raw', isFinite(raw)
+            ? `= (${f(pip,0)} − ${f(pplat,0)}) / (${f(flow,0)}/60) = ${f(pip-pplat,0)} / ${f(flowLps,2)} = ${f(raw,1)}` : '');
+
+          // τ
+          const tau = (isFinite(raw) && isFinite(cstat)) ? raw * (cstat / 1000) : NaN;
+          setHTML('r-tau', fmt(tau, 2) + '<span class="unit"> s</span>');
+          setFormula('f-tau', isFinite(tau)
+            ? `= ${f(raw,1)} × ${f(cstat/1000,3)} = ${f(tau,2)}  (Te ≥ 3τ = ${f(3*tau,2)} s)` : '');
+
+          // MP
+          const mp = (isFinite(rr) && isFinite(vt) && isFinite(pip) && isFinite(dp)) ? 0.098 * rr * (vt / 1000) * (pip - 0.5 * dp) : NaN;
+          setHTML('r-mp', fmt(mp, 1) + '<span class="unit"> J/min</span>');
+          setFormula('f-mp', isFinite(mp)
+            ? `= 0.098 × ${f(rr,0)} × ${f(vt/1000,2)} × (${f(pip,0)} − ½·${f(dp,1)}) = ${f(mp,1)}` : '');
+
+          // CaO₂
+          const cao2bound = isFinite(hb) && isFinite(sao2) ? 1.34 * hb * sao2 : NaN;
+          const cao2dissolved = isFinite(pao2) ? 0.003 * pao2 : 0;
+          const cao2 = (isFinite(cao2bound)) ? (cao2bound + cao2dissolved) : NaN;
+          setHTML('r-cao2', fmt(cao2, 2) + '<span class="unit"> mL/dL</span>');
+          setFormula('f-cao2', isFinite(cao2)
+            ? `= 1.34 × ${f(hb,1)} × ${f(sao2,2)} + 0.003 × ${f(isFinite(pao2)?pao2:0,0)} = ${f(cao2bound,2)} + ${f(cao2dissolved,2)} = ${f(cao2,2)}` : '');
+        } catch (err) {
+          console.error('Calculator calc() error:', err);
+        }
+      }
+
+      inputs.forEach(id => {
+        const el = $(id);
+        if (el) el.addEventListener('input', calc);
+      });
+      calc();
+
+      // Buttons
+      const btnClear = document.getElementById('btn-clear');
+      if (btnClear) btnClear.addEventListener('click', () => {
+        inputs.forEach(id => {
+          const el = $(id);
+          if (el && el.tagName === 'INPUT') el.value = '';
+        });
+        calc();
+      });
+
+      const btnExample = document.getElementById('btn-example');
+      if (btnExample) btnExample.addEventListener('click', () => {
+        // Case A: mild ARDS, post-pneumonia, average build
+        const caseA = {
+          'c-sex': 'f', 'c-ht': '64', 'c-age': '68', 'c-hb': '13',
+          'c-fio2': '0.5', 'c-pao2': '88', 'c-paco2': '50',
+          'c-spo2': '95', 'c-sao2': '0.97',
+          'c-vt': '480', 'c-rr': '18',
+          'c-pip': '28', 'c-pplat': '24', 'c-peep': '8', 'c-flow': '60'
+        };
+        Object.keys(caseA).forEach(id => {
+          const el = $(id);
+          if (el) el.value = caseA[id];
+        });
+        calc();
+      });
+
+      const btnPrint = document.getElementById('btn-print');
+      if (btnPrint) btnPrint.addEventListener('click', () => window.print());
+    }
+  } catch (err) {
+    console.error('Calculator init error:', err);
+  }
+})();
+</script>
+</body>
+</html>
