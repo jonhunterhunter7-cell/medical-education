@@ -103,6 +103,35 @@
     min-height: 1.2em;
   }
   .calc-result .formula:empty { display: none; }
+  /* Modeled-waveform panel (matches the embedded calculator in the parent doc) */
+  .calc-waveform {
+    margin-top: 12px;
+    padding: 10px 12px;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 5px;
+  }
+  .calc-waveform .cw-header {
+    font-size: 11px; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 0.06em;
+    margin-bottom: 6px;
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  }
+  .calc-waveform .cw-mode-group { display: inline-flex; gap: 0; }
+  .calc-waveform button.cw-mode {
+    font-family: inherit; font-size: 11px; padding: 3px 10px;
+    border: 1px solid var(--rule); background: var(--bg); color: var(--muted);
+    cursor: pointer; letter-spacing: 0; text-transform: none;
+  }
+  .calc-waveform button.cw-mode:first-child { border-radius: 4px 0 0 4px; }
+  .calc-waveform button.cw-mode:last-child  { border-radius: 0 4px 4px 0; border-left: none; }
+  .calc-waveform button.cw-mode.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .calc-waveform .cw-note { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.45; }
+  .calc-waveform svg text { font-family: inherit; }
+  @media (prefers-color-scheme: dark) {
+    .calc-waveform svg path#cw-pressure { stroke: #56b4e9; }
+    .calc-waveform svg path#cw-flow { stroke: #f0b66a; }
+  }
   /* Mini-table for the RR-by-I:E ceiling card */
   .calc-result .rr-mini { width: 100%; border-collapse: collapse; margin-top: 3px; font-size: 12.5px; }
   .calc-result .rr-mini td { padding: 1px 4px; border: none; vertical-align: middle; }
@@ -136,7 +165,7 @@
 
   <header>
     <h1>Bedside Mechanical Ventilation Calculator</h1>
-    <div class="sub">Real-time PBW, gas-exchange, mechanics, and lung-protective metrics with worked formula steps.</div>
+    <div class="sub">Real-time PBW, gas exchange, mechanics, and lung-protective metrics — with worked formula steps and live VC/PC pressure-flow waveforms.</div>
     <div class="meta">All calculations run locally in your browser — nothing is uploaded.</div>
   </header>
 
@@ -148,6 +177,8 @@
       <li><strong>The baseline formula</strong> in symbolic form (italic) — always visible so you see what the equation looks like even before filling anything in.</li>
       <li><strong>The worked substitution</strong> (monospace) — the formula with your literal values plugged in, plus the answer. Hidden until inputs are populated.</li>
     </ul>
+    <p>The <strong>"Max RR by I:E"</strong> card translates the calculated time constant (τ) into the highest respiratory rate that avoids air-trapping for each I:E ratio (Te ≥ 3τ rule).</p>
+    <p>The <strong>modeled waveforms panel</strong> renders the pressure-time and flow-time traces from your inputs. Toggle between <strong>VC</strong> (constant flow, linear pressure ramp) and <strong>PC</strong> (decelerating flow, square pressure) with the segmented control on its header.</p>
     <p>Ranges and defaults are conservative; placeholder text shows a typical adult value. PBW switches between the men/women formulas when you change the Sex dropdown.</p>
   </details>
 
@@ -227,6 +258,32 @@
       <div class="calc-result"><span class="lbl">Mechanical power</span><span class="val" id="r-mp">—<span class="unit"> J/min</span></span><span class="formula-base">MP = 0.098 × RR × VT × (PIP − ½ΔP)</span><span class="formula" id="f-mp"></span></div>
       <div class="calc-result"><span class="lbl">CaO₂ (oxygen content)</span><span class="val" id="r-cao2">—<span class="unit"> mL/dL</span></span><span class="formula-base">CaO₂ = 1.34 × Hb × SaO₂ + 0.003 × PaO₂</span><span class="formula" id="f-cao2"></span></div>
     </div>
+    <div class="calc-waveform" id="calcWaveform" aria-label="Pressure and flow waveforms modeled from current inputs">
+      <div class="cw-header">
+        <span>Modeled pressure &amp; flow waveforms</span>
+        <span class="cw-mode-group" role="radiogroup" aria-label="Ventilation mode">
+          <button type="button" class="cw-mode active" data-mode="VC" id="cw-mode-vc" aria-pressed="true">VC</button>
+          <button type="button" class="cw-mode" data-mode="PC" id="cw-mode-pc" aria-pressed="false">PC</button>
+        </span>
+      </div>
+      <svg id="cw-svg" viewBox="0 0 760 380" preserveAspectRatio="xMidYMid meet" style="width:100%; height:auto; display:block; aspect-ratio: 760/380;">
+        <text x="14" y="20" font-size="11" fill="currentColor" opacity="0.7">Pressure (cmH₂O)</text>
+        <rect x="130" y="32" width="610" height="128" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.35"/>
+        <text id="cw-pip-label"  x="124" y="44"  font-size="11" fill="currentColor" opacity="0.8" text-anchor="end">PIP</text>
+        <line id="cw-peep-line" x1="130" y1="148" x2="740" y2="148" stroke="currentColor" stroke-width="1" stroke-dasharray="3,3" opacity="0.4"/>
+        <text id="cw-peep-label" x="124" y="152" font-size="11" fill="currentColor" opacity="0.8" text-anchor="end">PEEP</text>
+        <path id="cw-pressure" fill="none" stroke="#0072B2" stroke-width="2.4"/>
+        <text x="14" y="208" font-size="11" fill="currentColor" opacity="0.7">Flow (L/min)</text>
+        <rect x="130" y="220" width="610" height="140" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.35"/>
+        <text id="cw-flow-pos-label" x="124" y="234" font-size="11" fill="currentColor" opacity="0.8" text-anchor="end">+ peak</text>
+        <line x1="130" y1="290" x2="740" y2="290" stroke="currentColor" stroke-width="1" stroke-dasharray="3,3" opacity="0.4"/>
+        <text id="cw-flow-zero-label" x="124" y="294" font-size="11" fill="currentColor" opacity="0.8" text-anchor="end">0</text>
+        <text id="cw-flow-neg-label" x="124" y="356" font-size="11" fill="currentColor" opacity="0.8" text-anchor="end">− peak</text>
+        <path id="cw-flow" fill="none" stroke="#E69F00" stroke-width="2.4"/>
+        <text x="740" y="376" font-size="10" fill="currentColor" opacity="0.6" text-anchor="end">time →</text>
+      </svg>
+      <div class="cw-note" id="cw-note">Enter VT, RR, PIP, Pplat, PEEP, and peak flow to see the breath cycle.</div>
+    </div>
     <p class="calc-note">
       <strong>Reference values.</strong>
       PBW (men) = 50 + 2.3·(ht in − 60); women = 45.5 + 2.3·(ht in − 60).
@@ -247,7 +304,9 @@
   <footer>
     Companion to the
     <a href="https://jonhunterhunter7-cell.github.io/medical-education/mechanical-ventilation-teaching-reference.html">Mechanical Ventilation Teaching Reference</a>
-    · All formulas referenced in §A · Equations of the parent doc.
+    and the
+    <a href="https://jonhunterhunter7-cell.github.io/medical-education/mechanical-ventilation-bedside-one-pager.html">bedside one-pager</a>.
+    All formulas referenced in §A · Equations of the parent doc.
   </footer>
 
 </div>
@@ -389,8 +448,147 @@
           setHTML('r-cao2', fmt(cao2, 2) + '<span class="unit"> mL/dL</span>');
           setFormula('f-cao2', isFinite(cao2)
             ? `= 1.34 × ${f(hb,1)} × ${f(sao2,2)} + 0.003 × ${f(isFinite(pao2)?pao2:0,0)} = ${f(cao2bound,2)} + ${f(cao2dissolved,2)} = ${f(cao2,2)}` : '');
+
+          // Modeled waveforms (pressure-time and flow-time)
+          drawWaveforms({pip, pplat, peep, vt, rr, flow, tau});
         } catch (err) {
           console.error('Calculator calc() error:', err);
+        }
+      }
+
+      // Ventilation mode (default VC). Toggled via .cw-mode buttons.
+      let cwMode = 'VC';
+      document.querySelectorAll('.calc-waveform .cw-mode').forEach(btn => {
+        btn.addEventListener('click', () => {
+          cwMode = btn.dataset.mode;
+          document.querySelectorAll('.calc-waveform .cw-mode').forEach(b => {
+            const isOn = b.dataset.mode === cwMode;
+            b.classList.toggle('active', isOn);
+            b.setAttribute('aria-pressed', String(isOn));
+          });
+          calc();
+        });
+      });
+
+      function drawWaveforms(p) {
+        const presPath = $('cw-pressure');
+        const flowPath = $('cw-flow');
+        const note = $('cw-note');
+        const peepLine = $('cw-peep-line');
+        const peepLabel = $('cw-peep-label');
+        const pipLabel = $('cw-pip-label');
+        if (!presPath || !flowPath) return;
+
+        const ready = [p.pip, p.pplat, p.peep, p.vt, p.rr, p.flow]
+          .every(v => isFinite(v) && v >= 0);
+        if (!ready) {
+          presPath.setAttribute('d', '');
+          flowPath.setAttribute('d', '');
+          if (note) note.textContent = 'Enter VT, RR, PIP, Pplat, PEEP, and peak flow to see the breath cycle.';
+          return;
+        }
+
+        // SVG layout constants — match the SVG viewBox (760 × 380)
+        const xL = 130, xR = 740;
+        const pTop = 40, pBot = 152;
+        const fZero = 290;
+        const fTopY = 226;
+        const fBotY = 354;
+        const fScalePos = fZero - fTopY;
+        const fScaleNeg = fBotY - fZero;
+
+        // Time model — show ONE breath cycle, padded slightly
+        const Ttot = 60 / p.rr;
+        const flowLps = p.flow / 60;
+        const TiFlow = (p.vt / 1000) / flowLps;
+        const TiHold = Math.min(0.4, Ttot * 0.15);
+        const Ti = TiFlow + TiHold;
+        const Te = Math.max(0, Ttot - Ti);
+        const tau = (isFinite(p.tau) && p.tau > 0) ? p.tau : 0.3;
+        const totalT = Ttot * 1.05;
+
+        const pMin = Math.max(0, p.peep - 3);
+        const pMax = Math.max(p.pip, p.pplat, p.peep) + 4;
+        const pRange = Math.max(1, pMax - pMin);
+        const xT = (t) => xL + (t / totalT) * (xR - xL);
+        const yP = (P) => pBot - ((P - pMin) / pRange) * (pBot - pTop);
+        const fAbs = Math.max(p.flow, 1);
+        const yF = (Q) => Q >= 0
+          ? fZero - (Q / fAbs) * fScalePos
+          : fZero - (Q / fAbs) * fScaleNeg;
+
+        const presPts = [];
+        const flowPts = [];
+
+        if (cwMode === 'VC') {
+          presPts.push([0, p.peep]);
+          presPts.push([TiFlow, p.pip]);
+          presPts.push([TiFlow + 0.003, p.pplat]);
+          presPts.push([Ti, p.pplat]);
+          for (let i = 1; i <= 24; i++) {
+            const dt = (i / 24) * Te;
+            presPts.push([Ti + dt, p.peep + (p.pplat - p.peep) * Math.exp(-dt / tau)]);
+          }
+          flowPts.push([0, 0]);
+          flowPts.push([0.001, p.flow]);
+          flowPts.push([TiFlow, p.flow]);
+          flowPts.push([TiFlow + 0.001, 0]);
+          flowPts.push([Ti, 0]);
+          const peakExp = -p.flow * 0.85;
+          flowPts.push([Ti + 0.001, peakExp]);
+          for (let i = 1; i <= 24; i++) {
+            const dt = (i / 24) * Te;
+            flowPts.push([Ti + dt, peakExp * Math.exp(-dt / tau)]);
+          }
+        } else {
+          // Pressure control: square pressure, decelerating flow
+          const Pset = p.pplat;
+          presPts.push([0, p.peep]);
+          presPts.push([0.04, Pset]);
+          presPts.push([Ti, Pset]);
+          for (let i = 1; i <= 24; i++) {
+            const dt = (i / 24) * Te;
+            presPts.push([Ti + dt, p.peep + (Pset - p.peep) * Math.exp(-dt / tau)]);
+          }
+          const flowTau = Math.max(tau, Ti / 4);
+          flowPts.push([0, 0]);
+          flowPts.push([0.001, p.flow]);
+          for (let i = 1; i <= 24; i++) {
+            const dt = (i / 24) * Ti;
+            flowPts.push([dt, p.flow * Math.exp(-dt / flowTau)]);
+          }
+          flowPts.push([Ti, 0]);
+          const peakExp = -p.flow * 0.85;
+          flowPts.push([Ti + 0.001, peakExp]);
+          for (let i = 1; i <= 24; i++) {
+            const dt = (i / 24) * Te;
+            flowPts.push([Ti + dt, peakExp * Math.exp(-dt / tau)]);
+          }
+        }
+
+        const presD = presPts.map((pt, i) => `${i ? 'L' : 'M'}${xT(pt[0]).toFixed(1)},${yP(pt[1]).toFixed(1)}`).join(' ');
+        presPath.setAttribute('d', presD);
+        const flowD = flowPts.map((pt, i) => `${i ? 'L' : 'M'}${xT(pt[0]).toFixed(1)},${yF(pt[1]).toFixed(1)}`).join(' ');
+        flowPath.setAttribute('d', flowD);
+
+        if (peepLine) {
+          const peepY = yP(p.peep).toFixed(1);
+          peepLine.setAttribute('y1', peepY);
+          peepLine.setAttribute('y2', peepY);
+        }
+        if (peepLabel) peepLabel.textContent = `PEEP ${p.peep.toFixed(0)}`;
+        if (pipLabel) {
+          const topPressure = (cwMode === 'VC') ? p.pip : p.pplat;
+          pipLabel.textContent = (cwMode === 'VC' ? 'PIP ' : 'Pset ') + topPressure.toFixed(0);
+        }
+        const fPosLabel = $('cw-flow-pos-label');
+        const fNegLabel = $('cw-flow-neg-label');
+        if (fPosLabel) fPosLabel.textContent = '+ ' + p.flow.toFixed(0);
+        if (fNegLabel) fNegLabel.textContent = '− ' + Math.round(p.flow * 0.85);
+        if (note) {
+          const ieRatio = (Ti > 0 && Te > 0) ? `1:${(Te / Ti).toFixed(1)}` : '—';
+          const trapWarn = Te < 3 * tau ? '  ⚠ Te < 3τ — air-trapping risk' : '';
+          note.textContent = `${cwMode} mode · Cycle ${Ttot.toFixed(2)} s · Ti ${Ti.toFixed(2)} s · Te ${Te.toFixed(2)} s · I:E ${ieRatio}${trapWarn}`;
         }
       }
 
