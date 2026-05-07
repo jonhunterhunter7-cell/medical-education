@@ -528,6 +528,26 @@
     text-transform: uppercase; font-weight: 700; margin-bottom: 0.45rem; display: block;
   }
 
+  /* Ultrasound clip viewer (when site has an image) */
+  .us-clip-stage {
+    background: #000; display: flex; align-items: center; justify-content: center;
+    padding: 0.5rem; min-height: 320px;
+  }
+  .us-clip-stage img {
+    width: auto; height: auto; max-width: 100%; max-height: 480px;
+    object-fit: contain; display: block; border-radius: 4px;
+  }
+  .us-clip-prompt {
+    padding: 0.95rem 1.25rem;
+    background: linear-gradient(180deg, rgba(107, 58, 166, 0.08) 0%, var(--panel-2) 100%);
+    border-top: 1px solid var(--line);
+    color: var(--text-dim); font-size: 0.88rem; line-height: 1.55;
+    display: flex; align-items: center; gap: 0.7rem;
+  }
+  .us-clip-prompt::before {
+    content: '⊙'; font-size: 1.2rem; color: var(--gold-text); flex-shrink: 0;
+  }
+
   /* ── Buttons ───────────────────────────────────────────── */
   .cta-row {
     margin-top: 1.5rem; display: flex; gap: 0.7rem;
@@ -932,68 +952,16 @@ const CASES = [
     scanWindows: [
       {
         id: 'lung-ant-r', label: 'Lung — anterior right', region: 'thorax-r', preset: 'Lung · curvilinear',
-        findings: [
-          { label: 'Pleural line', value: 'Smooth, sliding present', flag: 'normal' },
-          { label: 'A-lines', value: 'Absent', flag: 'abnormal' },
-          { label: 'B-lines', value: '>3 per rib space, confluent in two zones', flag: 'key' },
-          { label: 'Pleural effusion', value: 'Not visualized at this window', flag: 'normal' },
-        ],
+        image: 'https://i.postimg.cc/vmFMmY6p/case-1-right-lung.gif',
+        findings: [],
         interpretation: 'B+ profile (interstitial syndrome). Bilateral & symmetric pattern points toward cardiogenic pulmonary edema rather than focal pneumonia.',
         containsKey: true,
       },
       {
-        id: 'lung-ant-l', label: 'Lung — anterior left', region: 'thorax-l', preset: 'Lung · curvilinear',
-        findings: [
-          { label: 'Pleural line', value: 'Smooth, sliding present', flag: 'normal' },
-          { label: 'A-lines', value: 'Absent', flag: 'abnormal' },
-          { label: 'B-lines', value: '>3 per rib space, confluent in two zones', flag: 'key' },
-          { label: 'Pleural effusion', value: 'Not visualized at this window', flag: 'normal' },
-        ],
-        interpretation: 'Same B+ pattern. Bilateral B+ in two zones meets criteria for interstitial syndrome.',
-        containsKey: true,
-      },
-      {
         id: 'lung-plaps-r', label: 'Lung — PLAPS point right', region: 'flank-r', preset: 'Lung · curvilinear',
-        findings: [
-          { label: 'Diaphragm', value: 'Visible, normal motion', flag: 'normal' },
-          { label: 'Pleural fluid', value: 'Anechoic stripe above the diaphragm', flag: 'key' },
-          { label: 'Spine sign', value: 'Vertebral bodies visible above diaphragm', flag: 'abnormal' },
-          { label: 'Atelectatic lung', value: '"Jellyfish" sign — collapsed lung floating in fluid', flag: 'abnormal' },
-        ],
-        interpretation: 'Right pleural effusion. Spine sign confirms — vertebrae visible above the diaphragm only when fluid replaces aerated lung.',
-        containsKey: true,
-      },
-      {
-        id: 'lung-plaps-l', label: 'Lung — PLAPS point left', region: 'flank-l', preset: 'Lung · curvilinear',
-        findings: [
-          { label: 'Diaphragm', value: 'Visible', flag: 'normal' },
-          { label: 'Pleural fluid', value: 'Anechoic stripe present', flag: 'abnormal' },
-          { label: 'Spine sign', value: 'Present', flag: 'abnormal' },
-        ],
-        interpretation: 'Bilateral pleural effusions support a transudative process from elevated hydrostatic pressure.',
-        containsKey: false,
-      },
-      {
-        id: 'cardiac-psl', label: 'Cardiac — parasternal long', region: 'precordium', preset: 'Cardiac · phased',
-        findings: [
-          { label: 'LV cavity size', value: 'Mildly dilated (LVEDD ~5.6 cm)', flag: 'abnormal' },
-          { label: 'LV systolic function', value: 'Visually estimated EF 35–40%', flag: 'key' },
-          { label: 'EPSS', value: 'Widened (>7 mm)', flag: 'abnormal' },
-          { label: 'Mitral valve', value: 'Thin leaflets, normal opening', flag: 'normal' },
-          { label: 'Pericardial effusion', value: 'None', flag: 'normal' },
-          { label: 'LA size', value: 'Mildly dilated', flag: 'abnormal' },
-        ],
-        interpretation: 'Reduced LV systolic function with chamber dilation. EPSS > 7 mm correlates with EF < 50%. Findings consistent with HFrEF.',
-        containsKey: true,
-      },
-      {
-        id: 'ivc', label: 'IVC — long axis', region: 'subxiphoid', preset: 'Cardiac · phased',
-        findings: [
-          { label: 'Maximum diameter', value: '2.4 cm', flag: 'abnormal' },
-          { label: 'Respiratory variation', value: '<50% (minimal collapse)', flag: 'key' },
-          { label: 'Hepatic veins', value: 'Dilated', flag: 'abnormal' },
-        ],
-        interpretation: 'Plethoric IVC = elevated right atrial pressure. Combined with B-lines and reduced EF, confirms volume overload.',
+        image: 'https://i.postimg.cc/tCsHtZ3S/case-1-left-lung.gif',
+        findings: [],
+        interpretation: 'Right pleural effusion — anechoic stripe above the diaphragm with the spine sign present (vertebral bodies visible above the diaphragm). Atelectatic lung floats within the fluid (jellyfish sign). Combined with the ipsilateral B-line pattern at the anterior right lung, this supports a transudative process from elevated hydrostatic pressure (cardiogenic edema).',
         containsKey: true,
       },
     ],
@@ -1027,61 +995,18 @@ const CASES = [
     vitals: 'HR 110 · BP 128/76 · RR 22 · SpO₂ 93% RA · T 37.0°C',
     scanWindows: [
       {
-        id: 'lung-ant-r', label: 'Lung — anterior right (B-mode)', region: 'thorax-r', preset: 'Lung · linear',
-        findings: [
-          { label: 'Pleural line', value: 'Smooth, well-defined', flag: 'normal' },
-          { label: 'Lung sliding', value: 'Present (shimmering)', flag: 'normal' },
-          { label: 'A-lines', value: 'Present', flag: 'normal' },
-          { label: 'B-lines', value: 'None', flag: 'normal' },
-          { label: 'Lung pulse', value: 'Present', flag: 'normal' },
-        ],
-        interpretation: 'Normal aerated lung. Rules out pneumothorax in this zone.',
-        containsKey: false,
-      },
-      {
         id: 'lung-ant-l', label: 'Lung — anterior left (B-mode)', region: 'thorax-l', preset: 'Lung · linear',
-        findings: [
-          { label: 'Pleural line', value: 'Visible', flag: 'normal' },
-          { label: 'Lung sliding', value: 'ABSENT — pleural line is static', flag: 'key' },
-          { label: 'A-lines', value: 'Present', flag: 'normal' },
-          { label: 'B-lines', value: 'None', flag: 'normal' },
-          { label: 'Lung pulse', value: 'Absent (no cardiac transmission)', flag: 'abnormal' },
-        ],
-        interpretation: 'Absent sliding + absent lung pulse + A-lines only is highly suspicious for pneumothorax. Confirm with M-mode and look for the lung point.',
+        image: 'https://i.postimg.cc/c19SnMnT/case-2-left-lung-1.gif',
+        findings: [],
+        interpretation: 'Lung point identified — discrete transition between sliding and non-sliding lung within a single rib space. Lung point is 100% specific for pneumothorax and also localizes the leading edge of the PTX.',
         containsKey: true,
       },
       {
-        id: 'lung-mmode-l', label: 'Lung — anterior left (M-mode)', region: 'thorax-l', preset: 'Lung · linear · M-mode',
-        findings: [
-          { label: 'Pre-pleural pattern', value: 'Horizontal lines (chest wall)', flag: 'normal' },
-          { label: 'Pleural line', value: 'Identifiable', flag: 'normal' },
-          { label: 'Post-pleural pattern', value: 'Horizontal lines all the way down — barcode/stratosphere sign', flag: 'key' },
-          { label: 'Seashore pattern', value: 'Absent', flag: 'abnormal' },
-        ],
-        interpretation: 'Barcode (stratosphere) sign confirms absent sliding → pneumothorax in this zone.',
+        id: 'lung-ant-l-2', label: 'Lung — anterior left', region: 'thorax-l', preset: 'Lung · linear',
+        image: 'https://i.postimg.cc/tRSjxtxN/case-2-left-lung-2.gif',
+        findings: [],
+        interpretation: 'No lung sliding observed at this site — the pleural line is static. With A-lines and absent sliding, this is highly suspicious for pneumothorax in this zone.',
         containsKey: true,
-      },
-      {
-        id: 'lung-lat-l', label: 'Lung — lateral left (lung point)', region: 'flank-l', preset: 'Lung · linear',
-        findings: [
-          { label: 'Sliding pattern', value: 'Alternates between sliding and absent within a single rib space', flag: 'key' },
-          { label: 'Lung point location', value: 'Mid-axillary line, 5th ICS', flag: 'abnormal' },
-          { label: 'M-mode at lung point', value: 'Alternates seashore ↔ barcode', flag: 'abnormal' },
-        ],
-        interpretation: 'Lung point identified — 100% specific for pneumothorax. Also localizes the leading edge for chest tube planning.',
-        containsKey: true,
-      },
-      {
-        id: 'cardiac-psl', label: 'Cardiac — parasternal long', region: 'precordium', preset: 'Cardiac · phased',
-        findings: [
-          { label: 'LV size', value: 'Normal', flag: 'normal' },
-          { label: 'LV function', value: 'Normal, EF >55%', flag: 'normal' },
-          { label: 'RV size', value: 'Normal', flag: 'normal' },
-          { label: 'Pericardial effusion', value: 'None', flag: 'normal' },
-          { label: 'IVC variability', value: 'Normal collapse', flag: 'normal' },
-        ],
-        interpretation: 'Normal cardiac function. Excludes tension physiology and obstructive shock at this point.',
-        containsKey: false,
       },
     ],
     diagnosis: {
@@ -1115,55 +1040,17 @@ const CASES = [
     scanWindows: [
       {
         id: 'lung-ant-r', label: 'Lung — anterior right', region: 'thorax-r', preset: 'Lung · curvilinear',
-        findings: [
-          { label: 'Pleural line', value: 'Smooth, sliding present', flag: 'normal' },
-          { label: 'A-lines', value: 'Present', flag: 'normal' },
-          { label: 'B-lines', value: 'None', flag: 'normal' },
-        ],
-        interpretation: 'Normal aerated lung. No interstitial process anteriorly.',
-        containsKey: false,
-      },
-      {
-        id: 'lung-ant-l', label: 'Lung — anterior left', region: 'thorax-l', preset: 'Lung · curvilinear',
-        findings: [
-          { label: 'Pleural line', value: 'Smooth, sliding present', flag: 'normal' },
-          { label: 'A-lines', value: 'Present', flag: 'normal' },
-          { label: 'B-lines', value: 'None', flag: 'normal' },
-        ],
-        interpretation: 'Normal aerated lung anteriorly.',
-        containsKey: false,
-      },
-      {
-        id: 'lung-plaps-r', label: 'Lung — PLAPS point right', region: 'flank-r', preset: 'Lung · curvilinear',
-        findings: [
-          { label: 'Subpleural region', value: 'Hypoechoic (tissue-like) consolidation', flag: 'key' },
-          { label: 'Deep border', value: 'Irregular — shred sign', flag: 'key' },
-          { label: 'Air bronchograms', value: 'Hyperechoic punctate foci that move with respiration → DYNAMIC', flag: 'key' },
-          { label: 'Focal B-lines', value: 'Present at edges of consolidation', flag: 'abnormal' },
-          { label: 'Small parapneumonic effusion', value: 'Trace', flag: 'abnormal' },
-        ],
-        interpretation: 'Subpleural consolidation with dynamic air bronchograms = pneumonia (vs static air bronchograms in atelectasis).',
+        image: 'https://i.postimg.cc/MZPSQbQ7/case-3-right-lung-1.gif',
+        findings: [],
+        interpretation: 'Positive shred sign — irregular hypoechoic subpleural region with a shredded deep border. Suggests pneumonia (consolidated lung) rather than normal aeration.',
         containsKey: true,
       },
       {
-        id: 'lung-plaps-l', label: 'Lung — PLAPS point left', region: 'flank-l', preset: 'Lung · curvilinear',
-        findings: [
-          { label: 'Pleural line', value: 'Smooth, sliding present', flag: 'normal' },
-          { label: 'A-lines', value: 'Present', flag: 'normal' },
-          { label: 'Consolidation', value: 'None', flag: 'normal' },
-        ],
-        interpretation: 'No findings on left. Process is unilateral / focal.',
-        containsKey: false,
-      },
-      {
-        id: 'cardiac-psl', label: 'Cardiac — parasternal long', region: 'precordium', preset: 'Cardiac · phased',
-        findings: [
-          { label: 'LV size & function', value: 'Normal, EF >55%', flag: 'normal' },
-          { label: 'RV size', value: 'Normal', flag: 'normal' },
-          { label: 'Pericardial effusion', value: 'None', flag: 'normal' },
-        ],
-        interpretation: 'Normal cardiac function. Argues against cardiogenic etiology of dyspnea.',
-        containsKey: false,
+        id: 'lung-plaps-r', label: 'Lung — PLAPS point right', region: 'flank-r', preset: 'Lung · curvilinear',
+        image: 'https://i.postimg.cc/h4yBdbdh/case-3-right-lung-2.gif',
+        findings: [],
+        interpretation: 'Subpleural consolidation with dynamic air bronchograms = pneumonia (vs static air bronchograms in atelectasis).',
+        containsKey: true,
       },
     ],
     diagnosis: {
@@ -1197,58 +1084,24 @@ const CASES = [
     scanWindows: [
       {
         id: 'renal-r', label: 'Right kidney', region: 'flank-r', preset: 'Abdomen · curvilinear',
-        findings: [
-          { label: 'Cortex', value: 'Thinned', flag: 'abnormal' },
-          { label: 'Renal pelvis', value: 'Severely dilated, anechoic', flag: 'key' },
-          { label: 'Calyces', value: 'Dilated, branching pattern', flag: 'key' },
-          { label: 'Hydronephrosis grade', value: 'III–IV (severe)', flag: 'key' },
-          { label: 'Ureter (proximal)', value: 'Visualized, dilated', flag: 'abnormal' },
-        ],
+        image: 'https://i.postimg.cc/NFzvvBtB/AKI-case-1-right-kidney.gif',
+        findings: [],
         interpretation: 'Severe right hydronephrosis with cortical thinning. Indicates downstream obstruction.',
         containsKey: true,
       },
       {
         id: 'renal-l', label: 'Left kidney', region: 'flank-l', preset: 'Abdomen · curvilinear',
-        findings: [
-          { label: 'Cortex', value: 'Thinned', flag: 'abnormal' },
-          { label: 'Renal pelvis', value: 'Severely dilated', flag: 'key' },
-          { label: 'Calyces', value: 'Dilated', flag: 'key' },
-          { label: 'Hydronephrosis grade', value: 'III–IV (severe)', flag: 'key' },
-        ],
+        image: 'https://i.postimg.cc/zvcYY8NN/AKI-case-1-left-kidney.gif',
+        findings: [],
         interpretation: 'Bilateral severe hydronephrosis localizes the obstruction below the ureteric junctions — bladder outlet or distal bilateral obstruction.',
         containsKey: true,
       },
       {
         id: 'bladder', label: 'Suprapubic — bladder', region: 'pelvis', preset: 'Abdomen · curvilinear',
-        findings: [
-          { label: 'Bladder volume (estimated)', value: '~850 mL — massively distended', flag: 'key' },
-          { label: 'Bladder wall', value: 'Trabeculated (chronic outflow obstruction)', flag: 'abnormal' },
-          { label: 'Prostate', value: 'Enlarged (~80 g) visible posterior to base', flag: 'key' },
-          { label: 'Median lobe', value: 'Intravesical protrusion present', flag: 'abnormal' },
-          { label: 'Ureteric jets', value: 'Not seen', flag: 'abnormal' },
-        ],
+        image: 'https://i.postimg.cc/fyrQQDsh/AKI-case-1-bladder.gif',
+        findings: [],
         interpretation: 'Massively distended bladder + enlarged prostate = bladder outlet obstruction from BPH. The patient does not need dialysis emergently — he needs a Foley.',
         containsKey: true,
-      },
-      {
-        id: 'cardiac-psl', label: 'Cardiac — parasternal long', region: 'precordium', preset: 'Cardiac · phased',
-        findings: [
-          { label: 'LV size', value: 'Normal', flag: 'normal' },
-          { label: 'LV function', value: 'Adequate squeeze', flag: 'normal' },
-          { label: 'Pericardial effusion', value: 'None', flag: 'normal' },
-          { label: 'Mitral valve', value: 'Mild MAC, leaflets thin', flag: 'normal' },
-        ],
-        interpretation: 'Normal cardiac function. Hypotension is not cardiogenic.',
-        containsKey: false,
-      },
-      {
-        id: 'ivc', label: 'IVC — long axis', region: 'subxiphoid', preset: 'Cardiac · phased',
-        findings: [
-          { label: 'Maximum diameter', value: '2.3 cm', flag: 'abnormal' },
-          { label: 'Respiratory variation', value: '<50%', flag: 'abnormal' },
-        ],
-        interpretation: 'Plethoric IVC — likely from elevated intra-abdominal pressure from massive bladder, not volume overload.',
-        containsKey: false,
       },
     ],
     diagnosis: {
@@ -1282,55 +1135,30 @@ const CASES = [
     scanWindows: [
       {
         id: 'ivc', label: 'IVC — long axis', region: 'subxiphoid', preset: 'Cardiac · phased',
-        findings: [
-          { label: 'Maximum diameter', value: '<1 cm', flag: 'key' },
-          { label: 'Respiratory variation', value: '>50% (near-complete collapse)', flag: 'key' },
-          { label: 'Hepatic veins', value: 'Not distended', flag: 'normal' },
-        ],
+        image: 'https://i.postimg.cc/RhDxx4BY/AKI-case-2-IVC.gif',
+        findings: [],
         interpretation: 'Collapsed IVC — low right atrial pressure consistent with intravascular volume depletion. Likely fluid responsive.',
         containsKey: true,
       },
       {
         id: 'cardiac-psl', label: 'Cardiac — parasternal long', region: 'precordium', preset: 'Cardiac · phased',
-        findings: [
-          { label: 'LV cavity at end-diastole', value: 'Small', flag: 'abnormal' },
-          { label: 'LV function', value: 'Hyperdynamic — near cavity-obliteration in systole', flag: 'key' },
-          { label: 'Papillary muscles', value: '"Kissing" in systole', flag: 'abnormal' },
-          { label: 'EPSS', value: 'Normal/narrow', flag: 'normal' },
-          { label: 'Pericardial effusion', value: 'None', flag: 'normal' },
-        ],
+        image: 'https://i.postimg.cc/VvVPPm8K/AKI-case-2-PSLAX.gif',
+        findings: [],
         interpretation: 'Underfilled, hyperkinetic LV — classic for hypovolemia.',
         containsKey: true,
       },
       {
-        id: 'cardiac-a4', label: 'Cardiac — apical 4', region: 'precordium', preset: 'Cardiac · phased',
-        findings: [
-          { label: 'Biventricular size', value: 'Small chambers', flag: 'abnormal' },
-          { label: 'Biventricular function', value: 'Hyperdynamic', flag: 'abnormal' },
-          { label: 'RV:LV ratio', value: 'Normal (<0.6)', flag: 'normal' },
-          { label: 'Tricuspid regurgitation', value: 'None', flag: 'normal' },
-        ],
-        interpretation: 'Confirms vigorous, underfilled chambers. No RV strain pattern.',
-        containsKey: false,
-      },
-      {
-        id: 'lung-ant-r', label: 'Lung — anterior right', region: 'thorax-r', preset: 'Lung · curvilinear',
-        findings: [
-          { label: 'A-lines', value: 'Present', flag: 'normal' },
-          { label: 'B-lines', value: 'None', flag: 'normal' },
-          { label: 'Pleural sliding', value: 'Present', flag: 'normal' },
-        ],
-        interpretation: '"Dry" lungs — supports volume depletion as mechanism. Safe to bolus fluids.',
-        containsKey: false,
-      },
-      {
         id: 'renal-r', label: 'Right kidney', region: 'flank-r', preset: 'Abdomen · curvilinear',
-        findings: [
-          { label: 'Cortex', value: 'Normal thickness', flag: 'normal' },
-          { label: 'Pelvis', value: 'Not dilated', flag: 'normal' },
-          { label: 'Calyces', value: 'Not dilated', flag: 'normal' },
-        ],
-        interpretation: 'Normal kidney architecture. Excludes obstruction.',
+        image: 'https://i.postimg.cc/D0M33nhV/AKI-case-2-right-kidney.gif',
+        findings: [],
+        interpretation: 'Normal right kidney architecture. Excludes obstruction.',
+        containsKey: false,
+      },
+      {
+        id: 'renal-l', label: 'Left kidney', region: 'flank-l', preset: 'Abdomen · curvilinear',
+        image: 'https://i.postimg.cc/mk5WWBsJ/AKI-case-2-left-kidney.gif',
+        findings: [],
+        interpretation: 'Normal left kidney architecture. Confirms bilateral non-obstruction.',
         containsKey: false,
       },
     ],
@@ -1364,52 +1192,37 @@ const CASES = [
     vitals: 'HR 124 · BP 82/54 · RR 24 · SpO₂ 95% RA · pulsus 14 mmHg · JVP elevated',
     scanWindows: [
       {
-        id: 'cardiac-subx', label: 'Cardiac — subxiphoid', region: 'subxiphoid', preset: 'Cardiac · phased',
-        findings: [
-          { label: 'Pericardial effusion', value: 'Large, circumferential anechoic stripe', flag: 'key' },
-          { label: 'RV free wall in diastole', value: 'Inward concave bowing — diastolic collapse', flag: 'key' },
-          { label: 'RA in late systole', value: 'Collapse > 1/3 of cycle', flag: 'abnormal' },
-          { label: 'Heart motion', value: 'Swinging within fluid', flag: 'abnormal' },
-          { label: 'LV systolic function', value: 'Preserved', flag: 'normal' },
-        ],
+        id: 'cardiac-subx', label: 'Cardiac — subxiphoid (4-chamber)', region: 'subxiphoid', preset: 'Cardiac · phased',
+        image: 'https://i.postimg.cc/Xqz664bL/shock-case-1-SC4.gif',
+        findings: [],
         interpretation: 'Large pericardial effusion with RV diastolic collapse and RA systolic collapse = tamponade physiology.',
         containsKey: true,
       },
       {
         id: 'cardiac-psl', label: 'Cardiac — parasternal long', region: 'precordium', preset: 'Cardiac · phased',
-        findings: [
-          { label: 'Anterior pericardial fluid', value: 'Anechoic stripe', flag: 'key' },
-          { label: 'Posterior pericardial fluid', value: 'Anechoic stripe anterior to descending aorta', flag: 'key' },
-          { label: 'LV size & function', value: 'Normal LV size, preserved EF', flag: 'normal' },
-          { label: 'RV', value: 'Compressed by effusion', flag: 'abnormal' },
-        ],
+        image: 'https://i.postimg.cc/vTNwwbs7/shock-case-1-PSLX.gif',
+        findings: [],
         interpretation: 'Confirms pericardial (not pleural) effusion — fluid lies anterior to the descending aorta. Pleural fluid would lie posterior.',
         containsKey: true,
       },
       {
-        id: 'ivc', label: 'IVC — long axis', region: 'subxiphoid', preset: 'Cardiac · phased',
-        findings: [
-          { label: 'Maximum diameter', value: '2.5 cm', flag: 'abnormal' },
-          { label: 'Respiratory variation', value: '<50%', flag: 'key' },
-        ],
-        interpretation: 'Plethoric IVC — confirms elevated RA pressure, supports tamponade physiology.',
-        containsKey: true,
+        id: 'cardiac-psax', label: 'Cardiac — parasternal short', region: 'precordium', preset: 'Cardiac · phased',
+        image: 'https://i.postimg.cc/J0nCFt9b/shock-case-1-PSSA.gif',
+        findings: [],
+        interpretation: 'Effusion visible circumferentially in short axis. Confirms findings from subxiphoid view; LV systolic function preserved.',
+        containsKey: false,
       },
       {
         id: 'lung-ant-r', label: 'Lung — anterior right', region: 'thorax-r', preset: 'Lung · curvilinear',
-        findings: [
-          { label: 'A-lines', value: 'Present', flag: 'normal' },
-          { label: 'B-lines', value: 'None', flag: 'normal' },
-        ],
+        image: 'https://i.postimg.cc/L5XFWhrL/shock-case-1-lungs.gif',
+        findings: [],
         interpretation: 'Clear lungs argue against acute LV failure as cause of hypotension.',
         containsKey: false,
       },
       {
         id: 'lung-ant-l', label: 'Lung — anterior left', region: 'thorax-l', preset: 'Lung · curvilinear',
-        findings: [
-          { label: 'A-lines', value: 'Present', flag: 'normal' },
-          { label: 'B-lines', value: 'None', flag: 'normal' },
-        ],
+        image: 'https://i.postimg.cc/L5XFWhrL/shock-case-1-lungs.gif',
+        findings: [],
         interpretation: 'Bilaterally clear lungs.',
         containsKey: false,
       },
@@ -1446,64 +1259,38 @@ const CASES = [
     scanWindows: [
       {
         id: 'cardiac-psax', label: 'Cardiac — parasternal short', region: 'precordium', preset: 'Cardiac · phased',
-        findings: [
-          { label: 'LV shape in systole', value: 'D-shaped (septal flattening)', flag: 'key' },
-          { label: 'IVS motion', value: 'Paradoxical / flattens during systole', flag: 'key' },
-          { label: 'RV size', value: 'Dilated', flag: 'abnormal' },
-          { label: 'RV wall thickness', value: 'Not hypertrophied (acute, not chronic)', flag: 'abnormal' },
-        ],
+        image: 'https://i.postimg.cc/pTktkK1T/shock-case-2-PSSA.gif',
+        findings: [],
         interpretation: 'D-sign = acute RV pressure overload. Distinguishes from volume overload (which gives RV dilation without septal flattening).',
         containsKey: true,
       },
       {
         id: 'cardiac-a4', label: 'Cardiac — apical 4', region: 'precordium', preset: 'Cardiac · phased',
-        findings: [
-          { label: 'RV:LV ratio', value: '>1 (RV larger than LV)', flag: 'key' },
-          { label: 'RV mid free wall', value: 'Akinetic', flag: 'key' },
-          { label: 'RV apex', value: 'Contracts normally — McConnell sign', flag: 'key' },
-          { label: 'TAPSE', value: 'Reduced (<17 mm)', flag: 'abnormal' },
-          { label: 'Tricuspid regurgitation', value: 'Moderate, peak velocity ~3.4 m/s', flag: 'abnormal' },
-        ],
+        image: 'https://i.postimg.cc/3wXh4sXF/shock-case-2-A4C.gif',
+        findings: [],
         interpretation: 'McConnell sign + RV dilation = acute PE with RV strain. McConnell is reasonably specific for acute (vs chronic) RV strain.',
         containsKey: true,
       },
       {
         id: 'cardiac-psl', label: 'Cardiac — parasternal long', region: 'precordium', preset: 'Cardiac · phased',
-        findings: [
-          { label: 'RVOT', value: 'Enlarged relative to LVOT', flag: 'abnormal' },
-          { label: 'LV cavity', value: 'Small, compressed', flag: 'abnormal' },
-          { label: 'Pericardial effusion', value: 'None', flag: 'normal' },
-        ],
+        image: 'https://i.postimg.cc/PxKkK1FC/shock-case-2-PSLX.gif',
+        findings: [],
         interpretation: 'RV outflow exceeds LV outflow — supports RV strain pattern.',
         containsKey: false,
       },
       {
-        id: 'ivc', label: 'IVC — long axis', region: 'subxiphoid', preset: 'Cardiac · phased',
-        findings: [
-          { label: 'Maximum diameter', value: '2.3 cm', flag: 'abnormal' },
-          { label: 'Respiratory variation', value: '<50%', flag: 'abnormal' },
-        ],
-        interpretation: 'Plethoric IVC from acute RV failure.',
-        containsKey: false,
-      },
-      {
         id: 'lung-ant-r', label: 'Lung — anterior right', region: 'thorax-r', preset: 'Lung · curvilinear',
-        findings: [
-          { label: 'A-lines', value: 'Present', flag: 'normal' },
-          { label: 'B-lines', value: 'None', flag: 'normal' },
-        ],
+        image: 'https://i.postimg.cc/rmgLg5Yd/shock-case-2-lungs.gif',
+        findings: [],
         interpretation: 'Clear lungs argue against CHF as cause of dyspnea.',
         containsKey: false,
       },
       {
-        id: 'dvt-r', label: 'Lower extremity — right CFV', region: 'pelvis', preset: 'Vascular · linear',
-        findings: [
-          { label: 'Common femoral vein', value: 'Non-compressible with probe pressure', flag: 'key' },
-          { label: 'Echogenic material in lumen', value: 'Visible', flag: 'abnormal' },
-          { label: 'Common femoral artery', value: 'Pulsatile, compresses normally', flag: 'normal' },
-        ],
-        interpretation: 'Non-compressible CFV = DVT. Source of embolus.',
-        containsKey: true,
+        id: 'lung-ant-l', label: 'Lung — anterior left', region: 'thorax-l', preset: 'Lung · curvilinear',
+        image: 'https://i.postimg.cc/rmgLg5Yd/shock-case-2-lungs.gif',
+        findings: [],
+        interpretation: 'Bilaterally clear lungs.',
+        containsKey: false,
       },
     ],
     diagnosis: {
@@ -1865,6 +1652,24 @@ function renderFindingsReport(win) {
           </svg>
           Pick a scan window from the body diagram or the list above —<br>
           the structured findings at that site will appear here.
+        </div>
+      </div>
+    `;
+  }
+  // If this window has an image clip, show the clip and skip the findings table —
+  // the learner must interpret from the image alone.
+  if (win.image) {
+    return `
+      <div class="findings-report">
+        <div class="fr-header">
+          <div class="label"><strong>${win.label}</strong></div>
+          <div class="preset">${win.preset}</div>
+        </div>
+        <div class="us-clip-stage">
+          <img src="${win.image}" alt="${win.label} ultrasound clip" loading="lazy" />
+        </div>
+        <div class="us-clip-prompt">
+          What do you see? Form your own interpretation, then continue scanning or commit to a diagnosis.
         </div>
       </div>
     `;
