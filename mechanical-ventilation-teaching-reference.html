@@ -142,7 +142,11 @@
     padding: 10px 14px; margin: 12px 0; border-radius: 0 6px 6px 0;
     font-size: 14.5px;
   }
-  .pearl strong, .pitfall strong, .note strong, .phys strong {
+  /* Only the FIRST <strong> in a callout is the title (block, uppercase, small).
+     Subsequent <strong> tags within the body should remain inline emphasis,
+     otherwise mid-paragraph bold phrases (e.g. "ARDS, atelectasis…") get
+     forced onto their own line and rendered uppercase. */
+  .pearl > strong:first-child, .pitfall > strong:first-child, .note > strong:first-child, .phys > strong:first-child {
     display: block; font-size: 12px; letter-spacing: 0.1em;
     text-transform: uppercase; margin-bottom: 4px;
   }
@@ -393,7 +397,12 @@
     box-shadow: 0 4px 16px rgba(0,0,0,0.3);
   }
   .tip.show { opacity: 1; }
-  abbr[data-tip] { border-bottom: 1px dotted var(--muted); cursor: help; text-decoration: none; }
+  /* Custom "Staff of Asclepius" cursor on hoverable terms (replaces the
+     default ? help cursor). The data URL holds a tiny inline SVG of a
+     vertical rod with a single snake coiled around it — the medical
+     symbol — and falls back to the native help cursor in browsers that
+     don't support SVG cursors. */
+  abbr[data-tip] { border-bottom: 1px dotted var(--muted); text-decoration: none; cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22'><line x1='11' y1='3' x2='11' y2='20' stroke='%232c5282' stroke-width='1.6' stroke-linecap='round'/><path d='M 8 18 Q 14 17 11 15 Q 8 14 12 12 Q 16 11 11 9 Q 7 8 12 6 Q 15 5 11 4' stroke='%232c5282' stroke-width='1.4' fill='none' stroke-linecap='round'/><circle cx='11' cy='4' r='1.5' fill='%232c5282'/></svg>") 11 11, help; }
 
   /* ========== EQUATION COPY BUTTON ========== */
   .eq { position: relative; padding-right: 40px; }
@@ -468,7 +477,7 @@
   html[data-fontscale="xlarge"] body { font-size: 19px; }
 
   /* ========== ABBREVIATION TOOLTIPS ========== */
-  abbr[data-tip] { border-bottom: 1px dotted var(--accent); cursor: help; text-decoration: none; }
+  abbr[data-tip] { border-bottom: 1px dotted var(--accent); text-decoration: none; cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22'><line x1='11' y1='3' x2='11' y2='20' stroke='%232c5282' stroke-width='1.6' stroke-linecap='round'/><path d='M 8 18 Q 14 17 11 15 Q 8 14 12 12 Q 16 11 11 9 Q 7 8 12 6 Q 15 5 11 4' stroke='%232c5282' stroke-width='1.4' fill='none' stroke-linecap='round'/><circle cx='11' cy='4' r='1.5' fill='%232c5282'/></svg>") 11 11, help; }
 
   /* ========== CALCULATOR WIDGET ========== */
   .calc {
@@ -3152,7 +3161,16 @@
   <h3><span class="num">1</span>Why we ventilate — types of respiratory failure</h3>
   <p>Mechanical ventilation is, fundamentally, a way to do part of the patient's work of breathing while we treat the underlying problem. Six clinical patterns drive most intubations:</p>
   <ol>
-    <li><strong>Type I (hypoxemic) failure</strong> — arterial partial pressure of O₂ (PaO₂) &lt; 60 mmHg, or peripheral oxygen saturation (SpO₂) &lt; 90% on adequate fraction of inspired O₂ (FiO₂). Mechanism: shunt (acute respiratory distress syndrome [ARDS], pneumonia, edema, atelectasis) or ventilation/perfusion (V/Q) mismatch.</li>
+    <li><strong>Type I (hypoxemic) failure</strong> — arterial partial pressure of O₂ (PaO₂) &lt; 60 mmHg, or peripheral oxygen saturation (SpO₂) &lt; 90% on adequate fraction of inspired O₂ (FiO₂). Six mechanisms produce hypoxemia at the alveolar–capillary level; almost every Type I patient is one (or a combination) of these:
+      <ul>
+        <li><strong>Low inspired oxygen (P<sub>I</sub>O₂)</strong> — fewer O₂ molecules enter the lung at all. Normal A–a gradient; PaO₂ corrects with supplemental O₂. Causes: high altitude, low atmospheric pressure, confined spaces with displaced O₂.</li>
+        <li><strong>Alveolar hypoventilation</strong> — fewer O₂ molecules reach the alveoli per unit time because minute ventilation is too low. Normal A–a gradient; PaO₂ corrects with supplemental O₂; PaCO₂ is <em>elevated</em>. Causes: opioid / sedative overdose, brainstem stroke, obesity-hypoventilation, neuromuscular weakness (Guillain–Barré, ALS, myasthenia), chest-wall disease (kyphoscoliosis, flail chest), severe airflow obstruction.</li>
+        <li><strong>V/Q mismatch</strong> — regional imbalance between ventilation and perfusion (the most common mechanism of hypoxemia in clinical medicine). Increased A–a gradient; PaO₂ <em>does</em> correct with supplemental O₂. Causes: COPD, asthma, pulmonary embolism, pulmonary edema, interstitial disease, atelectasis.</li>
+        <li><strong>Shunt</strong> — blood traverses lung regions that receive zero ventilation (V/Q = 0). Increased A–a gradient; PaO₂ <em>does not</em> fully correct with supplemental O₂ (the shunted blood never sees alveolar gas). Causes: anatomical (ASD/VSD, pulmonary AVMs) and physiological (consolidated pneumonia, ARDS, dense atelectasis, alveolar flooding).</li>
+        <li><strong>Diffusion limitation</strong> — the alveolar–capillary membrane is too thick or its area is too small for O₂ to equilibrate during the red cell's transit time. Increased A–a gradient; PaO₂ corrects with supplemental O₂ at rest; reveals itself at exercise or with high cardiac output (less RBC transit time). Causes: pulmonary fibrosis, severe edema, alveolar inflammation.</li>
+        <li><strong>Low mixed venous O₂ (S<sub>v</sub>O₂)</strong> — the venous blood arriving at the lung is so oxygen-depleted that even normal alveolar gas exchange cannot fully oxygenate it. Normal A–a gradient; PaO₂ corrects with supplemental O₂. Causes: severe anemia (rare unless Hb &lt; 5 g/dL), low cardiac output, very high oxygen consumption (sepsis, shivering, exertion).</li>
+      </ul>
+    </li>
     <li><strong>Type II (hypercapnic) failure</strong> — arterial partial pressure of CO₂ (PaCO₂) &gt; 45 mmHg with acidosis. Mechanism: failure of the pump (chronic obstructive pulmonary disease [COPD] exacerbation, asthma, neuromuscular weakness, drug overdose, brainstem injury).</li>
     <li><strong>Type III (perioperative)</strong> — atelectasis-driven hypoxemia in surgical / obese / abdominal patients.</li>
     <li><strong>Type IV (shock)</strong> — high work of breathing diverts cardiac output from vital organs; intubation off-loads respiratory muscles.</li>
@@ -3164,7 +3182,7 @@
     <h5>Key takeaways</h5>
     <ul>
       <li>Six clinical patterns drive most intubations: hypoxemic failure, hypercapnic failure, perioperative atelectasis, shock, airway protection, anticipated decline.</li>
-      <li>Most intubations are not for a specific PaO₂/PaCO₂ number — they're for the trajectory and the ability to protect the airway.</li>
+      <li>Most intubations are not for a specific PaO₂/PaCO₂ number — they are for the trajectory and to protect the airway.</li>
       <li>P/F ratio &lt; 100 = severe ARDS; &lt; 80 = ECMO consideration.</li>
       <li>"Anticipated decline" is the most under-recognized indication — intubate proactively when the trajectory is bad, not after the patient codes.</li>
     </ul>
@@ -3183,7 +3201,6 @@
     </summary>
 
 <p>Start here. The brain stem fires a signal down the phrenic nerves; the diaphragm contracts; <strong>pleural pressure drops</strong>; the lung is pulled open passively along with the chest wall; <strong>alveolar pressure falls below atmospheric</strong>; air flows in down the pressure gradient. At end-inspiration the diaphragm relaxes; the elastic recoil of lung + chest wall pushes air back out; PaCO₂ produced by metabolism is exhaled with it. Mechanical ventilation reverses the inspiratory step — instead of pulling the lung open from below, it pushes air in from above (positive pressure). Everything else in this doc — alveolar gas, V/Q, compliance, the equation of motion, ARDS, COPD — is downstream of these five sentences.</p>
-  <div class="phys"><strong>The four big questions a vent setting answers</strong>How much volume each breath delivers (V<sub>T</sub>), how often (RR), how much pressure to keep alveoli open at end-exhale (PEEP), and how much oxygen to mix into the inspired gas (FiO₂). Every other knob is a variation on these four.</div>
   <div class="figure">
     <svg class="anim-fig anim-conceptmap" viewBox="0 0 800 300" role="img" aria-label="Concept map of pulmonary physiology in critical care: the oxygen cascade branches into the A-a gradient, V/Q matching, and the CO₂ master equation; all three converge on the equation of motion, which is parametrized by the four vent levers (V_T, RR, PEEP, FiO₂)." style="max-width:800px; width:100%; height:auto; display:block; margin:0 auto;">
       <defs>
@@ -3239,7 +3256,7 @@
     <div class="cap"><b>Figure 2.1 — Concept map of Part I.</b> The oxygen cascade is the framework. It branches into the <em>A–a gradient</em> (quantifies hypoxemia), <em>V/Q matching</em> (the spatial mechanism), and the <em>CO₂ master equation</em> (the ventilation side). All three feed into the <em>equation of motion</em>, which is parametrized by the four levers you actually turn at the bedside — V<sub>T</sub>, RR, PEEP, FiO₂.</div>
   </div>
 
-  <div class="phys"><strong>Part I roadmap — three chapters, one diagram</strong>The figure above is the navigational map for the next three chapters. <b>Chapter 2</b> (this one) builds the gas-exchange foundation: the cascade itself, the gas laws, the alveolar-gas equation. <b>Chapter 3</b> opens up the yellow boxes labeled <em>A–a gradient</em> and <em>V/Q matching</em> — the diagnostic toolkit for hypoxemia. <b>Chapter 4</b> opens the third yellow box — <em>CO₂ master equation</em> — adds CO₂ transport and the neural control of breathing. Return to this map whenever you lose the thread; every later chapter in the document plugs back into one of these mechanisms.</div>
+  <div class="phys"><strong>Part I roadmap — three chapters, one diagram</strong>The figure above is the navigational map for the next three chapters. <b>Chapter 2</b> (this one) builds the gas-exchange foundation: the cascade itself, the gas laws, the alveolar-gas equation. <b>Chapter 3</b> dives into A–a gradient and V/Q matching — the diagnostic toolkit for hypoxemia. <b>Chapter 4</b> dives further into the CO₂ master equation — adds CO₂ transport and the neural control of breathing. Return to this map whenever you lose the thread; every later chapter in the document plugs back into one of these mechanisms.</div>
   </details>
   <details class="chap-acc" data-acc-id="c2-h4-2">
     <summary>
@@ -3413,7 +3430,7 @@
         <line x1="660" y1="111" x2="676" y2="111" stroke="#5a8ab8" stroke-width="1.5" marker-end="url(#c3map-arrow)"/>
 
         <!-- Footer takeaway -->
-        <text x="410" y="208" text-anchor="middle" font-size="11" fill="#475569">Diagnosis (left) → mechanism (middle) → carrying capacity (right). The vent levers in §6 act on every step.</text>
+        <text x="410" y="208" text-anchor="middle" font-size="11" fill="#475569">Diagnosis → mechanism → carrying capacity. The vent levers in §6 act on every step.</text>
       </g>
     </svg>
     <div class="cap"><b>Figure 3.1 — What's in this chapter.</b> The diagnostic path through hypoxemia, ordered by bedside utility: <em>which</em> of the five causes is acting (§3.1) → the spatial physiology that explains regional V/Q (§3.2 with HPV in §3.2a) → the shunt-vs-mismatch dichotomy (§3.3) → how much oxygen the blood is actually carrying (§3.4, with the interactive ABG playground in §3.4a) → the saturation curve that determines whether a given PaO₂ is safe (§3.5).</div>
@@ -3453,11 +3470,11 @@
   <p>The vertical V/Q ratio in a healthy upright lung is ~3.3 at the apex (high V/Q — wasted ventilation) to ~0.6 at the base (low V/Q — preferentially perfused). Mechanical ventilation, supine positioning, and PEEP all redistribute this gradient.</p>
 
   <h5>3.2a Hypoxic pulmonary vasoconstriction (HPV) — the body's V/Q regulator</h5>
-  <p>When alveolar PO₂ drops in a region of lung, the local pulmonary arterioles <em>constrict</em>, diverting blood away from the poorly-ventilated unit toward better-ventilated lung. This <strong>hypoxic pulmonary vasoconstriction (HPV)</strong> is a uniquely pulmonary reflex (systemic arteries dilate to hypoxia; pulmonary arteries constrict). It is the body's automatic V/Q matching system — and it explains a striking number of clinical observations:</p>
+  <p>When alveolar PO₂ drops in a region of lung, the local pulmonary arterioles <em>constrict</em>, diverting blood away from the poorly-ventilated unit toward better-ventilated lung. This <strong>hypoxic pulmonary vasoconstriction (HPV)</strong> — historically called the <em>von Euler-Liljestrand mechanism</em> after the two physiologists who first described it in 1946 — is a uniquely pulmonary reflex (systemic arteries dilate to hypoxia; pulmonary arteries constrict). It is the body's automatic V/Q matching system — and it explains a striking number of clinical observations:</p>
   <ul>
     <li><strong>Why proning works (§20.5, §32):</strong> dorsal lung in supine ARDS is atelectatic and locally hypoxic; HPV diverts blood away to ventral lung. Once prone, the dorsal lung re-aerates → HPV releases → blood returns to the now-better-ventilated dependent regions. V/Q matching improves regardless of any change in vent settings.</li>
     <li><strong>Why iNO works (§20.7):</strong> inhaled nitric oxide reaches only the alveoli that <em>are</em> ventilated, where it diffuses into adjacent capillaries and selectively dilates them — overcoming HPV in good units, redistributing flow toward them, and dropping PVR. NO inhaled into a shunt unit goes nowhere because there's no gas exchange there.</li>
-    <li><strong>Why hyperoxia raises PaCO₂ in COPD (§21.6):</strong> high FiO₂ raises alveolar PO₂ in poorly-ventilated regions, releasing HPV → blood flows there → those regions become high-V/Q dead space → effective alveolar ventilation drops → PaCO₂ rises. (The Haldane effect is the second mechanism.)</li>
+    <li><strong>Why hyperoxia raises PaCO₂ in COPD (§21.6):</strong> three mechanisms contribute, in roughly descending order of magnitude. (1) <em>V/Q redistribution</em> — high FiO₂ raises alveolar PO₂ in poorly-ventilated regions, releasing HPV → blood flows there → those regions become high-V/Q dead space → effective alveolar ventilation drops → PaCO₂ rises. (2) <em>Haldane effect</em> — oxygenated hemoglobin holds less CO₂, so raising SaO₂ shifts CO₂ off Hb into plasma and raises measured PaCO₂ at any given V̇<sub>A</sub>. (3) <em>A small reduction in minute ventilation</em> from blunted central / peripheral chemoreceptor drive — historically called "loss of hypoxic drive," it is real but contributes only modestly to the rise in PaCO₂ in most patients.</li>
     <li><strong>Why severe lung disease causes pulmonary hypertension and cor pulmonale:</strong> chronic widespread alveolar hypoxia → sustained HPV → vascular remodeling → fixed pulm HTN → RV failure (§25).</li>
     <li><strong>Why high-altitude pulmonary edema happens:</strong> hypoxia-induced HPV is heterogeneous; over-perfused non-constricted regions overpressurize and leak.</li>
   </ul>
@@ -3501,8 +3518,8 @@
     <li>A patient with Hb 7 has half the O₂ content of a patient with Hb 14 at the same SpO₂. For tissue O₂ delivery, transfuse before maximizing FiO₂.</li>
   </ul>
   <div class="figure">
-    <img src="https://i.postimg.cc/QMXmbkD1/Screen-Shot-2021-08-30-at-11-49-23-PM.avif" alt="Annotated oxygen delivery equation — DO2 = CO × ((1.39 × Hb × SaO2) + (PaO2 × 0.03))" style="max-width:100%; height:auto; display:block; margin:0 auto;"/>
-    <div class="cap"><b>Figure 3.4 — The oxygen delivery (DO₂) equation, annotated.</b> DO₂ = CO × ((1.39 × [Hb] × SaO₂) + (PaO₂ × 0.03)). Cardiac output (L/min) multiplies the total arterial oxygen content. Within the content term, the first product (Hb × SaO₂ × 1.39) is the bound-to-hemoglobin contribution — dominant at any normal hemoglobin level — and the second product (PaO₂ × 0.03) is the dissolved oxygen, trivial at normal Hb. The constant 1.39 is Hüfner's number, the maximal oxygen-carrying capacity of fully saturated hemoglobin in mL O₂ per gram Hb. The three independent levers are CO, Hb, and SaO₂; the ventilator moves only SaO₂.</div>
+    <img src="https://i.postimg.cc/QMXmbkD1/Screen-Shot-2021-08-30-at-11-49-23-PM.avif" alt="Annotated oxygen delivery equation — DO2 = CO × ((1.34 × Hb × SaO2) + (PaO2 × 0.03))" style="max-width:100%; height:auto; display:block; margin:0 auto;"/>
+    <div class="cap"><b>Figure 3.4 — The oxygen delivery (DO₂) equation, annotated.</b> DO₂ = CO × ((1.34 × [Hb] × SaO₂) + (PaO₂ × 0.03)). Cardiac output (L/min) multiplies the total arterial oxygen content. Within the content term, the first product (Hb × SaO₂ × 1.34) is the bound-to-hemoglobin contribution — dominant at any normal hemoglobin level — and the second product (PaO₂ × 0.03) is the dissolved oxygen, trivial at normal Hb. The constant 1.34 is Hüfner's number, the maximal oxygen-carrying capacity of fully saturated hemoglobin in mL O₂ per gram Hb. The three independent levers are CO, Hb, and SaO₂; the ventilator moves only SaO₂.</div>
   </div>
   <div class="pearl"><strong>At the bedside</strong>The hypoxic ICU patient who is not improving on the vent has, at most, three levers: <strong>CO, Hb, SaO₂</strong>. The ventilator only adjusts SaO₂. If SaO₂ ≥ 90% and the patient still has a tissue O₂-debt (lactate, low ScvO₂), the next move is to <em>raise CO</em> (resuscitate, treat sepsis, support the RV) or <em>raise Hb</em> (transfuse if &lt; 7 g/dL with active ischemia or shock) — not to push FiO₂ from 60% to 100% chasing a higher PaO₂.</div>
 
@@ -3553,7 +3570,7 @@
         <text x="56" y="162" text-anchor="end" font-size="10">50%</text>
         <text x="56" y="264" text-anchor="end" font-size="10">0%</text>
         <line id="ifabg-cliff" x1="372" y1="20" x2="372" y2="260" stroke="#cbd5e1" stroke-width="0.5" stroke-dasharray="2,3"/>
-        <text x="372" y="278" text-anchor="middle" font-size="10" fill="#94a3b8" font-style="italic">edge of cliff (PaO₂ 60)</text>
+        <text x="372" y="14" text-anchor="middle" font-size="10" fill="#94a3b8" font-style="italic">edge of cliff (PaO₂ 60)</text>
         <path id="ifabg-curve" d="" stroke="#1f5f99" stroke-width="2.4" fill="rgba(24,95,165,0.10)"/>
         <line id="ifabg-hline" x1="60" y1="0" x2="0" y2="0" stroke="#c4452f" stroke-width="0.8" stroke-dasharray="2,3"/>
         <line id="ifabg-vline" x1="0" y1="260" x2="0" y2="0" stroke="#c4452f" stroke-width="0.8" stroke-dasharray="2,3"/>
@@ -3670,13 +3687,12 @@
 <div class="figure">
     <svg class="anim-fig anim-ohbc" viewBox="0 0 580 410" role="img" aria-label="Oxyhemoglobin dissociation curve, animating between right-shift (acidosis, hypercapnia, hyperthermia, increased 2,3-BPG) and left-shift (alkalemia, hypocapnia, hypothermia, decreased 2,3-BPG). The P50 marker moves accordingly." style="max-width:580px; width:100%; height:auto; display:block; margin:0 auto;">
       <g font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif">
-        <!-- Header label moved ABOVE the chart so it never overlaps curves -->
         <text x="300" y="20" text-anchor="middle" font-size="13" font-weight="600" fill="#1f5f99">Oxyhemoglobin dissociation curve</text>
-        <text x="300" y="38" text-anchor="middle" font-size="11" fill="#64748b">← left shift: ↑ pH, ↓ CO₂, ↓ temp, ↓ 2,3-BPG    ·    right shift: ↓ pH, ↑ CO₂, ↑ temp, ↑ 2,3-BPG →</text>
-        <!-- Axes (shifted down by 20 px to make room for the header) -->
+        <text x="300" y="38" text-anchor="middle" font-size="11" fill="#64748b">left shift: ↑ pH, ↓ CO₂, ↓ temp, ↓ 2,3-BPG    ·    right shift: ↓ pH, ↑ CO₂, ↑ temp, ↑ 2,3-BPG →</text>
+        <!-- Plot region: x = 60..540 (PaO₂ 0..100), y = 60..350 (SaO₂ 100..0).
+             Linear y-axis: 290 px / 100% = 2.9 px per %. -->
         <line x1="60" y1="350" x2="540" y2="350" stroke="#475569" stroke-width="1.2"/>
         <line x1="60" y1="60"  x2="60"  y2="350" stroke="#475569" stroke-width="1.2"/>
-        <!-- X-axis ticks -->
         <g font-size="10" fill="#475569">
           <text x="60" y="368" text-anchor="middle">0</text>
           <text x="156" y="368" text-anchor="middle">20</text>
@@ -3686,43 +3702,48 @@
           <text x="540" y="368" text-anchor="middle">100</text>
           <text x="300" y="392" text-anchor="middle" font-size="12">PaO₂ (mmHg)</text>
         </g>
-        <!-- Y-axis ticks (shifted down 30 px from previous layout) -->
+        <!-- Y-axis tick labels — evenly spaced 0/25/50/75/100 (true linear scale). -->
         <g font-size="10" fill="#475569">
           <text x="54" y="354" text-anchor="end">0</text>
-          <text x="54" y="302" text-anchor="end">25</text>
-          <text x="54" y="250" text-anchor="end">50</text>
-          <text x="54" y="198" text-anchor="end">75</text>
-          <text x="54" y="145" text-anchor="end">90</text>
-          <text x="54" y="94"  text-anchor="end">100</text>
-          <text x="20" y="210" font-size="12" transform="rotate(-90 20 210)">SaO₂ (%)</text>
+          <text x="54" y="281" text-anchor="end">25</text>
+          <text x="54" y="208" text-anchor="end">50</text>
+          <text x="54" y="135" text-anchor="end">75</text>
+          <text x="54" y="63"  text-anchor="end">100</text>
+          <text x="20" y="205" font-size="12" transform="rotate(-90 20 205)">SaO₂ (%)</text>
         </g>
-        <!-- Reference dashed lines at SaO₂ 90% (PaO₂ ≈ 60) — "the cliff" -->
-        <line x1="60" y1="145" x2="540" y2="145" stroke="#94a3b8" stroke-dasharray="3,3" stroke-width="0.8"/>
-        <text x="540" y="141" text-anchor="end" font-size="10" fill="#64748b">SaO₂ 90% — the cliff</text>
-        <!-- Three curves as 2-segment cubic Béziers; midpoint break = P50 coordinate
-             (x = 60 + P50·4.8, y = 250 = SaO₂ 50%). SMIL interpolates control points
-             linearly, so the active curve always passes through the dot. -->
-        <!-- Left shift: P50 ≈ 21 mmHg → x = 161 -->
-        <path id="ohbc-left"  d="M60,350 C90,346 125,325 161,250 C200,175 250,105 540,88" fill="none" stroke="#1e3a8a" stroke-width="2" opacity="0.32"/>
-        <!-- Right shift: P50 ≈ 33 mmHg → x = 218 -->
-        <path id="ohbc-right" d="M60,350 C100,346 170,330 218,250 C265,170 320,105 540,92" fill="none" stroke="#991b1b" stroke-width="2" opacity="0.32"/>
-        <!-- Active curve: animates between left, normal (P50 ≈ 26.5 → x = 187), right -->
-        <path id="ohbc-active" d="M60,350 C95,346 145,325 187,250 C230,175 280,105 540,90" fill="none" stroke="#1f5f99" stroke-width="3" stroke-linecap="round">
+        <!-- Faint horizontal gridlines at the labelled tick values. -->
+        <line x1="60" y1="277.5" x2="540" y2="277.5" stroke="#e2e8f0" stroke-width="0.5"/>
+        <line x1="60" y1="205" x2="540" y2="205" stroke="#e2e8f0" stroke-width="0.5"/>
+        <line x1="60" y1="132.5" x2="540" y2="132.5" stroke="#e2e8f0" stroke-width="0.5"/>
+        <!-- "The cliff" — SaO₂ 90% in linear coords lives at y = 350 − 0.90·290 = 89. -->
+        <line x1="60" y1="89" x2="540" y2="89" stroke="#94a3b8" stroke-dasharray="3,3" stroke-width="0.8"/>
+        <text x="540" y="85" text-anchor="end" font-size="10" fill="#64748b">SaO₂ 90% — the cliff</text>
+        <!-- Three curves as 2-segment cubic Béziers. Each is built so it passes
+             through (a) origin (60,350), (b) its P₅₀ point at y = 205 (SaO₂ 50%),
+             and (c) its PaO₂ = 60 / SaO₂-target point near the cliff line. SMIL
+             interpolates path d linearly, so the active curve always passes
+             through the dot at the matching break point. -->
+        <!-- Left shift: P50 ≈ 21 mmHg → x = 161; PaO₂ 60 → SaO₂ ≈ 96% (y ≈ 71). -->
+        <path id="ohbc-left"  d="M60,350 C85,344 125,265 161,205 C200,100 280,72 540,64" fill="none" stroke="#1e3a8a" stroke-width="2" opacity="0.32"/>
+        <!-- Right shift: P50 ≈ 33 mmHg → x = 218; PaO₂ 60 → SaO₂ ≈ 75% (y ≈ 132). -->
+        <path id="ohbc-right" d="M60,350 C100,346 180,295 218,205 C280,140 380,90 540,80" fill="none" stroke="#991b1b" stroke-width="2" opacity="0.32"/>
+        <!-- Normal: P50 = 26.5 → x = 187; PaO₂ 60 → SaO₂ ≈ 90% (y ≈ 89). -->
+        <path id="ohbc-active" d="M60,350 C95,348 155,275 187,205 C235,125 320,80 540,67" fill="none" stroke="#1f5f99" stroke-width="3" stroke-linecap="round">
           <animate attributeName="d" dur="6s" repeatCount="indefinite"
-            values="M60,350 C95,346 145,325 187,250 C230,175 280,105 540,90;
-                    M60,350 C100,346 170,330 218,250 C265,170 320,105 540,92;
-                    M60,350 C95,346 145,325 187,250 C230,175 280,105 540,90;
-                    M60,350 C90,346 125,325 161,250 C200,175 250,105 540,88;
-                    M60,350 C95,346 145,325 187,250 C230,175 280,105 540,90"
+            values="M60,350 C95,348 155,275 187,205 C235,125 320,80 540,67;
+                    M60,350 C100,346 180,295 218,205 C280,140 380,90 540,80;
+                    M60,350 C95,348 155,275 187,205 C235,125 320,80 540,67;
+                    M60,350 C85,344 125,265 161,205 C200,100 280,72 540,64;
+                    M60,350 C95,348 155,275 187,205 C235,125 320,80 540,67"
             keyTimes="0;0.25;0.5;0.75;1"/>
         </path>
-        <!-- P50 marker — y locked at 250 (SaO₂ 50%); x animates with the curve break point -->
+        <!-- P50 marker — y locked at 205 (SaO₂ 50%); x animates with the curve break point. -->
         <g class="ohbc-p50">
-          <line y1="250" y2="250" x1="60" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="2,2">
+          <line y1="205" y2="205" x1="60" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="2,2">
             <animate attributeName="x2" dur="6s" repeatCount="indefinite"
               values="187;218;187;161;187" keyTimes="0;0.25;0.5;0.75;1"/>
           </line>
-          <circle cy="250" r="5" fill="#f59e0b" stroke="white" stroke-width="2">
+          <circle cy="205" r="5" fill="#f59e0b" stroke="white" stroke-width="2">
             <animate attributeName="cx" dur="6s" repeatCount="indefinite"
               values="187;218;187;161;187" keyTimes="0;0.25;0.5;0.75;1"/>
           </circle>
@@ -3731,6 +3752,171 @@
     </svg>
     <div class="cap"><b>Figure 3.6 — The oxyhemoglobin dissociation curve.</b> The "edge of the cliff" sits at PaO₂ 60 / SaO₂ 90 — small drops below this cause big saturation drops. P₅₀ (the PaO₂ at 50% saturation) is normally 26.5 mmHg; right shifts (acidosis, hypercapnia, hyperthermia, ↑ 2,3-BPG) raise P₅₀ and unload O₂ at the tissue; left shifts do the opposite.<sup class="cite"><a href="#r28">28</a></sup></div>
   </div>
+
+  <h5>3.5a Try it — interactive shift explorer</h5>
+  <div class="figure interactive-fig" id="if-ohb">
+    <div class="if-controls">
+      <div class="if-control">
+        <label>pH: <span class="if-val" id="ifohb-phv">7.40</span></label>
+        <input type="range" min="7.10" max="7.60" step="0.01" value="7.40" id="ifohb-ph"/>
+      </div>
+      <div class="if-control">
+        <label>PaCO₂: <span class="if-val" id="ifohb-pacov">40 mmHg</span></label>
+        <input type="range" min="20" max="80" step="1" value="40" id="ifohb-paco"/>
+      </div>
+      <div class="if-control">
+        <label>Temperature: <span class="if-val" id="ifohb-tempv">37.0 °C</span></label>
+        <input type="range" min="32" max="41" step="0.1" value="37" id="ifohb-temp"/>
+      </div>
+    </div>
+    <div class="if-presets">
+      <button data-ph="7.40" data-paco="40" data-temp="37">Normal</button>
+      <button data-ph="7.20" data-paco="50" data-temp="39">Acidemia + fever (right shift)</button>
+      <button data-ph="7.55" data-paco="30" data-temp="33">Alkalemia + hypothermia (left shift)</button>
+      <button data-ph="7.25" data-paco="35" data-temp="38.5">Septic shock</button>
+    </div>
+    <div class="if-stats">
+      <div class="if-stat"><div class="if-stat-label">P₅₀</div><div class="if-stat-val" id="ifohb-p50">26.5</div><div class="if-stat-sub" id="ifohb-p50sub">no shift</div></div>
+      <div class="if-stat"><div class="if-stat-label">SaO₂ at PaO₂ 60</div><div class="if-stat-val" id="ifohb-sat60">90.0%</div><div class="if-stat-sub" id="ifohb-sat60sub">at the cliff</div></div>
+      <div class="if-stat"><div class="if-stat-label">PaO₂ for SaO₂ 90%</div><div class="if-stat-val" id="ifohb-pao90">60.0</div><div class="if-stat-sub" id="ifohb-pao90sub">to maintain saturation</div></div>
+    </div>
+    <svg class="if-chart" viewBox="0 0 700 320" role="img" aria-label="Interactive OHbDC: pH, PaCO2, and temperature shift the curve and reposition the P50 and 90 percent saturation markers.">
+      <g font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-size="11" fill="#475569">
+        <line x1="60" y1="260" x2="680" y2="260" stroke="#475569" stroke-width="1.2"/>
+        <line x1="60" y1="20" x2="60" y2="260" stroke="#475569" stroke-width="1.2"/>
+        <text x="370" y="305" text-anchor="middle" font-size="11">PaO₂ (mmHg)</text>
+        <text x="20" y="140" text-anchor="middle" font-size="11" transform="rotate(-90 20 140)">SaO₂ (%)</text>
+
+        <line x1="60" y1="56" x2="680" y2="56" stroke="#cbd5e1" stroke-width="0.7" stroke-dasharray="3,3"/>
+        <text x="56" y="60" text-anchor="end" font-size="10">90%</text>
+        <line x1="60" y1="158" x2="680" y2="158" stroke="#cbd5e1" stroke-width="0.7" stroke-dasharray="3,3"/>
+        <text x="56" y="162" text-anchor="end" font-size="10">50%</text>
+        <text x="56" y="264" text-anchor="end" font-size="10">0%</text>
+
+        <path id="ifohb-ref" d="" stroke="#94a3b8" stroke-width="1.6" fill="none" stroke-dasharray="5,3"/>
+        <path id="ifohb-act" d="" stroke="#2c5282" stroke-width="2.6" fill="none"/>
+
+        <line id="ifohb-p50line" x1="0" y1="158" x2="0" y2="260" stroke="#f59e0b" stroke-width="1.4" stroke-dasharray="3,2"/>
+        <circle id="ifohb-p50dot" cx="0" cy="158" r="6" fill="#f59e0b" stroke="white" stroke-width="2"/>
+        <text id="ifohb-p50label" x="0" y="278" text-anchor="middle" font-size="10" font-weight="600" fill="#b45309">P₅₀</text>
+
+        <line x1="187" y1="158" x2="187" y2="260" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="2,3"/>
+        <circle cx="187" cy="158" r="4" fill="#94a3b8"/>
+
+        <line id="ifohb-sat90line" x1="0" y1="56" x2="0" y2="260" stroke="#c4452f" stroke-width="1" stroke-dasharray="3,2"/>
+        <circle id="ifohb-sat90dot" cx="0" cy="56" r="5" fill="#c4452f" stroke="white" stroke-width="1.5"/>
+
+        <g id="ifohb-xticks"></g>
+
+        <text x="510" y="36" text-anchor="start" font-size="10" fill="#94a3b8" font-style="italic">— — reference (P₅₀ 26.5)</text>
+        <text x="510" y="50" text-anchor="start" font-size="10" fill="#2c5282" font-style="italic">━━ active</text>
+      </g>
+    </svg>
+    <div class="cap" style="margin-top: 6px;"><b>Figure 3.7 — Try it (shift explorer).</b> Move the pH, PaCO₂, and temperature sliders to shift the active curve. The amber P₅₀ marker (50% saturation) and red 90%-saturation marker both slide horizontally with the curve — that lateral movement is the right- or left-shift. The static gray dot at P₅₀ = 26.5 mmHg is the reference. Right shift (acidemia, hypercapnia, fever) raises P₅₀, drops SaO₂ at any given PaO₂, and unloads O₂ to tissue; left shift does the opposite.</div>
+  </div>
+  <script>
+  (function(){
+    try {
+      var ph = document.getElementById('ifohb-ph');
+      var paco = document.getElementById('ifohb-paco');
+      var temp = document.getElementById('ifohb-temp');
+      if (!ph) return;
+      var els = {
+        phv: document.getElementById('ifohb-phv'),
+        pacov: document.getElementById('ifohb-pacov'),
+        tempv: document.getElementById('ifohb-tempv'),
+        p50: document.getElementById('ifohb-p50'),
+        p50sub: document.getElementById('ifohb-p50sub'),
+        sat60: document.getElementById('ifohb-sat60'),
+        sat60sub: document.getElementById('ifohb-sat60sub'),
+        pao90: document.getElementById('ifohb-pao90'),
+        pao90sub: document.getElementById('ifohb-pao90sub'),
+        ref: document.getElementById('ifohb-ref'),
+        act: document.getElementById('ifohb-act'),
+        p50line: document.getElementById('ifohb-p50line'),
+        p50dot: document.getElementById('ifohb-p50dot'),
+        p50label: document.getElementById('ifohb-p50label'),
+        sat90line: document.getElementById('ifohb-sat90line'),
+        sat90dot: document.getElementById('ifohb-sat90dot'),
+        xticks: document.getElementById('ifohb-xticks')
+      };
+      var XL = 60, XR = 680, YT = 20, YB = 260, XMAX = 130, P50_REF = 26.5;
+      function xP(p){ return XL + Math.min(p, XMAX) / XMAX * (XR - XL); }
+      function yS(s){ return YB - s / 100 * (YB - YT); }
+      function rawSat(virtual){ if (virtual <= 0) return 0; return 100 / (1 + 23400 / (Math.pow(virtual, 3) + 150 * virtual)); }
+      function p50FromShift(pH, paco2, T){
+        var lf = 0.40 * (7.40 - pH) + 0.024 * (T - 37) + 0.06 * Math.log10(paco2 / 40);
+        return P50_REF * Math.pow(10, lf);
+      }
+      function sat(p, p50){ return rawSat(p * P50_REF / p50); }
+      function paoForSat(target, p50){
+        var lo = 0, hi = XMAX;
+        for (var i = 0; i < 30; i++){
+          var mid = (lo + hi) / 2;
+          if (sat(mid, p50) < target) lo = mid; else hi = mid;
+        }
+        return (lo + hi) / 2;
+      }
+      function curvePath(p50){
+        var d = '';
+        for (var p = 0; p <= XMAX; p += 1){
+          var s = sat(p, p50);
+          d += (p === 0 ? 'M' : 'L') + xP(p).toFixed(1) + ',' + yS(s).toFixed(1) + ' ';
+        }
+        return d;
+      }
+      var tickHTML = '';
+      [0, 20, 40, 60, 80, 100, 120].forEach(function(p){
+        var x = xP(p);
+        tickHTML += '<line x1="' + x + '" y1="260" x2="' + x + '" y2="265" stroke="#475569" stroke-width="1"/>';
+        tickHTML += '<text x="' + x + '" y="278" text-anchor="middle" font-size="10">' + p + '</text>';
+      });
+      els.xticks.innerHTML = tickHTML;
+      els.ref.setAttribute('d', curvePath(P50_REF));
+
+      function update(){
+        var pHv = parseFloat(ph.value);
+        var pacov = parseFloat(paco.value);
+        var tv = parseFloat(temp.value);
+        els.phv.textContent = pHv.toFixed(2);
+        els.pacov.textContent = Math.round(pacov) + ' mmHg';
+        els.tempv.textContent = tv.toFixed(1) + ' °C';
+        var p50 = p50FromShift(pHv, pacov, tv);
+        var dp50 = p50 - P50_REF;
+        els.p50.textContent = p50.toFixed(1);
+        var dir = dp50 > 0.1 ? 'right shift' : (dp50 < -0.1 ? 'left shift' : 'no shift');
+        els.p50sub.textContent = (dp50 > 0 ? '+' : '') + dp50.toFixed(1) + ' mmHg · ' + dir;
+        var sat60 = sat(60, p50);
+        els.sat60.textContent = sat60.toFixed(1) + '%';
+        var sat60ref = sat(60, P50_REF);
+        var dSat = sat60 - sat60ref;
+        els.sat60sub.textContent = (dSat > 0 ? '+' : '') + dSat.toFixed(1) + ' vs reference (90.0%)';
+        var pao90 = paoForSat(90, p50);
+        els.pao90.textContent = pao90.toFixed(1);
+        var dPao = pao90 - 60;
+        els.pao90sub.textContent = (dPao > 0 ? '+' : '') + dPao.toFixed(1) + ' vs reference (60.0)';
+        els.act.setAttribute('d', curvePath(p50));
+        var p50x = xP(p50);
+        els.p50line.setAttribute('x1', p50x); els.p50line.setAttribute('x2', p50x);
+        els.p50dot.setAttribute('cx', p50x);
+        els.p50label.setAttribute('x', p50x);
+        els.p50label.textContent = 'P₅₀ ' + p50.toFixed(1);
+        var sat90x = xP(pao90);
+        els.sat90line.setAttribute('x1', sat90x); els.sat90line.setAttribute('x2', sat90x);
+        els.sat90dot.setAttribute('cx', sat90x);
+      }
+      [ph, paco, temp].forEach(function(el){ el.addEventListener('input', update); });
+      document.querySelectorAll('#if-ohb .if-presets button').forEach(function(b){
+        b.addEventListener('click', function(){
+          ph.value = b.dataset.ph; paco.value = b.dataset.paco; temp.value = b.dataset.temp;
+          update();
+        });
+      });
+      update();
+    } catch(err) { console.error('[interactive: OHbDC shift]', err); }
+  })();
+  </script>
+
   <div class="phys"><strong>Why the curve is sigmoid</strong>Hemoglobin's four binding sites cooperate (positive cooperativity): the first O₂ molecule changes conformation to make subsequent binding easier. The result is a curve that's flat at the top (so PaO₂ can fall from 100 → 70 with little SaO₂ change) and steep in the middle (so once SaO₂ drops below 90%, every further mmHg matters).</div>
   </details>
 </section>
@@ -3826,7 +4012,8 @@
       <tr><td><strong>PaCO₂</strong></td><td>Arterial partial pressure of CO₂</td><td>mmHg</td></tr>
     </tbody>
   </table>
-  <p><strong>Anatomic dead space</strong> ≈ 2 mL/kg (~150 mL adult). <strong>Physiologic dead space</strong> = anatomic + alveolar; the alveolar component rises in pulmonary embolism (PE), low-output states, high PEEP, hyperinflation, and ARDS. <strong>Apparatus dead space</strong> = HME, connectors, ETT — clinically meaningful (~50–100 mL) particularly in low-VT lung-protective ventilation.</p>
+  <p><strong>Anatomic dead space</strong> ≈ 2 mL/kg (~150 mL adult). <strong>Physiologic dead space</strong> = anatomic + alveolar; the alveolar component rises in pulmonary embolism (PE), low-output states, high PEEP, hyperinflation, and ARDS.</p>
+  <div class="pearl"><strong>Apparatus dead space — the bedside lever you can actually adjust</strong>Dead space added by the circuit itself — HME (heat-and-moisture exchanger), Y-piece, connectors, catheter mount, and the ETT lumen distal to the carina — totals ~ 50–100 mL on most setups and is the only dead-space compartment under direct clinical control. In a 70-kg adult on 6 mL/kg PBW (V<sub>T</sub> ≈ 360 mL), a single 60-mL HME wastes ~ 17% of every breath as rebreathed gas — V̇<sub>A</sub> falls, PaCO₂ climbs, and the patient compensates with a higher RR (which then erodes T<sub>e</sub> and drives auto-PEEP in obstructive disease). Whenever PaCO₂ rises out of proportion to the set V̇<sub>E</sub>, look at the circuit before changing the vent: switching from an HME to heated humidification, shortening the catheter mount, or removing inline filters typically buys back 30–60 mL of V<sub>T</sub> per breath. See also <a class="xref" href="#c37" data-xref-chap="37">§37</a> on humidification choices.</div>
   <p>The <strong>Bohr-Enghoff dead-space equation</strong> at the bedside:</p>
   <div class="eq">$$\frac{V_d}{V_T} \;=\; \frac{P_aCO_2 - P_{\bar{e}}CO_2}{P_aCO_2}$$</div>
   <p>where P<sub>ē</sub>CO₂ is mixed expired CO₂ (volumetric capnography). Normal V<sub>d</sub>/V<sub>T</sub> is 0.20–0.40; values > 0.6 predict difficulty weaning and worse ARDS outcomes (Nuckton 2002).<sup class="cite"><a href="#r29">29</a></sup> The arterial-to-end-tidal CO₂ gap, P(a−et)CO₂, is a clinical surrogate when full volumetric capnography isn't available.</p>
@@ -3855,11 +4042,324 @@
       <h4>4.2 CO₂ transport and the Haldane effect</h4>
     </summary>
 
-<p>CO₂ travels in three forms: dissolved (~10%), as bicarbonate (~70%), and bound to hemoglobin as carbamino compounds (~20%). The <strong>Haldane effect</strong> is the mirror image of the Bohr effect: deoxygenated hemoglobin binds more CO₂. So in tissues, hemoglobin gives up O₂ <em>and</em> picks up more CO₂; in the lung, oxygenation displaces CO₂ off hemoglobin to be exhaled.</p>
-  <p>Clinical consequence: a patient with anemia (reduced Hb buffering) tolerates respiratory acidosis less well; massive transfusion can transiently worsen it via citrate-induced metabolic alkalosis but improve CO₂ buffering.</p>
+<p>CO₂ travels in the blood in three forms: dissolved in plasma (~10%), as bicarbonate after carbonic-anhydrase-catalysed hydration in the red blood cell (~70%), and bound to hemoglobin as carbamino compounds (~20%). Two physiological effects, both rooted in the same allosteric switch between hemoglobin's <em>T (taut, deoxygenated)</em> and <em>R (relaxed, oxygenated)</em> conformations, link the O₂ and CO₂ sides of gas transport so that each gas helps unload the other where it needs to be unloaded:</p>
+  <ul>
+    <li><strong>The Bohr effect</strong> — at the <em>tissue</em>, the local rise in CO₂, H⁺, and temperature shifts the oxyhemoglobin dissociation curve to the <em>right</em>. H⁺ binds to histidine residues on the β-globin chain, stabilizing the T-state, lowering O₂ affinity, and dumping O₂ exactly where it's needed (active, acidic, warm tissue).</li>
+    <li><strong>The Haldane effect</strong> — at the <em>lung</em>, the rise in alveolar PO₂ binds heme iron, flips hemoglobin into the R-state, and lowers its affinity for both CO₂ and H⁺. CO₂ is displaced from carbamino compounds back into plasma (where the bicarbonate equilibrium runs in reverse, generating CO₂ for exhalation) — so oxygenation itself drives CO₂ off the hemoglobin and out the alveolus.</li>
+  </ul>
+  <p>The two effects are mirror images of one another: the same conformational switch that releases O₂ at the tissue (Bohr) also picks up CO₂ there (Haldane in reverse), and the same switch that loads O₂ at the lung (Bohr in reverse) also drops CO₂ there (Haldane). Hemoglobin is therefore not just an O₂ carrier — it's a coupled O₂/CO₂ shuttle, and most of the CO₂-buffering capacity of the blood comes from this coupling.</p>
+  <p><strong>Clinical consequences.</strong> Anemia reduces the Hb-mediated CO₂ buffer and the carbamino sink, so anemic patients tolerate respiratory acidosis less well at the same minute ventilation. Massive transfusion temporarily perturbs both: citrate-induced metabolic alkalosis can mask hypercapnia early, then the restored Hb improves CO₂ carriage. And in COPD, raising FiO₂ above the patient's chronic level pushes hemoglobin further into the R-state, off-loads CO₂ from carbamino compounds, and raises PaCO₂ — the textbook "Haldane component" of oxygen-induced hypercapnia (see also <a class="xref" href="#c3" data-xref-chap="3">§3.2a</a> and the pearl below).</p>
   <div class="figure">
-    <img src="https://i.postimg.cc/VsSF15HZ/SCR-20260503-trfu.jpg" alt="Bohr and Haldane effects — molecular mechanisms, dissociation curve shifts, and partial-pressure exchange in tissue and pulmonary capillaries" style="max-width:100%; height:auto; display:block; margin:0 auto;"/>
-    <div class="cap"><b>Figure 4.2 — Bohr and Haldane effects, side by side.</b> <em>Left (Bohr, peripheral tissues):</em> high CO₂, H⁺, and temperature shift the oxyhemoglobin dissociation curve <em>right</em> — H⁺ binds histidine residues, stabilizes the deoxy (T) state, lowers O₂ affinity, and unloads O₂ to metabolically active tissues. <em>Right (Haldane, pulmonary capillary):</em> high PO₂ shifts the CO₂ dissociation curve <em>left</em> — O₂ binds heme iron, stabilizes the oxy (R) state, lowers CO₂ and H⁺ binding, and unloads CO₂ for exhalation. The two effects are mirror images linked by hemoglobin's allosteric switching between T and R conformations.</div>
+    <style>
+      .bh-widget {
+        --bh-bg: #FAFAF7; --bh-surface: #FFFFFF;
+        --bh-text-primary: #1F1F1C; --bh-text-secondary: #5F5E5A; --bh-text-tertiary: #888780;
+        --bh-border: rgba(0,0,0,0.12);
+        --bh-alv-bg: #E6F1FB; --bh-alv-text: #0C447C; --bh-alv-text-muted: #185FA5;
+        --bh-tis-bg: #FAECE7; --bh-tis-text: #712B13; --bh-tis-text-muted: #993C1D;
+        --bh-neutral-bg: #F1EFE8; --bh-neutral-text: #2C2C2A;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+        color: var(--bh-text-primary); line-height: 1.6;
+        padding: 16px 18px; background: var(--bh-bg); border-radius: 10px;
+      }
+      html[data-theme="dark"] .bh-widget {
+        --bh-bg: #1F1F1C; --bh-surface: #2C2C2A;
+        --bh-text-primary: #F1EFE8; --bh-text-secondary: #B4B2A9; --bh-text-tertiary: #888780;
+        --bh-border: rgba(255,255,255,0.15);
+        --bh-alv-bg: #042C53; --bh-alv-text: #B5D4F4; --bh-alv-text-muted: #85B7EB;
+        --bh-tis-bg: #4A1B0C; --bh-tis-text: #F5C4B3; --bh-tis-text-muted: #F0997B;
+        --bh-neutral-bg: #2C2C2A; --bh-neutral-text: #D3D1C7;
+      }
+      .bh-widget * { box-sizing: border-box; }
+      .bh-widget h2.bh-h1 { font-size: 22px; font-weight: 500; margin: 0 0 4px; }
+      .bh-widget .bh-subtitle { font-size: 14px; color: var(--bh-text-secondary); margin: 0 0 18px; }
+      .bh-widget .bh-controls { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; padding: 12px 16px; background: var(--bh-surface); border: 0.5px solid var(--bh-border); border-radius: 10px; }
+      .bh-widget .bh-legend { display: flex; gap: 14px; font-size: 12px; color: var(--bh-text-secondary); align-items: center; flex-wrap: wrap; }
+      .bh-widget .bh-legend-item { display: inline-flex; align-items: center; gap: 5px; }
+      .bh-widget .bh-swatch { width: 11px; height: 11px; border-radius: 50%; display: inline-block; border: 0.5px solid rgba(0,0,0,0.2); }
+      .bh-widget .bh-swatch.bh-sq { border-radius: 2px; }
+      .bh-widget .bh-buttons { display: flex; gap: 8px; align-items: center; }
+      .bh-widget .bh-slider-group { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--bh-text-secondary); }
+      .bh-widget .bh-slider-group input[type="range"] { width: 110px; }
+      .bh-widget .bh-slider-group .bh-value { font-variant-numeric: tabular-nums; color: var(--bh-text-primary); min-width: 38px; font-weight: 500; }
+      .bh-widget button.bh-btn { padding: 6px 14px; border-radius: 8px; border: 0.5px solid var(--bh-border); background: var(--bh-surface); color: var(--bh-text-primary); font-size: 12px; font-family: inherit; cursor: pointer; transition: background 0.15s; }
+      .bh-widget button.bh-btn:hover { background: var(--bh-bg); }
+      .bh-widget .bh-stage { border-radius: 12px; border: 0.5px solid var(--bh-border); background: var(--bh-surface); overflow: hidden; margin-top: 12px; }
+      .bh-widget .bh-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; margin-top: 16px; }
+      @media (max-width: 720px) { .bh-widget .bh-grid { grid-template-columns: 1fr; } }
+      .bh-widget .bh-card { border-radius: 12px; border: 0.5px solid var(--bh-border); background: var(--bh-surface); padding: 14px 16px; }
+      .bh-widget .bh-card h3 { font-size: 14px; font-weight: 500; margin: 0 0 4px; }
+      .bh-widget .bh-card .bh-desc { font-size: 12px; color: var(--bh-text-secondary); margin: 0 0 10px; }
+      .bh-widget .bh-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+      @media (max-width: 600px) { .bh-widget .bh-panels { grid-template-columns: 1fr; } }
+      .bh-widget .bh-panel { padding: 14px 16px; border-radius: 12px; }
+      .bh-widget .bh-panel.bh-haldane { background: var(--bh-alv-bg); color: var(--bh-alv-text); }
+      .bh-widget .bh-panel.bh-bohr { background: var(--bh-tis-bg); color: var(--bh-tis-text); }
+      .bh-widget .bh-panel h3 { font-size: 14px; font-weight: 500; margin: 0 0 4px; }
+      .bh-widget .bh-panel .bh-tagline { font-size: 11px; margin: 0 0 10px; }
+      .bh-widget .bh-panel.bh-haldane .bh-tagline { color: var(--bh-alv-text-muted); }
+      .bh-widget .bh-panel.bh-bohr .bh-tagline { color: var(--bh-tis-text-muted); }
+      .bh-widget .bh-panel ul { margin: 0 0 10px; padding-left: 16px; font-size: 12px; }
+      .bh-widget .bh-panel ul li { margin-bottom: 3px; }
+      .bh-widget .bh-panel .bh-clinical { font-size: 11px; font-style: italic; margin: 0; padding-top: 8px; border-top: 0.5px solid currentColor; opacity: 0.75; }
+      .bh-widget .bh-equation-card { margin-top: 16px; padding: 12px 16px; background: var(--bh-neutral-bg); border-radius: 10px; border: 0.5px solid var(--bh-border); font-size: 13px; color: var(--bh-neutral-text); }
+      .bh-widget .bh-eq-title { font-weight: 500; margin-bottom: 6px; font-size: 12px; color: var(--bh-text-secondary); text-transform: uppercase; letter-spacing: 0.04em; }
+      .bh-widget .bh-equation { font-family: "SF Mono", Consolas, monospace; font-size: 13px; text-align: center; padding: 4px 0; }
+      .bh-widget .bh-arrow-eq { color: var(--bh-text-tertiary); margin: 0 6px; }
+    </style>
+    <div class="bh-widget">
+      <h2 class="bh-h1">Bohr &amp; Haldane effects</h2>
+      <p class="bh-subtitle">Reciprocal modulation of hemoglobin affinity by O₂, CO₂, H⁺, and bicarbonate during gas exchange</p>
+      <div class="bh-controls">
+        <div class="bh-legend">
+          <span class="bh-legend-item"><span class="bh-swatch" style="background:#378ADD"></span>O₂</span>
+          <span class="bh-legend-item"><span class="bh-swatch" style="background:#5F5E5A"></span>CO₂</span>
+          <span class="bh-legend-item"><span class="bh-swatch" style="background:#D85A30"></span>H⁺</span>
+          <span class="bh-legend-item"><span class="bh-swatch" style="background:#1D9E75"></span>HCO₃⁻</span>
+          <span class="bh-legend-item"><span class="bh-swatch bh-sq" style="background:#7F77DD"></span>Cl⁻</span>
+          <span class="bh-legend-item"><span class="bh-swatch" style="background:#E24B4A"></span>RBC</span>
+        </div>
+        <div class="bh-buttons">
+          <div class="bh-slider-group">
+            <span>Ventilation</span>
+            <input type="range" id="bh-ventSlider" min="40" max="160" value="100">
+            <span class="bh-value" id="bh-ventValue">100%</span>
+          </div>
+          <button class="bh-btn" id="bh-pauseBtn">⏸ Pause</button>
+          <button class="bh-btn" id="bh-speedBtn">1×</button>
+        </div>
+      </div>
+      <div class="bh-stage">
+        <svg id="bh-stageSvg" width="100%" viewBox="0 0 880 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animated gas exchange showing oxygen, carbon dioxide, hydrogen ions, bicarbonate and chloride movement between alveolus, capillary blood, red blood cells and tissue">
+          <defs>
+            <radialGradient id="bh-alvFill" cx="50%" cy="50%" r="55%"><stop offset="0%" stop-color="#B5D4F4" stop-opacity="0.55"/><stop offset="100%" stop-color="#378ADD" stop-opacity="0.15"/></radialGradient>
+            <radialGradient id="bh-tisFill" cx="50%" cy="50%" r="55%"><stop offset="0%" stop-color="#F0997B" stop-opacity="0.5"/><stop offset="100%" stop-color="#D85A30" stop-opacity="0.15"/></radialGradient>
+            <linearGradient id="bh-vesselFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FBEAF0" stop-opacity="0.7"/><stop offset="100%" stop-color="#F4C0D1" stop-opacity="0.5"/></linearGradient>
+            <radialGradient id="bh-rbcFill" cx="35%" cy="35%" r="65%"><stop offset="0%" stop-color="#F09595"/><stop offset="100%" stop-color="#A32D2D"/></radialGradient>
+          </defs>
+          <g>
+            <ellipse cx="110" cy="180" rx="80" ry="68" fill="url(#bh-alvFill)" stroke="#185FA5" stroke-width="0.5"/>
+            <ellipse cx="78" cy="148" rx="22" ry="18" fill="#B5D4F4" opacity="0.4"/>
+            <ellipse cx="135" cy="210" rx="18" ry="14" fill="#B5D4F4" opacity="0.3"/>
+            <text x="110" y="100" text-anchor="middle" font-family="inherit" font-size="13" font-weight="500" fill="#0C447C">Alveolus</text>
+            <text x="110" y="270" text-anchor="middle" font-family="inherit" font-size="11" fill="#185FA5">PO₂ ≈ 100 · PCO₂ ≈ 40</text>
+            <text x="110" y="284" text-anchor="middle" font-family="inherit" font-size="10" fill="#185FA5" opacity="0.8">(ventilator-supplied)</text>
+          </g>
+          <g>
+            <ellipse cx="770" cy="180" rx="80" ry="68" fill="url(#bh-tisFill)" stroke="#993C1D" stroke-width="0.5"/>
+            <circle cx="745" cy="155" r="14" fill="#D85A30" opacity="0.35"/>
+            <circle cx="790" cy="195" r="11" fill="#D85A30" opacity="0.3"/>
+            <circle cx="755" cy="200" r="9" fill="#D85A30" opacity="0.3"/>
+            <text x="770" y="100" text-anchor="middle" font-family="inherit" font-size="13" font-weight="500" fill="#712B13">Tissue</text>
+            <text x="770" y="270" text-anchor="middle" font-family="inherit" font-size="11" fill="#993C1D">PO₂ ≈ 40 · PCO₂ ≈ 46 · ↓pH</text>
+            <text x="770" y="284" text-anchor="middle" font-family="inherit" font-size="10" fill="#993C1D" opacity="0.8">(active metabolism)</text>
+          </g>
+          <g>
+            <rect x="190" y="155" width="500" height="50" rx="25" fill="url(#bh-vesselFill)" stroke="#993556" stroke-width="0.5"/>
+            <text x="440" y="148" text-anchor="middle" font-family="inherit" font-size="11" fill="#72243E">Capillary blood flow →</text>
+            <text x="440" y="222" text-anchor="middle" font-family="inherit" font-size="10" fill="#72243E" opacity="0.75">Plasma carries ~70% of CO₂ as HCO₃⁻</text>
+          </g>
+          <g id="bh-rbc1"><circle cx="250" cy="180" r="20" fill="url(#bh-rbcFill)" stroke="#791F1F" stroke-width="0.5"/><ellipse cx="250" cy="180" rx="13" ry="7" fill="#791F1F" opacity="0.45"/><text x="250" y="183" text-anchor="middle" font-family="inherit" font-size="7" font-weight="600" fill="#FBEAF0">Hb</text></g>
+          <g id="bh-rbc2"><circle cx="380" cy="180" r="20" fill="url(#bh-rbcFill)" stroke="#791F1F" stroke-width="0.5"/><ellipse cx="380" cy="180" rx="13" ry="7" fill="#791F1F" opacity="0.45"/><text x="380" y="183" text-anchor="middle" font-family="inherit" font-size="7" font-weight="600" fill="#FBEAF0">Hb</text></g>
+          <g id="bh-rbc3"><circle cx="510" cy="180" r="20" fill="url(#bh-rbcFill)" stroke="#791F1F" stroke-width="0.5"/><ellipse cx="510" cy="180" rx="13" ry="7" fill="#791F1F" opacity="0.45"/><text x="510" y="183" text-anchor="middle" font-family="inherit" font-size="7" font-weight="600" fill="#FBEAF0">Hb</text></g>
+          <g id="bh-rbc4"><circle cx="630" cy="180" r="20" fill="url(#bh-rbcFill)" stroke="#791F1F" stroke-width="0.5"/><ellipse cx="630" cy="180" rx="13" ry="7" fill="#791F1F" opacity="0.45"/><text x="630" y="183" text-anchor="middle" font-family="inherit" font-size="7" font-weight="600" fill="#FBEAF0">Hb</text></g>
+          <g id="bh-particles"></g>
+          <text x="440" y="338" text-anchor="middle" font-family="inherit" font-size="9" fill="#888780" opacity="0.7" font-style="italic">CO₂ + H₂O ⇌ H₂CO₃ ⇌ HCO₃⁻ + H⁺  (carbonic anhydrase, inside RBC)</text>
+        </svg>
+      </div>
+      <div class="bh-grid">
+        <div class="bh-card">
+          <h3>Oxyhemoglobin dissociation curve</h3>
+          <p class="bh-desc">The curve shifts in real time based on tissue PCO₂ and pH. Right shift = more O₂ unloaded; left shift = O₂ held tighter.</p>
+          <svg id="bh-curveSvg" width="100%" viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Oxyhemoglobin dissociation curve showing right and left shifts">
+            <line x1="50" y1="240" x2="450" y2="240" stroke="#5F5E5A" stroke-width="0.5"/>
+            <line x1="50" y1="20" x2="50" y2="240" stroke="#5F5E5A" stroke-width="0.5"/>
+            <g font-family="inherit" font-size="10" fill="#5F5E5A"><text x="44" y="244" text-anchor="end">0</text><text x="44" y="200" text-anchor="end">25</text><text x="44" y="156" text-anchor="end">50</text><text x="44" y="112" text-anchor="end">75</text><text x="44" y="68" text-anchor="end">100</text></g>
+            <g font-family="inherit" font-size="10" fill="#5F5E5A"><text x="50" y="256" text-anchor="middle">0</text><text x="130" y="256" text-anchor="middle">20</text><text x="210" y="256" text-anchor="middle">40</text><text x="290" y="256" text-anchor="middle">60</text><text x="370" y="256" text-anchor="middle">80</text><text x="450" y="256" text-anchor="middle">100</text></g>
+            <text x="250" y="275" text-anchor="middle" font-family="inherit" font-size="11" fill="#1F1F1C">PO₂ (mmHg)</text>
+            <text x="14" y="130" text-anchor="middle" font-family="inherit" font-size="11" fill="#1F1F1C" transform="rotate(-90, 14, 130)">SaO₂ (%)</text>
+            <path id="bh-normalCurve" fill="none" stroke="#888780" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"/>
+            <path id="bh-activeCurve" fill="none" stroke="#D85A30" stroke-width="2"/>
+            <line id="bh-p50Line" stroke="#888780" stroke-width="0.5" stroke-dasharray="2 2"/>
+            <text id="bh-p50Label" font-family="inherit" font-size="10" fill="#5F5E5A"></text>
+            <circle id="bh-lungPoint" r="4" fill="#378ADD" stroke="#FFFFFF" stroke-width="1.5"/>
+            <circle id="bh-tissuePoint" r="4" fill="#D85A30" stroke="#FFFFFF" stroke-width="1.5"/>
+            <text x="380" y="78" font-family="inherit" font-size="10" fill="#0C447C">Lung</text>
+            <text x="195" y="180" font-family="inherit" font-size="10" fill="#993C1D">Tissue</text>
+          </svg>
+        </div>
+        <div class="bh-card">
+          <h3>Live conditions</h3>
+          <p class="bh-desc">Adjust ventilation to see how alveolar CO₂ clearance changes the system.</p>
+          <div id="bh-readouts" style="font-family: 'SF Mono', Consolas, monospace; font-size: 12px; line-height: 1.9;">
+            <div style="display:flex;justify-content:space-between"><span>Tissue PCO₂</span><span id="bh-rPCO2" style="font-weight:500">46 mmHg</span></div>
+            <div style="display:flex;justify-content:space-between"><span>Tissue pH</span><span id="bh-rPH" style="font-weight:500">7.36</span></div>
+            <div style="display:flex;justify-content:space-between"><span>P₅₀ (shifted)</span><span id="bh-rP50" style="font-weight:500">28 mmHg</span></div>
+            <div style="display:flex;justify-content:space-between"><span>Curve shift</span><span id="bh-rShift" style="font-weight:500">Right</span></div>
+            <div style="display:flex;justify-content:space-between;border-top:0.5px solid rgba(0,0,0,0.12);padding-top:8px;margin-top:6px"><span>O₂ delivered to tissue</span><span id="bh-rO2" style="font-weight:500;color:#1D9E75">↑ Enhanced</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="bh-panels">
+        <div class="bh-panel bh-haldane">
+          <h3>Haldane effect (in lung)</h3>
+          <p class="bh-tagline">O₂ binding pushes CO₂ off hemoglobin</p>
+          <ul>
+            <li>O₂ loads onto deoxy-Hb at high alveolar PO₂</li>
+            <li>OxyHb is a weaker base — releases bound H⁺</li>
+            <li>H⁺ recombines with HCO₃⁻ → H₂CO₃ → CO₂ + H₂O</li>
+            <li>Carbamino-CO₂ also dissociates from Hb</li>
+            <li>CO₂ diffuses into alveolus and is exhaled</li>
+          </ul>
+          <p class="bh-clinical">Clinical: minute ventilation drives CO₂ clearance; the Haldane effect roughly doubles CO₂ excretion vs. a passive system</p>
+        </div>
+        <div class="bh-panel bh-bohr">
+          <h3>Bohr effect (in tissue)</h3>
+          <p class="bh-tagline">CO₂ and H⁺ push O₂ off hemoglobin</p>
+          <ul>
+            <li>Tissue CO₂ enters RBC, hydrated by carbonic anhydrase</li>
+            <li>H⁺ binds Hb, stabilizing the deoxy (T) state</li>
+            <li>HCO₃⁻ exits RBC; Cl⁻ enters (chloride / Hamburger shift)</li>
+            <li>Hb affinity for O₂ falls — P₅₀ rises</li>
+            <li>Dissociation curve shifts right; more O₂ released</li>
+          </ul>
+          <p class="bh-clinical">Clinical: hyperventilation causes alkalosis → left shift → impaired tissue O₂ delivery despite high SaO₂</p>
+        </div>
+      </div>
+      <div class="bh-equation-card">
+        <div class="bh-eq-title">Coupled chemistry</div>
+        <div class="bh-equation">Hb·4O₂ + 2H⁺ + 2CO₂  <span class="bh-arrow-eq">⇌</span>  Hb·(H⁺)₂·(CO₂)₂ + 4O₂</div>
+        <div class="bh-equation" style="margin-top:6px;color:#5F5E5A;font-size:12px">← shift in lungs (Haldane)  ·  shift in tissue (Bohr) →</div>
+      </div>
+    </div>
+    <script>
+    (function() {
+      try {
+        const SVG_NS = 'http://www.w3.org/2000/svg';
+        const particleLayer = document.getElementById('bh-particles');
+        if (!particleLayer) return;
+        const rbcs = [
+          { el: document.getElementById('bh-rbc1'), baseX: 250 },
+          { el: document.getElementById('bh-rbc2'), baseX: 380 },
+          { el: document.getElementById('bh-rbc3'), baseX: 510 },
+          { el: document.getElementById('bh-rbc4'), baseX: 630 }
+        ];
+        let speed = 1, paused = false, ventilation = 1.0, lastTime = performance.now();
+        let particles = [], spawnTimer = 0, rbcDrift = 0;
+        const particleSpec = {
+          O2:   { fill: '#378ADD', stroke: '#0C447C', label: 'O₂',  size: 8, labelColor: '#FFFFFF', shape: 'circle' },
+          CO2:  { fill: '#5F5E5A', stroke: '#2C2C2A', label: 'CO₂', size: 8, labelColor: '#FFFFFF', shape: 'circle' },
+          H:    { fill: '#D85A30', stroke: '#993C1D', label: 'H⁺',  size: 6, labelColor: '#FFFFFF', shape: 'circle' },
+          HCO3: { fill: '#1D9E75', stroke: '#0F6E56', label: 'HCO₃⁻', size: 9, labelColor: '#FFFFFF', shape: 'circle' },
+          Cl:   { fill: '#7F77DD', stroke: '#3C3489', label: 'Cl⁻', size: 7, labelColor: '#FFFFFF', shape: 'square' }
+        };
+        function spawn(type, fromX, fromY, toX, toY, duration, controlY) {
+          const spec = particleSpec[type];
+          const g = document.createElementNS(SVG_NS, 'g');
+          let shape;
+          if (spec.shape === 'square') {
+            shape = document.createElementNS(SVG_NS, 'rect');
+            shape.setAttribute('x', -spec.size); shape.setAttribute('y', -spec.size);
+            shape.setAttribute('width', spec.size * 2); shape.setAttribute('height', spec.size * 2);
+            shape.setAttribute('rx', '2');
+          } else {
+            shape = document.createElementNS(SVG_NS, 'circle');
+            shape.setAttribute('r', spec.size);
+          }
+          shape.setAttribute('fill', spec.fill); shape.setAttribute('stroke', spec.stroke); shape.setAttribute('stroke-width', '0.5');
+          const t = document.createElementNS(SVG_NS, 'text');
+          t.setAttribute('text-anchor', 'middle'); t.setAttribute('dominant-baseline', 'central');
+          t.setAttribute('font-size', spec.label.length > 2 ? '6.5' : '7.5'); t.setAttribute('font-weight', '600');
+          t.setAttribute('font-family', 'inherit'); t.setAttribute('fill', spec.labelColor); t.setAttribute('y', '0.5');
+          t.textContent = spec.label;
+          g.appendChild(shape); g.appendChild(t); particleLayer.appendChild(g);
+          particles.push({ el: g, fromX, fromY, toX, toY, controlY: controlY ?? (fromY + toY) / 2, duration, elapsed: 0 });
+        }
+        function updateParticle(p, dt) {
+          p.elapsed += dt; const t = Math.min(p.elapsed / p.duration, 1); const mt = 1 - t;
+          const cx = (p.fromX + p.toX) / 2;
+          const x = mt * mt * p.fromX + 2 * mt * t * cx + t * t * p.toX;
+          const y = mt * mt * p.fromY + 2 * mt * t * p.controlY + t * t * p.toY;
+          p.el.setAttribute('transform', 'translate(' + x + ', ' + y + ')');
+          const opacity = t < 0.1 ? t * 10 : t > 0.9 ? (1 - t) * 10 : 1;
+          p.el.setAttribute('opacity', opacity);
+          return t >= 1;
+        }
+        function pickRBC() {
+          const r = rbcs[Math.floor(Math.random() * rbcs.length)];
+          return parseFloat(r.el.dataset.currentX || r.baseX);
+        }
+        function jitter(x, amp) { return x + (Math.random() - 0.5) * amp; }
+        function spawnCycle() {
+          spawn('O2', jitter(110, 30), 180, pickRBC(), 180, 1900, 110);
+          if (Math.random() < ventilation) setTimeout(function(){ if (!paused) spawn('CO2', pickRBC(), 180, jitter(110, 30), 180, 2100, 105); }, 350 / speed);
+          setTimeout(function(){ if (paused) return; const x = pickRBC(); spawn('H', x, 180, x + jitter(0, 30), jitter(165, 8), 1000, 170); }, 600 / speed);
+          setTimeout(function(){ if (paused) return; const x = pickRBC(); spawn('HCO3', jitter(x + 25, 20), 165, x, 180, 900, 168); }, 800 / speed);
+          setTimeout(function(){ if (!paused) spawn('CO2', jitter(770, 30), 180, pickRBC(), 180, 1900, 250); }, 200 / speed);
+          setTimeout(function(){ if (!paused) spawn('O2', pickRBC(), 180, jitter(770, 30), 180, 2100, 245); }, 700 / speed);
+          setTimeout(function(){ if (paused) return; const x = pickRBC(); spawn('HCO3', x, 180, jitter(x - 25, 20), jitter(195, 8), 900, 195); }, 1100 / speed);
+          setTimeout(function(){ if (paused) return; const x = pickRBC(); spawn('Cl', jitter(x + 30, 15), jitter(195, 8), x, 180, 900, 195); }, 1300 / speed);
+          setTimeout(function(){ if (paused) return; const x = pickRBC(); spawn('H', jitter(x - 25, 15), jitter(165, 6), x, 180, 800, 170); }, 1500 / speed);
+        }
+        function tick(now) {
+          const dt = Math.min(now - lastTime, 50); lastTime = now;
+          if (!paused) {
+            const adjDt = dt * speed;
+            particles = particles.filter(function(p){ const done = updateParticle(p, adjDt); if (done) p.el.remove(); return !done; });
+            rbcDrift = (rbcDrift + adjDt * 0.022) % 130;
+            rbcs.forEach(function(r){ let newX = r.baseX + rbcDrift; if (newX > 660) newX -= 520; if (newX < 220) newX += 520; r.el.setAttribute('transform', 'translate(' + (newX - r.baseX) + ', 0)'); r.el.dataset.currentX = newX; });
+            spawnTimer += adjDt;
+            if (spawnTimer > 1100) { spawnTimer = 0; spawnCycle(); }
+          }
+          requestAnimationFrame(tick);
+        }
+        const normalPath = document.getElementById('bh-normalCurve'); const activePath = document.getElementById('bh-activeCurve');
+        const p50Line = document.getElementById('bh-p50Line'); const p50Label = document.getElementById('bh-p50Label');
+        const lungPoint = document.getElementById('bh-lungPoint'); const tissuePoint = document.getElementById('bh-tissuePoint');
+        function pt(po2, sat) { const x = 50 + (po2 / 100) * 400; const y = 240 - (sat / 100) * 220; return [x, y]; }
+        function buildCurvePath(p50, n) { n = n || 2.7; let d = '';
+          for (let po2 = 0; po2 <= 100; po2 += 2) {
+            const sat = 100 * Math.pow(po2, n) / (Math.pow(po2, n) + Math.pow(p50, n));
+            const xy = pt(po2, sat); d += (po2 === 0 ? 'M' : 'L') + xy[0].toFixed(1) + ',' + xy[1].toFixed(1) + ' ';
+          } return d;
+        }
+        normalPath.setAttribute('d', buildCurvePath(26.6));
+        function updateCurve() {
+          const tissuePCO2 = 46 + (1 - ventilation) * 25;
+          const pH = 7.40 - (tissuePCO2 - 40) * 0.008;
+          const p50 = 26.6 + (tissuePCO2 - 40) * 0.45 + (7.40 - pH) * 12;
+          activePath.setAttribute('d', buildCurvePath(p50));
+          const xy = pt(p50, 50);
+          p50Line.setAttribute('x1', xy[0]); p50Line.setAttribute('y1', xy[1]); p50Line.setAttribute('x2', xy[0]); p50Line.setAttribute('y2', 240);
+          p50Label.setAttribute('x', xy[0] + 4); p50Label.setAttribute('y', xy[1] - 4);
+          p50Label.textContent = 'P₅₀ = ' + p50.toFixed(0);
+          const lungSat = 100 * Math.pow(100, 2.7) / (Math.pow(100, 2.7) + Math.pow(p50, 2.7));
+          const ll = pt(100, lungSat); lungPoint.setAttribute('cx', ll[0]); lungPoint.setAttribute('cy', ll[1]);
+          const tissueSat = 100 * Math.pow(40, 2.7) / (Math.pow(40, 2.7) + Math.pow(p50, 2.7));
+          const tt = pt(40, tissueSat); tissuePoint.setAttribute('cx', tt[0]); tissuePoint.setAttribute('cy', tt[1]);
+          document.getElementById('bh-rPCO2').textContent = tissuePCO2.toFixed(0) + ' mmHg';
+          document.getElementById('bh-rPH').textContent = pH.toFixed(2);
+          document.getElementById('bh-rP50').textContent = p50.toFixed(0) + ' mmHg';
+          const shift = p50 > 27.5 ? 'Right' : p50 < 25.5 ? 'Left' : 'Normal';
+          document.getElementById('bh-rShift').textContent = shift;
+          const o2el = document.getElementById('bh-rO2');
+          if (shift === 'Right') { o2el.textContent = '↑ Enhanced unloading'; o2el.style.color = '#1D9E75'; }
+          else if (shift === 'Left') { o2el.textContent = '↓ Impaired unloading'; o2el.style.color = '#A32D2D'; }
+          else { o2el.textContent = '→ Normal'; o2el.style.color = '#1F1F1C'; }
+        }
+        document.getElementById('bh-pauseBtn').addEventListener('click', function() { paused = !paused; this.textContent = paused ? '▶ Play' : '⏸ Pause'; });
+        document.getElementById('bh-speedBtn').addEventListener('click', function() {
+          const speeds = [1, 2, 0.5]; const labels = ['1×', '2×', '0.5×'];
+          const idx = speeds.indexOf(speed); const next = (idx + 1) % speeds.length;
+          speed = speeds[next]; this.textContent = labels[next];
+        });
+        const ventSlider = document.getElementById('bh-ventSlider'); const ventValue = document.getElementById('bh-ventValue');
+        ventSlider.addEventListener('input', function() { ventilation = this.value / 100; ventValue.textContent = this.value + '%'; updateCurve(); });
+        updateCurve(); spawnCycle(); setTimeout(spawnCycle, 400); setTimeout(spawnCycle, 800); requestAnimationFrame(tick);
+      } catch(err) { console.error('[bohr-haldane widget]', err); }
+    })();
+    </script>
+    <div class="cap"><b>Figure 4.2 — Bohr and Haldane effects (interactive).</b> Animated gas exchange across the alveolus → capillary → tissue axis. The legend up top maps each particle (O₂, CO₂, H⁺, HCO₃⁻, Cl⁻); the ventilation slider lets you change alveolar CO₂ clearance and watch the live oxyhemoglobin dissociation curve shift right (more tissue PCO₂, lower pH, higher P₅₀, more O₂ released to tissue) or left (less tissue PCO₂, higher pH, lower P₅₀, O₂ held more tightly). The two side panels recap the chemistry: Haldane in the lung — O₂ binding displaces CO₂ off Hb; Bohr in the tissue — CO₂/H⁺ binding displaces O₂ off Hb. Same allosteric switch, mirror effects.</div>
   </div>
   <div class="pearl"><strong>At the bedside</strong>The Haldane effect is the second mechanism (alongside HPV, §3.2a) behind the COPD patient whose PaCO₂ rises after high-flow O₂: oxygenated hemoglobin <em>off-loads</em> CO₂ into plasma, so a given V<sub>A</sub> now clears less of it. The fix isn't to drop FiO₂ to dangerously low levels — it's to titrate to SpO₂ 88–92% and watch for the rise. If PaCO₂ climbs anyway, that's a ventilation problem, not an oxygenation one — start non-invasive support (<a class="xref" href="#c27" data-xref-chap="27">§27</a>).</div>
   </details>
@@ -4177,7 +4677,34 @@
       <tr><td><strong>PEEP</strong></td><td>Positive end-expiratory pressure (machine baseline + any auto-PEEP)</td><td>cmH₂O</td></tr>
     </tbody>
   </table>
-  <p>Every airway pressure during a breath is the sum of three contributions: a <strong>volume-elastic</strong> component (V/C — volume divided by compliance), a <strong>flow-resistive</strong> component (V̇ × R — flow times resistance), and the baseline <strong>PEEP</strong>. Memorize this — it explains everything from auto-PEEP to driving pressure. The same symbols carry through the next equations: at end-inspiratory <em>hold</em> (V̇ = 0), the resistive term disappears and what's left is Pplat = V/C + PEEP, which rearranges to <em>compliance = VT / (Pplat − PEEP)</em>; during constant-flow inspiration the resistive term is read directly as <em>R = (PIP − Pplat) / V̇</em>.</p>
+  <p>Every airway pressure during a breath is the sum of three components — each one a different physical force the ventilator (or the diaphragm) must work against. Memorize how each maps to the bedside; the rest of this chapter is just unpacking these three terms.</p>
+
+  <table>
+    <caption>The three components of P<sub>aw</sub>, decomposed</caption>
+    <thead><tr><th>Term</th><th>What it represents</th><th>How to read it on the trace</th><th>Goes up when…</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>V / C</strong><br><em>volume-elastic</em></td>
+        <td>Pressure required to <em>stretch</em> the lung + chest wall by the delivered volume V at compliance C. This is the elastic recoil that builds as the lung fills.</td>
+        <td>P<sub>plat</sub> − PEEP after a 0.5–2 s end-inspiratory hold (V̇ = 0, so the resistive term vanishes). Equivalently, V<sub>T</sub> / (P<sub>plat</sub> − PEEP) gives compliance C.</td>
+        <td>Stiff lung (ARDS, edema, fibrosis, atelectasis), stiff chest wall (obesity, ascites, abdominal hypertension), or excessive V<sub>T</sub>.</td>
+      </tr>
+      <tr>
+        <td><strong>V̇ × R</strong><br><em>flow-resistive</em></td>
+        <td>Pressure required to push gas through the airways and the ETT at instantaneous flow V̇, against airway resistance R.</td>
+        <td>PIP − P<sub>plat</sub> during constant-flow VC inspiration. Disappears at end-inspiratory hold. Equivalently, R = (PIP − P<sub>plat</sub>) / V̇.</td>
+        <td>Bronchospasm, airway secretions, kinked / biting / undersized ETT, water in the circuit, mucous plug.</td>
+      </tr>
+      <tr>
+        <td><strong>PEEP</strong><br><em>baseline</em></td>
+        <td>End-expiratory airway pressure already in the system before the next breath begins. Set PEEP + any auto-PEEP from incomplete exhalation.</td>
+        <td>The trough between breaths on the pressure trace. End-expiratory hold reveals total PEEP; total − set = auto-PEEP (<a class="xref" href="#c17" data-xref-chap="17">§17</a>).</td>
+        <td>You set it (extrinsic PEEP), <em>or</em> the lung fails to empty (auto-PEEP / dynamic hyperinflation).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Total airway pressure at any moment during a breath = (V/C now) + (V̇ × R now) + (PEEP). When the patient breathes spontaneously, a fourth term — P<sub>mus</sub>, the pressure generated by the inspiratory muscles — pulls airway pressure <em>down</em>; the equation becomes P<sub>aw</sub> = V/C + V̇·R + PEEP − P<sub>mus</sub>. Almost every bedside ventilator concept in the rest of this document is one of these four terms in disguise.</p>
 
   <div class="phys"><strong>How the equation of motion shows up at the bedside</strong>
     <table style="margin-top:6px;">
@@ -4193,25 +4720,33 @@
       </tbody>
     </table>
   </div>
-
-  <div class="figure">
-    <img src="https://i.postimg.cc/FzQ6QmpH/lung-volumes.webp" alt="Lung volumes and capacities — IRV, VT, ERV, RV (the four volumes) and IC, FRC, VC, TLC (the four capacities)" style="max-width:100%; height:auto; display:block; margin:0 auto;"/>
-    <div class="cap"><b>Figure 6.1 — The four lung volumes and four capacities.</b> The <strong>volumes</strong> (non-overlapping): inspiratory reserve volume (IRV ~2500 mL), tidal volume (V<sub>T</sub> ~500 mL), expiratory reserve volume (ERV ~1500 mL), residual volume (RV ~1500 mL — the volume that <em>cannot</em> be exhaled and which is why we always have some gas in the lung). The <strong>capacities</strong> (sums of two or more volumes): inspiratory capacity (IC = V<sub>T</sub> + IRV ~3000 mL), functional residual capacity (FRC = ERV + RV ~3000 mL — the relaxed end-expiratory volume; the operating point of the Campbell diagram), vital capacity (VC = IRV + V<sub>T</sub> + ERV ~4500 mL), total lung capacity (TLC = all four ~6000 mL). FRC is the most clinically important capacity for ventilator decisions — atelectasis develops below FRC, dynamic hyperinflation accumulates above it.</div>
-  </div>
   </details>
   <details class="chap-acc" data-acc-id="c6-h4-2">
     <summary>
       <h4>6.1a Closing capacity vs FRC — why some patients desaturate fast</h4>
     </summary>
 
-<p><strong>Closing capacity (CC)</strong> is the lung volume below which small airways start to collapse on exhalation. <strong>FRC</strong> is the normal end-expiratory volume. The relationship between these two — not the absolute number of either — predicts who develops atelectasis and shunt.</p>
-  <ul>
-    <li><strong>Healthy young upright adult</strong>: FRC &gt; CC by ~ 1 L. Tidal breathing happens entirely above closing volume; no atelectasis develops.</li>
-    <li><strong>Aging</strong>: CC rises by ~ 50 mL/year of life. By age 65 supine, CC and FRC roughly equal. Tidal breaths now drop below closing volume → small-airway collapse → V/Q low units → relative hypoxemia even in healthy elderly.</li>
-    <li><strong>Obesity</strong>: FRC drops dramatically (up to 50%) due to abdominal-wall compliance and supine diaphragm displacement. CC unchanged → CC &gt; FRC → tidal breaths happen partly inside collapsed airway zone → shunt at baseline.</li>
-    <li><strong>Supine position</strong>: FRC drops ~ 20% supine vs upright. Combined with anesthesia and induction agents (which further reduce FRC by ~ 20%), the supine obese anesthetized patient has FRC well below CC within seconds.</li>
-    <li><strong>Acute lung injury</strong>: edema and surfactant loss raise CC and lower FRC simultaneously — atelectasis everywhere.</li>
-  </ul>
+<p><strong>Closing capacity (CC)</strong> is the lung volume at which small airways (those without cartilage to splint them) begin to collapse during exhalation. Below CC, the airway lumen closes and the alveoli behind it can no longer ventilate. <strong>FRC</strong> is the normal end-expiratory volume. The <em>relationship</em> between these two — not the absolute number of either — predicts who develops atelectasis and shunt.</p>
+  <p>Why CC moves at all: small airways are kept open by two opposing forces. <em>Radial traction</em> from surrounding alveoli (alveolar attachments to the airway wall pull it open) and <em>airway smooth-muscle tone</em> hold the lumen open; <em>surface tension</em> at the airway lining and <em>extramural pressure</em> from surrounding tissue push it closed. CC rises whenever the radial traction is lost (emphysematous destruction of alveolar attachments) or the closing force grows (mucosal edema, secretions, smooth-muscle hyperresponsiveness). FRC drops whenever the chest-wall recoil outward weakens or the abdominal/intrathoracic pressure pushing inward grows.</p>
+  <table>
+    <caption>Drivers of CC and FRC at the bedside</caption>
+    <thead><tr><th>Condition</th><th>FRC</th><th>CC</th><th>Mechanism</th></tr></thead>
+    <tbody>
+      <tr><td>Healthy young, upright</td><td>Normal</td><td>Normal (CC ≪ FRC)</td><td>Tidal breathing well above closing volume; no atelectasis.</td></tr>
+      <tr><td><strong>Aging</strong></td><td>Stable until late decades</td><td><strong>↑ ~ 50 mL per year of life</strong></td><td>Loss of elastin from airway walls and surrounding parenchyma → less radial traction. By age ~ 45 supine, by age ~ 65 upright, CC reaches FRC and tidal breathing dips into the closing zone.</td></tr>
+      <tr><td><strong>Smoking, chronic bronchitis, early COPD</strong></td><td>Variable (often ↑ with hyperinflation)</td><td><strong>↑↑</strong> — early</td><td>Mucosal inflammation thickens the airway wall, narrows the lumen, and accelerates the loss of elastin. CC rises long before FEV<sub>1</sub> changes — the small-airway disease that smokers develop in their 30s–40s.</td></tr>
+      <tr><td><strong>Asthma / bronchospasm</strong></td><td>↑ (hyperinflation)</td><td><strong>↑↑</strong></td><td>Smooth-muscle constriction + mucosal edema + mucus plugging close the airways at higher lung volumes.</td></tr>
+      <tr><td><strong>Obesity</strong></td><td><strong>↓↓ — up to 50%</strong></td><td>≈ Normal at baseline</td><td>The chest-wall (abdominal compartment) compliance falls; supine diaphragm rides higher; ERV is consumed. CC didn't change but the FRC/CC ratio inverts — tidal breaths now happen inside the closing zone → shunt at rest.</td></tr>
+      <tr><td><strong>Pregnancy (term)</strong></td><td>↓ ~ 20% supine</td><td>Normal</td><td>Gravid uterus elevates the diaphragm; same FRC/CC inversion as obesity.</td></tr>
+      <tr><td><strong>Supine position alone</strong></td><td>↓ ~ 20% vs upright</td><td>Stable</td><td>Loss of gravity-assisted chest expansion and abdominal contents pressing on the diaphragm.</td></tr>
+      <tr><td><strong>General anesthesia / sedation / paralysis</strong></td><td>↓ ~ 20% additional</td><td>Stable or ↑</td><td>Loss of inspiratory muscle tone (especially diaphragm) collapses dependent lung. Combined with supine: FRC down ~ 40% from upright awake — happens within minutes of induction.</td></tr>
+      <tr><td><strong>Acute lung injury / ARDS</strong></td><td><strong>↓↓</strong></td><td><strong>↑↑</strong></td><td>Edema floods alveoli (FRC down); surfactant loss raises closing pressure of small airways (CC up). Both forces converge → widespread atelectasis and shunt.</td></tr>
+      <tr><td><strong>Cardiogenic pulmonary edema</strong></td><td>↓</td><td>↑</td><td>Interstitial cuffs of edema around airways narrow the lumen and raise CC; alveolar flooding drops FRC.</td></tr>
+      <tr><td><strong>Abdominal hypertension / ascites</strong></td><td>↓</td><td>Stable</td><td>Diaphragm pushed cranially; same mechanical mechanism as obesity.</td></tr>
+      <tr><td><strong>Trendelenburg position, surgery</strong></td><td>↓</td><td>Stable</td><td>Gravity pushes the abdominal contents into the diaphragm; reverse the position to recover.</td></tr>
+    </tbody>
+  </table>
+  <p>What unifies all of these: anything that raises CC <em>or</em> drops FRC moves tidal breathing closer to the closing zone. Whoever sits closest to (or below) the line desaturates fastest in apnea and benefits most from PEEP that lifts the operating volume back above CC.</p>
   <div class="phys"><strong>Why the obese patient desaturates in 60 seconds</strong>FRC has dropped to ~ 30% of predicted; closing capacity is unchanged or higher; almost the entire tidal range is below closing volume. There's almost no oxygen reservoir to draw from during apnea. This is why pre-oxygenation, ramping, and apneic oxygenation are mandatory — and why even brief desaturation occurs minutes after induction in non-obese patients but seconds after in obese patients.</div>
   <div class="pearl"><strong>The clinical lever: PEEP raises FRC above CC</strong>That's the single most important physiologic effect of PEEP — not just "open the alveolus," but "lift the operating volume back above closing capacity." This is why PEEP 8–12 helps the obese anesthetized patient even without ARDS, why post-operative atelectasis is treated with CPAP, and why supine position alone causes shunt that PEEP can fix.</div>
   </details>
@@ -4220,19 +4755,87 @@
       <h4>6.2 Compliance</h4>
     </summary>
 
-<p>Compliance (C) = ΔV/ΔP. Two flavors:</p>
+<p>Compliance (C) is the volume change you get per unit of pressure applied: <strong>C = ΔV / ΔP</strong>. It is the inverse of stiffness — high compliance means a soft, easily-distensible lung; low compliance means a stiff one. Two flavors are measured at the bedside:</p>
   <ul>
-    <li><strong>Static compliance (Cstat)</strong> = V<sub>T</sub> / (Pplat − PEEP), where <strong>Pplat</strong> = plateau pressure (the elastic-recoil pressure with no flow) — pure elastic lung+chest-wall; measured during a 0.5-s end-inspiratory hold with no flow. Normal ≈ 60–100 mL/cmH₂O; ARDS often 20–40.</li>
-    <li><strong>Dynamic compliance</strong> = V<sub>T</sub> / (PIP − PEEP), where <strong>PIP</strong> = peak inspiratory pressure — includes resistance; used for trending only.</li>
+    <li><strong>Static compliance (C<sub>stat</sub>)</strong> = V<sub>T</sub> / (P<sub>plat</sub> − PEEP). Read at end-inspiratory hold (V̇ = 0), so the resistive contribution is gone and only the elastic recoil of lung + chest wall remains. Normal in a healthy intubated adult: <strong>60–100 mL/cmH₂O</strong>. ARDS commonly 20–40; severe restrictive disease &lt; 20.</li>
+    <li><strong>Dynamic compliance (C<sub>dyn</sub>)</strong> = V<sub>T</sub> / (PIP − PEEP). Includes the resistive overhead, so it's always lower than C<sub>stat</sub>. Useful for trending; not for setting strategy. The C<sub>stat</sub> − C<sub>dyn</sub> gap is a rough resistance index — small gap = low R; widening gap = bronchospasm or secretions developing.</li>
   </ul>
+
+  <h5>Three compliances in series — and why this matters</h5>
+  <p>What the ventilator measures (C<sub>rs</sub>, the respiratory-system compliance) is actually the series combination of the lung itself and the chest wall it has to push outward:</p>
+  <div class="eq">$$\frac{1}{C_{rs}} = \frac{1}{C_L} + \frac{1}{C_{CW}}$$</div>
+  <ul>
+    <li><strong>Lung compliance (C<sub>L</sub>)</strong> — the lung tissue + alveolar interface. Falls in ARDS, edema, fibrosis, atelectasis, hemorrhage, tumor, infection. Rises in emphysema (loss of elastic recoil).</li>
+    <li><strong>Chest-wall compliance (C<sub>CW</sub>)</strong> — the rib cage + abdominal wall + diaphragm. Falls in obesity, ascites, abdominal compartment syndrome, kyphoscoliosis, large pleural effusions, chest-wall edema, tense pneumothorax, and circumferential burns.</li>
+    <li><strong>Respiratory-system compliance (C<sub>rs</sub>)</strong> — what the dial shows. A low number can come from a stiff lung, a stiff chest wall, or both — and the management is completely different.</li>
+  </ul>
+
+  <table>
+    <caption>How disease shifts the three compliance components</caption>
+    <thead><tr><th>Condition</th><th>C<sub>L</sub></th><th>C<sub>CW</sub></th><th>C<sub>rs</sub> (measured)</th></tr></thead>
+    <tbody>
+      <tr><td>Healthy adult</td><td>~ 200 mL/cmH₂O</td><td>~ 200 mL/cmH₂O</td><td>~ 100 mL/cmH₂O</td></tr>
+      <tr><td>ARDS (parenchymal injury)</td><td>↓↓ (40–80)</td><td>≈ Normal</td><td>↓↓ (20–40)</td></tr>
+      <tr><td>ARDS + obesity / abdominal HTN</td><td>↓↓</td><td>↓</td><td>↓↓↓</td></tr>
+      <tr><td>Emphysema (advanced)</td><td>↑↑ (loss of recoil)</td><td>≈ Normal</td><td>↑ — but with hyperinflation, the operating point is on the flat top of the P-V curve, so functional compliance is low.</td></tr>
+      <tr><td>Pulmonary fibrosis</td><td>↓↓↓</td><td>≈ Normal</td><td>↓↓</td></tr>
+      <tr><td>Cardiogenic pulmonary edema</td><td>↓ (variable)</td><td>≈ Normal</td><td>↓</td></tr>
+      <tr><td>Pure obesity (no lung disease)</td><td>≈ Normal</td><td>↓↓</td><td>↓ — looks like ARDS but the lung is fine.</td></tr>
+      <tr><td>Late pregnancy, supine</td><td>≈ Normal</td><td>↓</td><td>↓</td></tr>
+      <tr><td>Pleural effusion (large)</td><td>≈ Normal</td><td>↓</td><td>↓</td></tr>
+    </tbody>
+  </table>
+
+  <div class="phys"><strong>The lung-vs-chest-wall ambiguity matters at the bedside</strong>A morbidly obese ARDS patient may have P<sub>plat</sub> 35 not because the lung is on the verge of barotrauma but because the chest wall is heavy and the abdomen pushes the diaphragm up. Pushing P<sub>plat</sub> ≤ 30 by lowering V<sub>T</sub> may under-ventilate that patient. <strong>Esophageal manometry</strong> (<a class="xref" href="#c29" data-xref-chap="29">§29</a>) decomposes P<sub>plat</sub> into transpulmonary pressure (the lung sees) and pleural pressure (the chest wall imposes), telling you which compartment to act on.</div>
+
+  <p><strong>Specific compliance</strong> = C<sub>rs</sub> / FRC. This normalizes for lung size — small lungs always have lower absolute compliance. Specific compliance is approximately constant (~ 0.05/cmH₂O) across mammals; a baby with C<sub>rs</sub> = 5 mL/cmH₂O can have perfectly normal specific compliance. Useful when interpreting low absolute numbers in pediatrics or in the "baby lung" of severe ARDS where only ~ 20% of lung is aerated and the absolute compliance reflects that small recruitable volume, not intrinsic lung stiffness.</p>
+
+  <div class="pearl"><strong>Track C<sub>stat</sub> day to day</strong>The single most useful trended number on the vent. A falling C<sub>stat</sub> with stable resistance is the lung becoming stiffer — evolving ARDS, edema, fibrosis, atelectasis. A rising C<sub>stat</sub> is improvement (or, less commonly, derecruitment of overdistended lung after PEEP reduction). Driving pressure (P<sub>plat</sub> − PEEP) is C<sub>stat</sub>'s mirror image: ΔP = V<sub>T</sub> / C<sub>stat</sub>.</div>
   </details>
   <details class="chap-acc" data-acc-id="c6-h4-4">
     <summary>
       <h4>6.3 Resistance</h4>
     </summary>
 
-<div class="eq">$$R_{aw} \;=\; \frac{P_{IP} - P_{plat}}{\dot{V}} \quad \text{(constant-flow VC; }\dot{V}\text{ in L/sec)}$$</div>
-  <p>Normal airway resistance (Raw) &lt; 5 cmH₂O/L/sec on a vented patient. Elevated Raw points to an endotracheal tube (ETT) issue (kink, secretions, biting), bronchospasm, or upper-airway obstruction. Note the trick: if PIP is high but Pplat is normal, the problem is <em>resistance</em>, not the lung parenchyma.</p>
+<p>Resistance (R) is the pressure required to drive gas flow through the airway tree, per unit of flow: <strong>R = ΔP<sub>resistive</sub> / V̇</strong>. In a constant-flow VC breath the resistive pressure is exactly the gap between PIP and P<sub>plat</sub>:</p>
+  <div class="eq">$$R_{aw} \;=\; \frac{P_{IP} - P_{plat}}{\dot{V}} \quad \text{(constant-flow VC; }\dot{V}\text{ in L/sec)}$$</div>
+  <p>Normal airway resistance (R<sub>aw</sub>) on an intubated adult: <strong>&lt; 5 cmH₂O / (L/s)</strong>. In disease it climbs to 10–20+; in catastrophic bronchospasm or severe mucus plugging, &gt; 30.</p>
+
+  <h5>Components of resistance — they sit in series</h5>
+  <p>Total inspiratory resistance is the sum of several segments, each a candidate for sudden change at the bedside:</p>
+  <ol>
+    <li><strong>The endotracheal tube (ETT)</strong>. The biggest component you can do anything about. Resistance scales as ~ 1/radius<sup>4</sup> at low flow (Poiseuille) and gets even worse at high flow (turbulent). Approximate values in adults: 7.0 mm ID ≈ 6 cmH₂O/(L/s); 8.0 mm ≈ 4; 6.0 mm ≈ 12. A bitten, kinked, or secretion-plugged ETT can quadruple this in seconds.</li>
+    <li><strong>Conducting airways</strong> (large bronchi → bronchioles). The dominant component in disease — bronchospasm, mucosal edema, mucus plugging, secretions, dynamic compression in obstructive disease.</li>
+    <li><strong>Tissue resistance</strong> (lung and chest-wall viscoelasticity). Small contribution; usually neglected in acute decisions but accounts for the slow drift on the inspiratory hold (<a class="xref" href="#c14" data-xref-chap="14">§14.7</a>).</li>
+    <li><strong>Apparatus / circuit resistance</strong> (inline filters, HME, catheter mounts). Small but additive. Worth checking on a "stuck" pressure trace.</li>
+  </ol>
+
+  <h5>How resistance varies with flow and lung volume</h5>
+  <ul>
+    <li><strong>Flow-dependent</strong>: at higher flow rates, gas movement through the airway tree becomes turbulent and R rises (turbulent resistance scales with velocity, not just radius). Measuring R<sub>aw</sub> at 60 L/min gives a different number than at 30 L/min. Standard practice: measure at moderate flow (~ 30–60 L/min ≈ 0.5–1 L/sec).</li>
+    <li><strong>Volume-dependent</strong>: small airways are tethered open by radial traction from surrounding alveoli. At higher lung volume, traction is greater and small-airway R falls; at lower lung volume, R rises. This is why end-expiratory R is higher than end-inspiratory R, why severe bronchospasm worsens at low volumes, and why PEEP can transiently reduce small-airway resistance.</li>
+    <li><strong>Phase-dependent</strong>: in obstructive disease, expiratory R is much higher than inspiratory R because dynamic compression of small airways during exhalation (positive pleural pressure squeezing the airway from outside) closes them off. This asymmetry is the basis of dynamic hyperinflation and auto-PEEP.</li>
+  </ul>
+
+  <h5>Disease-specific resistance patterns</h5>
+  <table>
+    <caption>R<sub>aw</sub> in common ICU phenotypes</caption>
+    <thead><tr><th>Phenotype</th><th>R<sub>aw</sub></th><th>Mechanism / fix</th></tr></thead>
+    <tbody>
+      <tr><td>COPD exacerbation</td><td>↑↑↑</td><td>Mucus + bronchospasm + dynamic small-airway collapse on exhalation. Bronchodilators, anticholinergics, steroids; allow long T<sub>e</sub>.</td></tr>
+      <tr><td>Acute severe asthma</td><td>↑↑↑↑</td><td>Smooth-muscle bronchospasm dominates; mucus plugging and inflammation contribute. Aggressive bronchodilation; permissive hypercapnia; ketamine, magnesium, heliox in refractory cases.</td></tr>
+      <tr><td>Secretion plug / mucus in ETT</td><td>Sudden ↑↑</td><td>PIP rises while P<sub>plat</sub> stays flat; the gap explodes. Suction, lavage, sometimes replace ETT.</td></tr>
+      <tr><td>Kinked / bitten ETT</td><td>Sudden ↑↑↑</td><td>Bite block, sedation, position the head, replace tube.</td></tr>
+      <tr><td>Water in the circuit</td><td>Variable, often saw-tooth on flow trace</td><td>Drain water traps; check humidifier/HME.</td></tr>
+      <tr><td>ARDS (uncomplicated)</td><td>Normal to mildly ↑</td><td>The pathology is in the alveolus, not the airway. If R<sub>aw</sub> is high in ARDS, look for a complication (bronchospasm, secretions).</td></tr>
+      <tr><td>Cardiogenic pulmonary edema</td><td>↑ ("cardiac asthma")</td><td>Peribronchial cuffing of fluid narrows the lumen; resolves with diuresis and PEEP.</td></tr>
+      <tr><td>Anaphylaxis</td><td>↑↑↑</td><td>Bronchospasm + mucosal edema + upper-airway swelling; epinephrine first-line.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="pearl"><strong>The two-question diagnostic algorithm</strong>(1) Is PIP high? (2) Is P<sub>plat</sub> high? <em>Yes/No</em>: resistance problem — fix the airway (suction, bronchodilator, replace ETT, treat bronchospasm). <em>Yes/Yes</em>: lung-mechanics problem — ARDS, edema, atelectasis, abdominal hypertension. This dichotomy alone solves most pressure alarms. Do not raise PEEP for a resistive problem.</div>
+
+  <div class="pitfall"><strong>Inhaled bronchodilator response</strong>A 10–30% drop in R<sub>aw</sub> after albuterol within 10–15 min confirms reversible bronchospasm. No response argues for fixed obstruction (chronic bronchitis, mucus plug, ETT issue) and changes the management ladder.</div>
   </details>
   <details class="chap-acc" data-acc-id="c6-h4-5">
     <summary>
@@ -4246,22 +4849,105 @@
   <ul>
     <li><strong>Auto-PEEP / dynamic hyperinflation</strong> — in severe COPD/asthma, R is markedly elevated → τ &gt; 1.5–2 s. If the ventilator's expiratory time (T<sub>e</sub>) is shorter than 3τ, the lung cannot empty before the next breath; gas trapping and intrinsic PEEP develop. This is the physiologic justification for low respiratory rate (8–10) and prolonged I:E (1:4–1:5) in obstructed patients (Ch 21).</li>
     <li><strong>Recruitment heterogeneity in ARDS</strong> — ARDS lungs have <em>regionally different</em> time constants. Healthy alveoli have short τ (low R, normal C). Atelectatic regions have long τ (need higher pressure for longer to recruit). Overdistended regions have short τ but already at the top of the compliance curve. Single-PEEP solutions are always compromises; this is why personalized titration (best-compliance, esophageal-guided) outperforms one-size-fits-all approaches.</li>
-    <li><strong>Cycling-threshold tuning in PSV</strong> — the expiratory cycle threshold (default 25% of peak inspiratory flow) effectively defines when the ventilator decides inspiration "should" be over. In long-τ patients (ARDS), inspiration may need a higher cycle threshold (35–40%) to terminate appropriately; in short-τ patients (COPD), a lower threshold (10–15%).</li>
-    <li><strong>Pressure-control inspiratory time</strong> — in PC mode, set T<sub>i</sub> ≈ 3–5 τ for full equilibration of pressure into the alveolus. Shorter T<sub>i</sub> = lower delivered VT than expected; longer T<sub>i</sub> wastes time without adding volume.</li>
   </ul>
 
-  <h5>6.4.2 Measuring τ at the bedside</h5>
+  <h5>6.4.2 Cycling threshold and inspiratory time — getting the breath length right</h5>
+  <p>Every breath has to end somewhere. <em>How</em> the ventilator decides to end inspiration depends on the mode:</p>
+  <ul>
+    <li><strong>Volume control (VC)</strong> — inspiration ends when the set V<sub>T</sub> has been delivered (volume-cycled).</li>
+    <li><strong>Pressure control (PC)</strong> — inspiration ends when the set inspiratory time T<sub>i</sub> elapses (time-cycled).</li>
+    <li><strong>Pressure support (PSV)</strong> — inspiration ends when inspiratory flow falls below a threshold expressed as a percentage of the peak inspiratory flow of that breath (flow-cycled). The default is <strong>25%</strong>.</li>
+  </ul>
+
+  <p>In all three, the goal is for the vent's <strong>mechanical T<sub>i</sub></strong> to match the patient's <strong>neural T<sub>i</sub></strong> — how long they actually want inspiration to last. When they don't match you get cycling asynchrony (<a class="xref" href="#c18" data-xref-chap="18">§18.5–18.8</a>): premature cycling if the vent ends inspiration too early, delayed cycling if too late.</p>
+
+  <p>For PSV, the cycling-threshold knob is the bedside lever. The intuition is the opposite of what most learners guess at first:</p>
+  <ul>
+    <li><strong>Raising the cycle threshold (e.g., 25 → 40%)</strong> — vent terminates inspiration when flow has only dropped to 40% of peak. That happens <em>earlier</em> in the breath → <strong>shorter T<sub>i</sub></strong>.</li>
+    <li><strong>Lowering the cycle threshold (e.g., 25 → 10%)</strong> — vent waits until flow is down to 10% of peak. That happens <em>later</em> → <strong>longer T<sub>i</sub></strong>.</li>
+  </ul>
+
+  <p>Now match it to the time constant:</p>
+  <table>
+    <caption>Cycling-threshold tuning by phenotype</caption>
+    <thead><tr><th>Phenotype</th><th>τ</th><th>Flow decay during PSV</th><th>Default 25% gives</th><th>Patient's neural T<sub>i</sub></th><th>Mismatch</th><th>Fix</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>COPD / asthma</strong> (high R)</td>
+        <td>Long (1–2 s)</td>
+        <td>Slow — flow takes a long time to drop to 25%</td>
+        <td>Long vent T<sub>i</sub></td>
+        <td>Short (dyspneic, wants to exhale soon)</td>
+        <td>Delayed cycling: patient pushes against still-flowing inspiration</td>
+        <td><strong>↑ threshold to 35–45%</strong> — terminate sooner</td>
+      </tr>
+      <tr>
+        <td><strong>ARDS / restrictive</strong> (low C)</td>
+        <td>Short (0.3–0.6 s)</td>
+        <td>Fast — flow drops rapidly to 25%</td>
+        <td>Short vent T<sub>i</sub></td>
+        <td>Long (high drive, wants more volume)</td>
+        <td>Premature cycling: patient continues to inhale after the vent has cycled</td>
+        <td><strong>↓ threshold to 10–15%</strong> — extend T<sub>i</sub></td>
+      </tr>
+      <tr>
+        <td><strong>Normal mechanics</strong></td>
+        <td>~ 0.5–0.8 s</td>
+        <td>Moderate</td>
+        <td>~ Right</td>
+        <td>~ Right</td>
+        <td>Synchronous</td>
+        <td>Leave at 25%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>For <strong>PC mode</strong>, you set T<sub>i</sub> directly (typical 0.7–1.2 s in adults). The benchmark is full pressure equilibration into the alveoli — about <strong>3–5 τ</strong>. Two failure modes:</p>
+  <ul>
+    <li><strong>T<sub>i</sub> too short</strong> (&lt; 3τ) — alveolar pressure never reaches the set inspiratory pressure; delivered V<sub>T</sub> is smaller than predicted. Common in obstruction (long τ) when the operator picks a generic 0.8 s.</li>
+    <li><strong>T<sub>i</sub> too long</strong> (&gt; 5τ) — equilibration was already complete; the extra time adds no volume but eats into expiratory time T<sub>e</sub>, raising the risk of auto-PEEP. Common when the operator confuses long T<sub>i</sub> for "more lung recruitment."</li>
+  </ul>
+  <p>Practical defaults: ARDS (short τ ≈ 0.4 s) → T<sub>i</sub> ≈ 0.7–0.8 s gives full equilibration with room to spare. COPD/asthma (long τ ≈ 1.5 s) → 3τ would mean T<sub>i</sub> 4.5 s, which is impossible without crushing T<sub>e</sub>. The clinical compromise is T<sub>i</sub> ~ 0.8 s plus a slow rate (RR 8–12) and long T<sub>e</sub> (I:E 1:4 or 1:5) — accept partial equilibration on each breath and protect the exhalation window.</p>
+
+  <div class="pearl"><strong>The flow-cycling rule of thumb</strong>If the patient looks like they're "fighting the end of the breath" — pulling against ongoing flow, double-triggering, or appearing to start exhalation while the screen still shows inspiration — your cycling threshold is wrong. Long τ patient: raise the threshold. Short τ patient: lower it. The change is usually in 5% increments and the response is visible within a few breaths.</div>
+
+  <h5>6.4.3 Measuring τ at the bedside</h5>
   <p>Modern ventilators do not display τ directly, but you can compute or visualize it from waveforms and bedside maneuvers:</p>
   <ol>
     <li><strong>From the equation</strong> — τ (sec) = R<sub>aw</sub> (cmH₂O/L/sec) × C<sub>stat</sub> (L/cmH₂O). With R<sub>aw</sub> from the PIP–Pplat gradient (resistive pressure / inspiratory flow) and C<sub>stat</sub> = VT/(Pplat − PEEP). Example: VT 0.5 L, Pplat 22, PEEP 8, PIP 32, flow 1 L/sec → R<sub>aw</sub> = 10/1 = 10; C<sub>stat</sub> = 0.5/14 ≈ 0.036 L/cmH₂O; τ = 10 × 0.036 = <strong>0.36 sec</strong>. Te should be ≥ 1 sec to ensure complete emptying.</li>
     <li><strong>From the expiratory flow trace</strong> — the time from peak expiratory flow to the point where flow has decayed to 37% of peak (i.e., 1 − 1/e) equals the expiratory time constant. Visually: if expiratory flow is still &gt; 0 at the next breath, τ &gt; available T<sub>e</sub> — auto-PEEP is occurring (Ch 17).</li>
     <li><strong>From an end-expiratory pause maneuver</strong> — measures total PEEP. Total PEEP − set PEEP = auto-PEEP. Auto-PEEP &gt; 0 means τ exceeded T<sub>e</sub>.</li>
     <li><strong>From volume re-expansion on disconnect</strong> — disconnect the patient from the vent for 5–10 seconds. The amount of additional gas that flows out is the trapped volume. (Useful in catastrophic auto-PEEP / hemodynamic collapse — Ch 19.4.)</li>
-    <li><strong>Stress-index method</strong> — under constant-flow VC, the shape of the pressure-time curve reflects whether tidal breathing is occurring on the linear portion of the compliance curve (stress index ≈ 1) or above it (stress index &gt; 1, overdistension) or below it (stress index &lt; 1, recruitment ongoing). Indirectly informs τ regional heterogeneity.</li>
   </ol>
   <div class="pearl"><strong>The bedside τ check</strong>If you suspect auto-PEEP: pause the ventilator's flow trace and look at exhalation. Flow should reach zero before the next inspiration (≥ 3τ exhalation time). If it doesn't, you're hyperinflating — lower the rate or VT, lengthen T<sub>e</sub>, or both. This single visual check substitutes for the math in &gt; 90% of bedside cases.</div>
 
-  <h5>6.4.3 Try it — interactive time-constant filling</h5>
+  <h5>6.4.4 Stress index — reading regional mechanics from the pressure trace</h5>
+  <p>The <strong>stress index</strong> is a quantitative description of the <em>shape</em> of the airway-pressure-vs-time curve during a constant-flow VC inspiration. It tells you whether tidal breathing is occurring on the linear (uniform-compliance) portion of the lung's pressure–volume curve, or whether the breath is being driven into <em>overdistension</em> (above the upper inflection) or is still <em>recruiting</em> alveoli (below the lower inflection). Mathematically, during constant flow, airway pressure rises as a power function of time:</p>
+  <div class="eq">$$P_{aw}(t) \;=\; a \cdot t^{\beta} \;+\; c$$</div>
+  <p>Where the exponent β <em>is</em> the stress index. Three values matter at the bedside:</p>
+  <table>
+    <caption>Stress index — visual interpretation</caption>
+    <thead><tr><th>β value</th><th>Pressure-time shape</th><th>What's happening in the lung</th><th>Bedside action</th></tr></thead>
+    <tbody>
+      <tr><td><strong>β ≈ 1</strong></td><td>Linear pressure rise (a straight ramp)</td><td>Compliance is roughly constant during the breath — the lung is operating on the steep, linear portion of its P–V curve. Settings are appropriate.</td><td>Maintain.</td></tr>
+      <tr><td><strong>β &lt; 1</strong></td><td><em>Concave-up</em> (pressure rises fast initially, then flattens — curve sits below the straight line drawn from start to peak)</td><td>Compliance is <em>increasing</em> as volume rises — recruitment is ongoing during the breath. The lung is opening alveoli with each tidal cycle (atelectrauma). PEEP is too low.</td><td><strong>↑ PEEP</strong> to hold the alveoli open between breaths instead of recruiting them on each one.</td></tr>
+      <tr><td><strong>β &gt; 1</strong></td><td><em>Convex-up</em> (pressure rises slowly at first, then accelerates — curve sits above the straight line)</td><td>Compliance is <em>decreasing</em> as volume rises — the breath is being driven into overdistension. Tidal volume or PEEP is too high; the lung is on the upper flat region of its P–V curve.</td><td><strong>↓ V<sub>T</sub></strong> first (most direct lever), then consider ↓ PEEP if Pplat remains high.</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Reading β by eye on the pressure-time scalar.</strong> You don't need the algorithm to use the stress index — the visual is fast and surprisingly reliable.</p>
+  <ol>
+    <li>Pause the pressure-time scalar during a passive constant-flow VC breath (no spontaneous effort).</li>
+    <li>Mentally draw a straight line from the start of the inspiratory ramp (just above PEEP) to the PIP.</li>
+    <li>Compare the actual pressure curve to that line: <em>below the line in the middle</em> → β &lt; 1, recruitment ongoing → consider raising PEEP. <em>Above the line in the middle</em> → β &gt; 1, overdistension → drop V<sub>T</sub>. <em>On the line</em> → β ≈ 1, leave it alone.</li>
+  </ol>
+
+  <p>Grasso and colleagues (2007) showed that this eyeball method correlates well with the algorithmic β, and that titrating PEEP to keep β in the linear (≈ 1) zone reduces overdistension as well as ICU-physician PEEP titration.<sup class="cite"><a href="#r40">40</a></sup> The stress index is one of the few tools that can be applied with no extra equipment — every modern vent shows the trace.</p>
+
+  <p><strong>How it fits in ARDS protective ventilation.</strong> Use it alongside, not instead of, the other two anchors: <em>P<sub>plat</sub> ≤ 30</em> as a ceiling, <em>driving pressure ΔP ≤ 15</em> as the strain proxy. The stress index gives the third dimension — the <em>shape</em> of the breath, which neither ceiling nor driving pressure captures. A patient can have an acceptable P<sub>plat</sub> and ΔP and still have β &gt; 1 (overdistension hidden inside an adequate-looking number) or β &lt; 1 (cyclic atelectrauma despite the right pressures).</p>
+
+  <div class="pitfall"><strong>Three caveats that ruin the stress index</strong>(1) The mode must be VC with a <em>square (constant-flow) waveform</em>. Decelerating-ramp VC and PC waveforms are non-linear by design — the resulting curve shape doesn't carry the same meaning. (2) The patient must be passive — any spontaneous inspiratory effort adds a P<sub>mus</sub> that distorts the trace and can fake either a β &lt; 1 or β &gt; 1 pattern. (3) The stress index reflects the <em>global</em> lung; in heterogeneous ARDS, regional β values vary, and a global β = 1 can hide pockets of both recruitment and overdistension.</div>
+
+  <h5>6.4.5 Try it — interactive time-constant filling</h5>
   <div class="figure interactive-fig" id="if-tau">
     <style>
       .interactive-fig { background: var(--surface, #fff); border: 1px solid var(--rule, #e2e8f0); border-radius: 8px; padding: 14px 16px; margin: 12px 0; }
@@ -4329,7 +5015,7 @@
         <g id="iftau-ticks" font-size="10" fill="#475569"></g>
       </g>
     </svg>
-    <div class="cap" style="margin-top: 6px;"><b>Figure 6.2 — Try it (interactive time-constant filling).</b> Drag τ and T<sub>i</sub> to see how filling evolves. The 1τ / 2τ / 3τ rule (63% / 86% / 95%) is visible: at T_i = τ the breath is only two-thirds in. Set τ to 1.4 s (COPD) and T_i to 1 s and see how V_T plateaus far below maximum — explaining why short T_i in obstructed patients delivers less than expected. Conversely, in ARDS short τ means even brief T_i achieves near-full equilibration.</div>
+    <div class="cap" style="margin-top: 6px;"><b>Figure 6.1 — Try it (interactive time-constant filling).</b> Drag τ and T<sub>i</sub> to see how filling evolves. The 1τ / 2τ / 3τ rule (63% / 86% / 95%) is visible: at T_i = τ the breath is only two-thirds in. Set τ to 1.4 s (COPD) and T_i to 1 s and see how V_T plateaus far below maximum — explaining why short T_i in obstructed patients delivers less than expected. Conversely, in ARDS short τ means even brief T_i achieves near-full equilibration.</div>
   </div>
   <script>
   (function(){
@@ -5263,6 +5949,7 @@
     </summary>
 
 <p>For an intubated adult of average mechanics, on a modern ICU vent, with no specific disease modifier (see chapters 18–24 for ARDS, COPD, etc.):</p>
+  <div class="phys"><strong>The four big questions a vent setting answers</strong>How much volume each breath delivers (V<sub>T</sub>), how often (RR), how much pressure to keep alveoli open at end-exhale (PEEP), and how much oxygen to mix into the inspired gas (FiO₂). Every other knob in the table below is a variation on these four.</div>
   <table>
     <caption>Day-1 default settings — average adult</caption>
     <thead><tr><th>Setting</th><th>Default</th><th>Rationale / range</th></tr></thead>
@@ -5370,8 +6057,33 @@
   <h3><span class="num">14</span>Waveform scalars — the three traces (and the fourth)</h3>
   <p class="lead">Modern ventilators put four traces on the screen — pressure-time, flow-time, volume-time, and capnography — and the majority of bedside vent diagnoses are made by reading them. Each shape is its own diagnosis; the trick is to scan them in a fixed order and let pattern recognition do the work.</p>
 
-  
-  
+  <!-- ===================== Live waveform simulator (iframe) ===================== -->
+  <div class="figure" id="ch14-live-simulator" style="margin-bottom:1.4rem;">
+    <div style="display:flex; align-items:baseline; justify-content:space-between; gap:1rem; margin-bottom:0.4rem; flex-wrap:wrap;">
+      <div>
+        <strong style="color:#0072B2; font-size:0.95rem;">Live waveform simulator</strong>
+        <span style="color:#475569; font-size:0.85rem; margin-left:0.5rem;">— manipulate the equation of motion in real time</span>
+      </div>
+      <a href="mechanical-ventilation-waveform-simulator.html" target="_blank" rel="noopener" style="font-size:0.8rem; color:#2c5282; text-decoration:none; border:1px solid #2c5282; padding:0.15rem 0.55rem; border-radius:3px;">
+        Open full-screen ↗
+      </a>
+    </div>
+    <div style="position:relative; width:100%; border:1px solid #d6d3c7; border-radius:4px; overflow:hidden; background:#0a0e1a;">
+      <iframe
+        src="mechanical-ventilation-waveform-simulator.html"
+        title="Ventilator waveform simulator — pressure, flow, and volume traces driven by the equation of motion"
+        loading="lazy"
+        style="width:100%; height:2400px; border:0; display:block;"
+        allow="clipboard-write"
+      ></iframe>
+    </div>
+    <div class="cap" style="margin-top:0.6rem;">
+      <b>Live simulator.</b> Sweep traces driven by P<sub>aw</sub>(t) = V(t)/C + Flow(t)·R + PEEP. Pick a <em>mode</em> (VC, PC, PRVC, PS, SIMV, CPAP, APRV) and a <em>scenario</em> (ARDS, COPD, auto-PEEP, ineffective triggering, double-triggering, reverse-triggering, premature/delayed cycling) and watch the shapes change. Drag <em>Compliance</em> and <em>Resistance</em> to feel how the slope of the pressure trace splits into elastic vs resistive components. Use <em>Inspiratory Hold</em> to read P<sub>plat</sub> and compute static compliance; use <em>Expiratory Hold</em> to unmask intrinsic PEEP. The simulator's traces are the same physiology this chapter walks through in static form — the figures below are snapshots of what you'll see here.
+    </div>
+  </div>
+
+
+
   <details class="chap-acc" data-acc-id="c14-h4-1" open>
     <summary>
       <h4>14.1 Reading the three scalars in order</h4>
@@ -10347,6 +11059,7 @@
     <li id="r37">Yartsev A. Interpreting the shape of the pressure-volume loop; Hysteresis of the pulmonary pressure-volume curve. <em>Deranged Physiology</em> (CICM Primary Exam — Respiratory System, Chapters 554 &amp; 0312). Available at <a href="https://derangedphysiology.com/main/cicm-primary-exam/respiratory-system/Chapter-554/interpreting-shape-pressure-volume-loop">derangedphysiology.com</a>.</li>
     <li id="r38">Harris RS. Pressure-volume curves of the respiratory system. <em>Respir Care</em>. 2005;50(1):78-99. (Definitive review of LIP/UIP measurement and interrater variability; also referenced by Deranged Physiology Ch 555 — pressure-volume loops in the presence of lung pathology.)</li>
     <li id="r39">Yartsev A. Interpreting the shape of the pressure waveform; Interpreting the shape of the ventilator flow waveform; Interpreting the shape of the flow-volume loop; Pressure-volume loops in the presence of lung pathology; Normal and abnormal capnograph waveforms; An introduction to the ventilator waveform. <em>Deranged Physiology</em> (CICM Primary Exam — Respiratory System, Chapters 551, 552, 553, 555, 556, 5592, 5593). Available at <a href="https://derangedphysiology.com/main/cicm-primary-exam/respiratory-system">derangedphysiology.com</a>.</li>
+    <li id="r40">Grasso S, Stripoli T, De Michele M, et al. ARDSnet ventilatory protocol and alveolar hyperinflation: role of positive end-expiratory pressure. <em>Am J Respir Crit Care Med</em>. 2007;176(8):761-767. (The reference for the stress-index β as a bedside marker of overdistension and recruitment.)</li>
   </ol>
   <p class="footer-note">For clinician education only; not a substitute for institutional protocols, current FDA labeling, or specialist consultation. Verify dosing and ventilator-specific behavior at the bedside. Companion <a href="https://jonhunterhunter7-cell.github.io/medical-education/mechanical-ventilation-bedside-one-pager.html" style="color:var(--accent);">bedside one-pager</a> (single-page rounds reference) · standalone <a href="https://jonhunterhunter7-cell.github.io/medical-education/bedside-calculator.html" style="color:var(--accent);">interactive calculator</a> with threshold-coded outputs, LPV-bundle status row, ARDSnet PEEP/FiO₂ ladder lookup, Vd/Vt, DO₂, OI, transpulmonary pressures, target-PaCO₂ helper, and saveable snapshots.</p>
 </section>
@@ -10509,7 +11222,18 @@
 
   // ============== ABBREVIATION AUTO-WRAP & TOOLTIPS ==============
   try {
-  // Build abbreviation map from #abbr table — already exists in earlier section
+  // Build abbreviation map from #abbr table. NOTE: the citation-tooltip block
+  // below also builds an abbrMap, but that one is `const`-scoped to its own
+  // try block; we need our own copy here so the auto-wrap can reference it.
+  const abbrMap = new Map();
+  document.querySelectorAll('#abbr table tr').forEach(tr => {
+    const cells = tr.querySelectorAll('td');
+    for (let i = 0; i < cells.length; i += 2) {
+      const term = cells[i] && cells[i].textContent.trim();
+      const def = cells[i+1] && cells[i+1].textContent.trim();
+      if (term && def) abbrMap.set(term, def);
+    }
+  });
   // After page load, scan main prose and wrap matched abbreviations in <abbr data-tip="...">
   function autoWrapAbbreviations() {
     if (!abbrMap || abbrMap.size === 0) return;
@@ -10541,26 +11265,48 @@
         });
         if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
         node.parentNode.replaceChild(frag, node);
-      } else if (node.nodeType === 1 && !skip.has(node.tagName) && !node.closest('#abbr') && !node.closest('#drugs') && !node.closest('table') && !node.classList.contains('toolbar')) {
+      } else if (node.nodeType === 1 && !skip.has(node.tagName) && !node.closest('#abbr') && !node.closest('#drugs') && !node.classList.contains('toolbar')) {
+        // (Previously skipped all <table> contents — now we descend into tables
+        //  too, so abbreviations in cells get wrapped. The #abbr / #drugs
+        //  guards above still keep the glossary and drug-reference tables
+        //  themselves out of the auto-wrap.)
         const children = Array.from(node.childNodes);
         children.forEach(walk);
       }
     }
-    document.querySelectorAll('main p, main li, main .pearl, main .pitfall, main .note, main .phys, main .takeaways').forEach(walk);
+    // Walk prose, callouts, takeaways, figure captions, table cells, and
+    // table captions so abbreviations in any of those locations get wrapped.
+    document.querySelectorAll('main p, main li, main .pearl, main .pitfall, main .note, main .phys, main .takeaways, main .cap, main td, main caption').forEach(walk);
   }
   // Run after a short delay to avoid blocking initial paint
   setTimeout(autoWrapAbbreviations, 50);
+
+  // Local tooltip helpers (the citation-tooltip block defines its own
+  // showTip/hideTip but those are block-scoped — duplicate them here so
+  // the abbreviation hover works even if that block fails or hasn't run.)
+  const tipEl = document.getElementById('tip');
+  function showAbbrTip(html, x, y) {
+    if (!tipEl) return;
+    tipEl.innerHTML = html;
+    tipEl.style.left = Math.min(x + 12, window.innerWidth - 340) + 'px';
+    tipEl.style.top = (y + 16) + 'px';
+    tipEl.classList.add('show');
+  }
+  function hideAbbrTip() {
+    if (tipEl) tipEl.classList.remove('show');
+  }
 
   // Hook tooltips on auto-wrapped abbreviations
   document.body.addEventListener('mouseover', (e) => {
     const a = e.target.closest('abbr[data-tip]');
     if (a) {
-      showTip(a.getAttribute('data-tip'), e.clientX, e.clientY);
+      showAbbrTip(a.getAttribute('data-tip'), e.clientX, e.clientY);
     }
   });
   document.body.addEventListener('mouseout', (e) => {
-    if (e.target.closest('abbr[data-tip]')) hideTip();
+    if (e.target.closest('abbr[data-tip]')) hideAbbrTip();
   });
+  document.addEventListener('scroll', hideAbbrTip, {passive: true});
   } catch (err) { console.error('[ABBREVIATION AUTO-WRAP & TOOLTIPS] error:', err); }
 
 
