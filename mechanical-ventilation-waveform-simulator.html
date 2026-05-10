@@ -519,16 +519,38 @@ function WaveformPlot({
   onHoverMove, onHoverLeave,
 }) {
   const canvasRef = useRef(null);
-  const W = 720, H = height, padL = 60, padR = 12, padT = 30, padB = 22;
-  const innerW = W - padL - padR, innerH = H - padT - padB;
+  const sizeRef = useRef({ W: 720, innerW: 720 - 60 - 12 });
+  const H = height, padL = 60, padR = 12, padT = 30, padB = 22;
+  const innerH = H - padT - padB;
   useEffect(() => {
     const cvs = canvasRef.current;
     if (!cvs) return;
     const dpr = window.devicePixelRatio || 1;
-    cvs.width = W * dpr;
-    cvs.height = H * dpr;
+    // Dynamic canvas width — match the CSS-rendered size so text and grid aren't
+    // stretched horizontally when the iframe is wider than the 720px design width.
+    // The buffer is resized on layout changes via ResizeObserver below; the draw()
+    // closure picks up the new W / innerW values on the next animation frame.
+    let W = Math.max(360, cvs.clientWidth || 720);
+    let innerW = W - padL - padR;
+    sizeRef.current = { W, innerW };
+    const sizeCanvas = () => { cvs.width = W * dpr; cvs.height = H * dpr; };
+    sizeCanvas();
     const ctx = cvs.getContext("2d");
     ctx.scale(dpr, dpr);
+    let ro;
+    if (typeof ResizeObserver !== "undefined") {
+      ro = new ResizeObserver(() => {
+        const newW = Math.max(360, cvs.clientWidth || W);
+        if (newW !== W) {
+          W = newW;
+          innerW = W - padL - padR;
+          sizeRef.current = { W, innerW };
+          sizeCanvas();
+          ctx.scale(dpr, dpr);
+        }
+      });
+      ro.observe(cvs);
+    }
     const x = (t) => padL + (t / windowSec) * innerW;
     const y = (v) => padT + innerH - ((v - yMin) / (yMax - yMin)) * innerH;
     let raf;
@@ -666,7 +688,7 @@ function WaveformPlot({
       raf = requestAnimationFrame(draw);
     };
     raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
+    return () => { cancelAnimationFrame(raf); if (ro) ro.disconnect(); };
   }, [theme, color, yLabel, yMin, yMax, windowSec, channel, bufferRef, sweepRef, crosshairRef]);
   // Map mouse position to plot coordinates and check if hovering an annotation dot
   const handleMouseMove = (e) => {
@@ -674,6 +696,7 @@ function WaveformPlot({
     if (!cvs) return;
     const rect = cvs.getBoundingClientRect();
     const xPx = e.clientX - rect.left;
+    const { W, innerW } = sizeRef.current;
     const xVB = (xPx / rect.width) * W;
     // Crosshair when paused
     if (onHoverMove && xVB >= padL && xVB <= W - padR) {
