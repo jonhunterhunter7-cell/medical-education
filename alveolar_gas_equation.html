@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alveolar Gas Equation</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-gradient: linear-gradient(135deg, #050810 0%, #0a0f1f 100%);
+    --surface: #0a0e1a;
+    --surface-alt: rgba(15, 23, 42, 0.45);
+    --border: #1e293b;
+    --border-strong: #2c3e58;
+    --text: #e2e8f0;
+    --text-muted: #94a3b8;
+    --text-faint: #64748b;
+    --tick: #7a89aa;
+    --accent: #22d3ee;
+    --accent-ink: #0f172a;
+    --accent-soft: rgba(34, 211, 238, 0.8);
+    --accent-bg: rgba(34, 211, 238, 0.10);
+    --blue: #60a5fa;
+    --blue-bg: rgba(96, 165, 250, 0.12);
+    --teal: #34d399;
+    --teal-bg: rgba(52, 211, 153, 0.12);
+    --amber: #fbbf24;
+    --amber-bg: rgba(251, 191, 36, 0.12);
+    --gray: #94a3b8;
+    --gray-bg: rgba(148, 163, 184, 0.10);
+    --success: #4ade80;
+    --success-bg: rgba(34, 197, 94, 0.16);
+    --warn: #fbbf24;
+    --warn-bg: rgba(245, 158, 11, 0.16);
+    --danger: #f87171;
+    --danger-bg: rgba(239, 68, 68, 0.16);
+    --radius: 4px;
+    --radius-lg: 8px;
+  }
+
+  [data-theme="light"] {
+    --bg-gradient: linear-gradient(135deg, #fafaf7 0%, #f1f0e9 100%);
+    --surface: #ffffff;
+    --surface-alt: rgba(241, 240, 233, 0.6);
+    --border: #d6d3c7;
+    --border-strong: #b8b3a3;
+    --text: #1c1917;
+    --text-muted: #57534e;
+    --text-faint: #78716c;
+    --tick: #78716c;
+    --accent: #0891b2;
+    --accent-ink: #fafaf7;
+    --accent-soft: rgba(8, 145, 178, 0.9);
+    --accent-bg: rgba(8, 145, 178, 0.08);
+    --blue: #1d4ed8;
+    --blue-bg: rgba(29, 78, 216, 0.08);
+    --teal: #047857;
+    --teal-bg: rgba(4, 120, 87, 0.08);
+    --amber: #b45309;
+    --amber-bg: rgba(180, 83, 9, 0.08);
+    --gray: #57534e;
+    --gray-bg: rgba(87, 83, 78, 0.08);
+    --success: #15803d;
+    --success-bg: rgba(34, 197, 94, 0.10);
+    --warn: #b45309;
+    --warn-bg: rgba(217, 119, 6, 0.10);
+    --danger: #b91c1c;
+    --danger-bg: rgba(185, 28, 28, 0.10);
+  }
+
+  html, body { min-height: 100vh; }
+  body {
+    background: var(--bg-gradient);
+    color: var(--text);
+    font-family: ui-serif, Georgia, serif;
+    padding: 1.5rem 1rem 3rem;
+    display: flex;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+
+  .app { width: 100%; max-width: 760px; }
+
+  /* ───── Header ───── */
+  header.app-header {
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+  .header-titles { flex: 1; min-width: 240px; }
+  .eyebrow {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent-soft);
+    margin-bottom: 4px;
+  }
+  h1 {
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .header-actions { display: flex; gap: 8px; }
+  .ghost-btn {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 6px 12px;
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .ghost-btn:hover { border-color: var(--border-strong); color: var(--text); }
+
+  /* ───── Cards ───── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.1rem 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+  .card-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+  .card-label {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+  .card-hint {
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    color: var(--text-faint);
+  }
+
+  /* ───── Formula visualization ───── */
+  .formula {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 0.5rem 0 1rem;
+  }
+  .term {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 3px;
+    padding: 5px 10px;
+    font-family: ui-serif, Georgia, serif;
+    font-weight: 500;
+    font-size: 14px;
+    border: 1px solid;
+  }
+  .term sub { font-size: 9px; padding-left: 0.5px; }
+  .t-result { background: var(--accent-bg); color: var(--accent); border-color: var(--accent-soft); }
+  .t-blue   { background: var(--blue-bg);   color: var(--blue);   border-color: var(--blue); }
+  .t-teal   { background: var(--teal-bg);   color: var(--teal);   border-color: var(--teal); }
+  .t-amber  { background: var(--amber-bg);  color: var(--amber);  border-color: var(--amber); }
+  .t-gray   { background: var(--gray-bg);   color: var(--gray);   border-color: var(--gray); }
+  .op {
+    font-family: ui-monospace, monospace;
+    font-size: 15px;
+    color: var(--text-muted);
+    padding: 0 2px;
+  }
+  .frac { display: inline-flex; flex-direction: column; align-items: center; gap: 1px; font-size: 12px; line-height: 1.2; }
+  .frac-line { width: 100%; height: 1px; background: currentColor; }
+
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 10px 16px;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 6px;
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+
+  /* ───── Slider cards ───── */
+  .slider-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+  @media (max-width: 580px) { .slider-grid { grid-template-columns: 1fr; } }
+
+  .slider-card { padding: 1rem 1.1rem; }
+  .slider-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 4px;
+  }
+  .slider-chip {
+    display: inline-flex; align-items: center;
+    border-radius: 3px;
+    padding: 2px 8px;
+    font-family: ui-serif, Georgia, serif;
+    font-weight: 500;
+    font-size: 12px;
+    border: 1px solid;
+  }
+  .slider-chip sub { font-size: 8px; padding-left: 0.5px; }
+  .slider-val {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .slider-val .unit {
+    font-size: 10px;
+    color: var(--text-faint);
+    font-weight: 400;
+    margin-left: 4px;
+  }
+  .slider-desc {
+    font-family: ui-monospace, monospace;
+    font-size: 10.5px;
+    color: var(--text-faint);
+    margin-bottom: 12px;
+    line-height: 1.4;
+  }
+
+  input[type=range] {
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    appearance: none;
+    background: var(--border);
+    outline: none;
+    cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: 2px solid var(--surface);
+    box-shadow: 0 0 0 1px var(--accent-soft);
+  }
+  input[type=range]::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: 2px solid var(--surface);
+    box-shadow: 0 0 0 1px var(--accent-soft);
+  }
+  input[type=range]:focus { accent-color: var(--accent); }
+
+  .slider-footer {
+    display: flex; justify-content: space-between;
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    color: var(--text-faint);
+    margin-top: 6px;
+  }
+
+  /* ───── Result card ───── */
+  .result-card {
+    display: flex;
+    gap: 1.5rem;
+    align-items: stretch;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--accent-soft);
+    border-radius: var(--radius);
+    background: linear-gradient(180deg, var(--accent-bg), transparent 80%), var(--surface);
+    margin-bottom: 0.75rem;
+  }
+  .result-main { display: flex; flex-direction: column; justify-content: center; min-width: 160px; }
+  .result-label {
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-soft);
+    margin-bottom: 8px;
+  }
+  .result-big {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 48px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--accent);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .result-unit {
+    font-family: ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--accent-soft);
+    margin-top: 4px;
+  }
+  .result-divider {
+    width: 1px;
+    background: var(--border);
+    opacity: 0.6;
+  }
+  .result-detail {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    justify-content: center;
+    font-family: ui-monospace, monospace;
+    font-size: 12px;
+  }
+  .detail-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: 12px;
+  }
+  .detail-row span:first-child { color: var(--text-muted); }
+  .detail-val {
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+  }
+  @media (max-width: 580px) {
+    .result-card { flex-direction: column; gap: 1rem; padding: 1.25rem; }
+    .result-divider { display: none; }
+    .result-main { min-width: 0; }
+  }
+
+  /* ───── A–a gradient panel ───── */
+  .aa-input {
+    width: 100%;
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 9px 12px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .aa-input::placeholder { color: var(--text-faint); }
+  .aa-input:focus { border-color: var(--accent); }
+  .aa-result {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    display: none;
+  }
+  .aa-result.visible { display: block; }
+  .aa-row {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 1rem;
+  }
+  .aa-big {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 28px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+    line-height: 1;
+  }
+  .aa-unit {
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--text-faint);
+    margin-top: 4px;
+  }
+  .badge {
+    display: inline-flex; align-items: center;
+    font-family: ui-monospace, monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 99px;
+    font-weight: 600;
+  }
+  .b-ok    { background: var(--success-bg); color: var(--success); }
+  .b-warn  { background: var(--warn-bg);    color: var(--warn); }
+  .b-bad   { background: var(--danger-bg);  color: var(--danger); }
+
+  .aa-hint {
+    font-family: ui-monospace, monospace;
+    font-size: 10.5px;
+    color: var(--text-faint);
+    margin-top: 8px;
+  }
+
+  /* ───── Footer note ───── */
+  .footer-note {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    line-height: 1.7;
+    color: var(--text-faint);
+  }
+  .footer-note .tag {
+    color: var(--accent-soft);
+    font-weight: 600;
+    margin-right: 4px;
+  }
+  .footer-note b { color: var(--text); font-weight: 600; }
+</style>
+</head>
+<body data-theme="dark">
+<div class="app">
+
+  <header class="app-header">
+    <div class="header-titles">
+      <div class="eyebrow">Alveolar Gas Equation · Live</div>
+      <h1>Alveolar gas equation</h1>
+      <p class="subtitle">Interactive calculator — adjust the four bedside variables to see P<sub>A</sub>O<sub>2</sub> recompute in real time.</p>
+    </div>
+    <div class="header-actions">
+      <button id="theme-btn" class="ghost-btn" type="button">☼ Light</button>
+    </div>
+  </header>
+
+  <!-- Formula -->
+  <section class="card">
+    <div class="card-head">
+      <span class="card-label">Equation</span>
+      <span class="card-hint">colour = source of each term</span>
+    </div>
+    <div class="formula">
+      <span class="term t-result">P<sub>A</sub>O<sub>2</sub></span>
+      <span class="op">=</span>
+      <span class="op">(</span>
+      <span class="term t-blue">FiO<sub>2</sub></span>
+      <span class="op">×</span>
+      <span class="op">(</span>
+      <span class="term t-teal">P<sub>atm</sub></span>
+      <span class="op">−</span>
+      <span class="term t-teal">P<sub>H₂O</sub></span>
+      <span class="op">)</span>
+      <span class="op">)</span>
+      <span class="op">−</span>
+      <span class="op">(</span>
+      <span class="term t-amber">
+        <span class="frac">
+          <span>PaCO<sub>2</sub></span>
+          <span class="frac-line"></span>
+          <span>RespQ</span>
+        </span>
+      </span>
+      <span class="op">)</span>
+    </div>
+    <div class="legend">
+      <div class="legend-item"><span class="dot" style="background:var(--blue)"></span> Inspired oxygen fraction</div>
+      <div class="legend-item"><span class="dot" style="background:var(--teal)"></span> Pressure constants</div>
+      <div class="legend-item"><span class="dot" style="background:var(--amber)"></span> ABG-derived value</div>
+      <div class="legend-item"><span class="dot" style="background:var(--gray)"></span> Metabolic constant</div>
+    </div>
+  </section>
+
+  <!-- Sliders -->
+  <div class="slider-grid">
+    <div class="card slider-card">
+      <div class="slider-head">
+        <span class="slider-chip t-blue">FiO<sub>2</sub></span>
+        <span class="slider-val"><span id="fio2-out">0.21</span></span>
+      </div>
+      <div class="slider-desc">Fraction of inspired oxygen</div>
+      <input type="range" id="fio2" min="0.21" max="1.0" step="0.01" value="0.21">
+      <div class="slider-footer"><span>0.21</span><span>room air ≈ 0.21</span><span>1.00</span></div>
+    </div>
+
+    <div class="card slider-card">
+      <div class="slider-head">
+        <span class="slider-chip t-teal">P<sub>atm</sub></span>
+        <span class="slider-val"><span id="patm-out">760</span><span class="unit">mmHg</span></span>
+      </div>
+      <div class="slider-desc">Atmospheric pressure</div>
+      <input type="range" id="patm" min="400" max="760" step="1" value="760">
+      <div class="slider-footer"><span>400</span><span>sea level = 760</span><span>760</span></div>
+    </div>
+
+    <div class="card slider-card">
+      <div class="slider-head">
+        <span class="slider-chip t-amber">PaCO<sub>2</sub></span>
+        <span class="slider-val"><span id="paco2-out">40</span><span class="unit">mmHg</span></span>
+      </div>
+      <div class="slider-desc">Arterial CO₂ (from ABG)</div>
+      <input type="range" id="paco2" min="10" max="100" step="1" value="40">
+      <div class="slider-footer"><span>10</span><span>normal 35–45</span><span>100</span></div>
+    </div>
+
+    <div class="card slider-card">
+      <div class="slider-head">
+        <span class="slider-chip t-gray">RespQ</span>
+        <span class="slider-val"><span id="rq-out">0.80</span></span>
+      </div>
+      <div class="slider-desc">Respiratory quotient (V̇CO₂ / V̇O₂)</div>
+      <input type="range" id="rq" min="0.7" max="1.0" step="0.01" value="0.8">
+      <div class="slider-footer"><span>0.70</span><span>mixed diet ≈ 0.8</span><span>1.00</span></div>
+    </div>
+  </div>
+
+  <!-- Result -->
+  <section class="result-card">
+    <div class="result-main">
+      <div class="result-label">P<sub>A</sub>O₂ result</div>
+      <div class="result-big" id="pao2-out">99</div>
+      <div class="result-unit">mmHg</div>
+    </div>
+    <div class="result-divider"></div>
+    <div class="result-detail">
+      <div class="detail-row"><span>P<sub>atm</sub> − P<sub>H₂O</sub></span><span class="detail-val" id="d-dry">713</span></div>
+      <div class="detail-row"><span>FiO<sub>2</sub> × dry pressure</span><span class="detail-val" id="d-fi">149.7</span></div>
+      <div class="detail-row"><span>PaCO<sub>2</sub> / RespQ correction</span><span class="detail-val" id="d-co">50.0</span></div>
+    </div>
+  </section>
+
+  <!-- A-a gradient -->
+  <section class="card">
+    <div class="card-head">
+      <span class="card-label">A–a gradient</span>
+      <span class="card-hint">optional · paste from ABG</span>
+    </div>
+    <div class="slider-desc" style="margin-bottom:10px;">Enter the measured PaO₂ from the same blood gas to compute the alveolar–arterial difference.</div>
+    <input type="number" id="pao2-meas" class="aa-input" placeholder="PaO₂ (mmHg)" min="0" max="700">
+    <div class="aa-result" id="aa-result">
+      <div class="aa-row">
+        <div>
+          <div class="card-label" style="margin-bottom:6px;">A–a gradient</div>
+          <div class="aa-big" id="aa-val">—</div>
+          <div class="aa-unit">mmHg</div>
+        </div>
+        <span id="aa-badge" class="badge b-ok">Normal</span>
+      </div>
+      <div class="aa-hint">Expected upper limit ≈ age/4 + 4 mmHg on room air; widens with age and on supplemental O₂.</div>
+    </div>
+  </section>
+
+  <div class="footer-note">
+    <span class="tag">NOTE</span> Fixed constants: P<sub>H₂O</sub> = <b>47 mmHg</b> at 37 °C body temperature. Normal P<sub>A</sub>O₂ on room air at sea level ≈ <b>99–104 mmHg</b>. An A–a gradient &lt; 15 mmHg is generally normal in young adults. Educational use — verify clinical values against the patient's ABG and full bedside context.
+  </div>
+
+</div>
+
+<script>
+  function calc() {
+    const fio2  = parseFloat(document.getElementById('fio2').value);
+    const patm  = parseFloat(document.getElementById('patm').value);
+    const paco2 = parseFloat(document.getElementById('paco2').value);
+    const rq    = parseFloat(document.getElementById('rq').value);
+    const ph2o  = 47;
+
+    document.getElementById('fio2-out').textContent  = fio2.toFixed(2);
+    document.getElementById('patm-out').textContent  = Math.round(patm);
+    document.getElementById('paco2-out').textContent = Math.round(paco2);
+    document.getElementById('rq-out').textContent    = rq.toFixed(2);
+
+    const dry    = patm - ph2o;
+    const fiPart = fio2 * dry;
+    const coPart = paco2 / rq;
+    const pao2   = fiPart - coPart;
+
+    document.getElementById('d-dry').textContent = Math.round(dry);
+    document.getElementById('d-fi').textContent  = fiPart.toFixed(1);
+    document.getElementById('d-co').textContent  = coPart.toFixed(1);
+    document.getElementById('pao2-out').textContent = Math.round(pao2);
+
+    const measEl = document.getElementById('pao2-meas');
+    const aaResult = document.getElementById('aa-result');
+    if (measEl.value.trim() !== '') {
+      const meas = parseFloat(measEl.value);
+      const aa   = Math.round(pao2 - meas);
+      document.getElementById('aa-val').textContent = aa;
+      const badge = document.getElementById('aa-badge');
+      if (aa < 0)        { badge.textContent = 'Check values';   badge.className = 'badge b-warn'; }
+      else if (aa < 15)  { badge.textContent = 'Normal';         badge.className = 'badge b-ok'; }
+      else if (aa < 35)  { badge.textContent = 'Mildly elevated'; badge.className = 'badge b-warn'; }
+      else               { badge.textContent = 'Elevated';        badge.className = 'badge b-bad'; }
+      aaResult.classList.add('visible');
+    } else {
+      aaResult.classList.remove('visible');
+    }
+  }
+  ['fio2','patm','paco2','rq','pao2-meas'].forEach(id => {
+    document.getElementById(id).addEventListener('input', calc);
+  });
+  calc();
+
+  // Theme toggle — default dark to match the simulator family.
+  const themeBtn = document.getElementById('theme-btn');
+  function setTheme(t) {
+    document.body.setAttribute('data-theme', t);
+    themeBtn.textContent = t === 'dark' ? '☼ Light' : '☾ Dark';
+  }
+  themeBtn.addEventListener('click', () => {
+    const cur = document.body.getAttribute('data-theme');
+    setTheme(cur === 'dark' ? 'light' : 'dark');
+  });
+</script>
+
+<script>
+  // Height-sync for iframe embedding — mirrors the chapter 14 / capnography
+  // simulators so this page can be iframed inline in the vent book later.
+  (function(){
+    function measureContentHeight() {
+      let maxBottom = 0;
+      const all = document.body.getElementsByTagName('*');
+      for (let i = 0; i < all.length; i++) {
+        const el = all[i];
+        if (el.children && el.children.length > 0) continue;
+        const tag = el.tagName;
+        if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'LINK' || tag === 'META') continue;
+        const cs = window.getComputedStyle(el);
+        if (cs.display === 'none' || cs.visibility === 'hidden') continue;
+        const rect = el.getBoundingClientRect();
+        if (rect.width <= 0 && rect.height <= 0) continue;
+        const bottom = rect.bottom + (window.scrollY || window.pageYOffset || 0);
+        if (bottom > maxBottom) maxBottom = bottom;
+      }
+      return Math.ceil(maxBottom);
+    }
+    function postHeight() {
+      try {
+        const h = measureContentHeight();
+        if (h > 0 && window.parent && window.parent !== window) {
+          window.parent.postMessage({ type: 'aag-calc-height', height: h }, '*');
+        }
+      } catch (e) {}
+    }
+    window.addEventListener('load', postHeight);
+    window.addEventListener('resize', postHeight);
+    if (typeof ResizeObserver !== 'undefined' && document.body) {
+      const ro = new ResizeObserver(postHeight);
+      ro.observe(document.body);
+    }
+    setTimeout(postHeight, 200);
+    setTimeout(postHeight, 800);
+    setTimeout(postHeight, 2000);
+  })();
+</script>
+
+</body>
+</html>
