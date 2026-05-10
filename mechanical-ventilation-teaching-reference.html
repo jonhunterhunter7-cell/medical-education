@@ -6334,9 +6334,60 @@
 
   <div class="pitfall"><strong>ETCO₂ ≠ PaCO₂ in dead space</strong>The arterial-to-end-tidal gradient (P(a−et)CO₂) is normally 2–5 mmHg. In ARDS it can widen to 10–15; in pulmonary embolism, &gt; 20. Trend ETCO₂ on stable settings, but verify PaCO₂ with an ABG in any patient with high dead space (see <a class="xref" href="#c4" data-xref-chap="4">§4.1</a>).</div>
 
-  <div class="figure">
-    <img src="https://i.postimg.cc/QdbXsPvj/waveform-capno.jpg" alt="Capnography waveform library" style="max-width:100%; height:auto; display:block; margin:0 auto;"/>
-    <div class="cap"><b>Figure 14.2 — Capnography pattern library.</b> Six classical shapes catch nearly every diagnostic question at the bedside. Rule of scanning order: Phase III plateau height (ETCO₂ value) → Phase II steepness → baseline return to zero → trend across breaths.</div>
+  <div class="figure" id="ch14-capno-simulator" style="margin-bottom:1.4rem;">
+    <div style="display:flex; align-items:baseline; justify-content:space-between; gap:1rem; margin-bottom:0.4rem; flex-wrap:wrap;">
+      <div>
+        <strong style="color:#0891b2; font-size:0.95rem;">Live capnography library</strong>
+        <span style="color:#475569; font-size:0.85rem; margin-left:0.5rem;">— pick a pattern or adjust the physiology directly</span>
+      </div>
+      <a href="https://jonhunterhunter7-cell.github.io/medical-education/mechanical-ventilation-capnography-simulator.html" target="_blank" rel="noopener" style="font-size:0.8rem; color:#2c5282; text-decoration:none; border:1px solid #2c5282; padding:0.15rem 0.55rem; border-radius:3px;">
+        Open full-screen ↗
+      </a>
+    </div>
+    <div style="position:relative; width:100%; border:1px solid #d6d3c7; border-radius:4px; overflow:hidden; background:#0a0e1a;">
+      <iframe
+        id="capno-sim-iframe"
+        src="https://jonhunterhunter7-cell.github.io/medical-education/mechanical-ventilation-capnography-simulator.html"
+        title="Capnography waveform library — six classic patterns with parametric physiology controls"
+        loading="lazy"
+        style="width:100%; height:1200px; border:0; display:block;"
+      ></iframe>
+    </div>
+    <script>
+      (function(){
+        const iframe = document.getElementById('capno-sim-iframe');
+        if (!iframe) return;
+        // Width-based starting estimate — overridden by postMessage when the
+        // iframed page reports its real document height (see height-sync
+        // script in mechanical-ventilation-capnography-simulator.html).
+        let reportedExact = false;
+        function estimateHeight(w) {
+          if (w >= 1200) return 1100;
+          if (w >= 800)  return 1250;
+          return 1500;
+        }
+        function applyEstimated() {
+          if (reportedExact) return;
+          const w = iframe.clientWidth || iframe.getBoundingClientRect().width || 1000;
+          iframe.style.height = estimateHeight(w) + 'px';
+        }
+        applyEstimated();
+        if (typeof ResizeObserver !== 'undefined') {
+          const ro = new ResizeObserver(applyEstimated);
+          ro.observe(iframe);
+        } else {
+          window.addEventListener('resize', applyEstimated);
+        }
+        window.addEventListener('message', function(e){
+          if (e && e.data && e.data.type === 'capno-sim-height' && typeof e.data.height === 'number') {
+            reportedExact = true;
+            const h = Math.max(600, Math.min(4000, e.data.height + 20));
+            iframe.style.height = h + 'px';
+          }
+        });
+      })();
+    </script>
+    <div class="cap"><b>Figure 14.2 — Capnography waveform library (interactive).</b> Live sweep of the six classical capnogram shapes — normal, obstructive ("shark-fin"), curare cleft, cardiogenic oscillations, rebreathing, and sudden drop to zero. Pick a pattern to load characteristic physiology, then drag the sliders (respiratory rate, peak ETCO₂, Phase III slope, baseline / β-angle, I:E, heart rate) to recreate the bedside trace. Scanning order: Phase III plateau height (ETCO₂ value) → Phase II steepness → baseline return to zero → trend across breaths.</div>
   </div>
   </details>
   <details class="chap-acc" data-acc-id="c14-h4-7">
