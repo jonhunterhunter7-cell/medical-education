@@ -3359,9 +3359,56 @@
     </tbody>
   </table>
   <p>An <strong>elevated A–a gradient</strong> indicates a problem at the alveolar–capillary level (V/Q mismatch, shunt, diffusion impairment). A <strong>normal A–a gradient with hypoxemia</strong> means hypoventilation or low FiO₂ — the alveolus is fine, it just isn't being filled with O₂.</p>
-  <div class="figure">
-    <img src="https://i.postimg.cc/PxFsDNmy/alveolar-gas-equation.jpg" alt="Annotated alveolar gas equation — PAO2 = FiO2(P_atm − P_H2O) − PaCO2/R" style="max-width:100%; height:auto; display:block; margin:0 auto;"/>
-    <div class="cap"><b>Figure 2.3 — The alveolar gas equation, annotated.</b> PAO₂ = FiO₂ × (P<sub>atm</sub> − P<sub>H₂O</sub>) − PaCO₂ / R. Each term, broken out: <strong>FiO₂</strong> is the inspired oxygen fraction (0.21 room air → 1.0 pure O₂); <strong>P<sub>atm</sub></strong> is atmospheric pressure (760 mmHg at sea level, less at altitude); <strong>P<sub>H₂O</sub></strong> is water-vapor pressure at body temperature (47 mmHg, fully saturated airway gas); <strong>PaCO₂</strong> is the patient's measured arterial CO₂; <strong>R</strong> is the respiratory exchange ratio, ~ 0.8 in steady state. The formula computes the PO₂ that <em>should</em> be in the alveolus; subtracting measured PaO₂ gives the A–a gradient — the amount of oxygen "lost" between alveolus and artery, which scales the diagnosis of hypoxemia.</div>
+  <div class="figure" id="ch2-aag-calculator" style="margin-bottom:1.4rem;">
+    <div style="display:flex; align-items:baseline; justify-content:space-between; gap:1rem; margin-bottom:0.4rem; flex-wrap:wrap;">
+      <div>
+        <strong style="color:#0891b2; font-size:0.95rem;">Live alveolar gas equation</strong>
+        <span style="color:#475569; font-size:0.85rem; margin-left:0.5rem;">— drag the variables to see P<sub>A</sub>O₂ recompute</span>
+      </div>
+      <a href="https://jonhunterhunter7-cell.github.io/medical-education/alveolar_gas_equation.html" target="_blank" rel="noopener" style="font-size:0.8rem; color:#2c5282; text-decoration:none; border:1px solid #2c5282; padding:0.15rem 0.55rem; border-radius:3px;">
+        Open full-screen ↗
+      </a>
+    </div>
+    <div style="position:relative; width:100%; border:1px solid #d6d3c7; border-radius:4px; overflow:hidden; background:#0a0e1a;">
+      <iframe
+        id="aag-calc-iframe"
+        src="https://jonhunterhunter7-cell.github.io/medical-education/alveolar_gas_equation.html"
+        title="Alveolar gas equation — interactive calculator with A–a gradient"
+        loading="lazy"
+        style="width:100%; height:1000px; border:0; display:block;"
+      ></iframe>
+    </div>
+    <script>
+      (function(){
+        const iframe = document.getElementById('aag-calc-iframe');
+        if (!iframe) return;
+        let reportedExact = false;
+        function estimateHeight(w) {
+          if (w >= 800) return 950;
+          return 1250;
+        }
+        function applyEstimated() {
+          if (reportedExact) return;
+          const w = iframe.clientWidth || iframe.getBoundingClientRect().width || 800;
+          iframe.style.height = estimateHeight(w) + 'px';
+        }
+        applyEstimated();
+        if (typeof ResizeObserver !== 'undefined') {
+          const ro = new ResizeObserver(applyEstimated);
+          ro.observe(iframe);
+        } else {
+          window.addEventListener('resize', applyEstimated);
+        }
+        window.addEventListener('message', function(e){
+          if (e && e.data && e.data.type === 'aag-calc-height' && typeof e.data.height === 'number') {
+            reportedExact = true;
+            const h = Math.max(400, Math.min(2400, e.data.height + 20));
+            iframe.style.height = h + 'px';
+          }
+        });
+      })();
+    </script>
+    <div class="cap"><b>Figure 2.3 — The alveolar gas equation, interactive.</b> P<sub>A</sub>O₂ = FiO₂ × (P<sub>atm</sub> − P<sub>H₂O</sub>) − PaCO₂ / R. Drag the four levers to see how each shapes the alveolar PO₂ in real time: <strong>FiO₂</strong> (inspired oxygen fraction, 0.21 → 1.0), <strong>P<sub>atm</sub></strong> (atmospheric pressure, 760 mmHg at sea level and less at altitude), <strong>PaCO₂</strong> (the patient's measured arterial CO₂), and <strong>R</strong> (respiratory exchange ratio, ~0.8 in steady state). P<sub>H₂O</sub> is fixed at 47 mmHg. The formula gives the PO₂ that <em>should</em> be in the alveolus; subtracting the measured PaO₂ in the A–a gradient panel quantifies the oxygen "lost" between alveolus and artery — the diagnostic anchor for hypoxemia.</div>
   </div>
   </details>
 </section>
