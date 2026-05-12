@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>2026 ACC/AHA Dyslipidemia Guideline — PCP Quick Reference</title>
+<style>
+  :root {
+    --navy:#0B3D6B;
+    --teal:#0F7B8A;
+    --gold:#B8860B;
+    --light:#EAF2F7;
+    --hilite:#FFF4D6;
+    --rule:#C9D3DB;
+    --text:#1A1A1A;
+    --muted:#555;
+    --bg:#fff;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #f4f4f4; color: var(--text); font-family: Calibri, "Segoe UI", Arial, sans-serif; }
+  .page {
+    max-width: 8.5in;
+    margin: 24px auto;
+    padding: 0.45in;
+    background: var(--bg);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    font-size: 12px;
+    line-height: 1.35;
+  }
+  h1, h2, h3 { margin: 0; }
+  .banner {
+    background: var(--navy);
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 4px;
+  }
+  .banner h1 { font-size: 18px; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; }
+  .banner .sub { color: #CFE2F3; font-size: 11px; font-style: italic; margin-top: 2px; }
+  .ldl-box {
+    border: 2px solid var(--gold);
+    background: var(--hilite);
+    padding: 10px 14px;
+    margin-top: 10px;
+    border-radius: 4px;
+  }
+  .ldl-box .title { color: var(--gold); font-weight: 700; text-transform: uppercase; font-size: 13px; }
+  .ldl-box .sub { color: var(--muted); font-style: italic; font-size: 11px; margin-left: 6px; }
+  .ldl-box .body { margin-top: 6px; font-size: 12px; }
+  .ldl-box .eq { font-size: 11px; margin-top: 4px; }
+  .ldl-box .eq strong { color: var(--navy); }
+  .ldl-box code { font-family: Consolas, "Courier New", monospace; }
+  .section-title {
+    text-transform: uppercase;
+    color: var(--navy);
+    font-weight: 700;
+    font-size: 13px;
+    border-bottom: 1.5px solid var(--navy);
+    padding-bottom: 2px;
+    margin-top: 14px;
+  }
+  .section-title.teal { color: var(--teal); border-bottom-color: var(--teal); }
+  .subtitle { font-size: 11px; color: var(--muted); font-style: italic; margin: 2px 0 4px; }
+  table.grid {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    margin-top: 4px;
+  }
+  table.grid th {
+    background: var(--navy);
+    color: #fff;
+    font-weight: 700;
+    text-align: left;
+    padding: 5px 7px;
+    border: 0.5px solid var(--rule);
+  }
+  table.grid.teal th { background: var(--teal); }
+  table.grid td {
+    padding: 5px 7px;
+    border: 0.5px solid var(--rule);
+    vertical-align: top;
+  }
+  table.grid td:first-child { background: var(--light); font-weight: 600; }
+  .cac-when {
+    border: 1px solid var(--teal);
+    background: var(--light);
+    padding: 8px 12px;
+    margin-top: 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    line-height: 1.45;
+  }
+  .cac-when .title { color: var(--teal); font-weight: 700; text-transform: uppercase; font-size: 12px; margin-bottom: 4px; }
+  .cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 4px;
+  }
+  .col h4 {
+    color: var(--navy);
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 700;
+    border-bottom: 0.5px solid var(--navy);
+    padding-bottom: 1px;
+    margin: 8px 0 4px;
+  }
+  .col.right h4 { color: var(--teal); border-bottom-color: var(--teal); }
+  .col p { margin: 3px 0; font-size: 11px; line-height: 1.4; }
+  .col ul { margin: 3px 0; padding-left: 18px; }
+  .col li { font-size: 11px; line-height: 1.4; margin-bottom: 2px; }
+  .footnote { font-size: 10px; color: var(--muted); margin-top: 10px; }
+  .footnote em { font-style: italic; }
+
+  /* Calculator */
+  .calc-section { page-break-before: always; margin-top: 24px; }
+  .calc-section h2 {
+    color: var(--navy);
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--navy);
+    padding-bottom: 3px;
+    margin-bottom: 10px;
+  }
+  .calc-inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .calc-inputs label {
+    font-size: 11px;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 3px;
+  }
+  .calc-inputs .iw { position: relative; }
+  .calc-inputs input {
+    width: 100%;
+    padding: 8px 50px 8px 10px;
+    font-size: 14px;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    font-family: inherit;
+  }
+  .calc-inputs input:focus { outline: 2px solid var(--navy); outline-offset: -1px; border-color: var(--navy); }
+  .calc-inputs .unit {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .nonhdl-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 12px;
+    background: var(--light);
+    border-radius: 4px;
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+  .nonhdl-row .v { font-weight: 600; }
+  .results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .result-card {
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 12px 14px;
+    background: #fff;
+  }
+  .result-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .result-label { font-size: 12px; color: var(--muted); }
+  .badge {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: #DEEAF5;
+    color: var(--navy);
+    font-weight: 600;
+  }
+  .result-value { font-size: 26px; font-weight: 600; line-height: 1.1; color: var(--navy); }
+  .result-value small { font-size: 11px; color: var(--muted); font-weight: 400; }
+  .result-detail { font-size: 10px; color: var(--muted); margin-top: 4px; }
+  .alert {
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    margin-bottom: 10px;
+  }
+  .alert.info { background: #E1F0F7; color: #114a66; }
+  .alert.warn { background: #FFF0D6; color: #7a5b00; }
+  .alert.hide { display: none; }
+  .eq-ref {
+    background: var(--light);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+  .eq-ref strong { color: var(--navy); }
+
+  @media print {
+    body { background: #fff; }
+    .page { box-shadow: none; margin: 0; padding: 0.4in; max-width: 100%; }
+    .calc-section { page-break-before: always; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="banner">
+    <h1>2026 ACC/AHA Dyslipidemia Guideline</h1>
+    <div class="sub">Primary Care Quick Reference  ·  Replaces 2018 AHA/ACC Blood Cholesterol Guideline  ·  Circulation 2026</div>
+  </div>
+
+  <div class="ldl-box">
+    <span class="title">★ New — LDL-C Calculation</span><span class="sub">(Class I, all adults &amp; children)</span>
+    <div class="body">
+      <strong>Martin/Hopkins</strong> or <strong>Sampson/NIH</strong> are preferred over Friedewald (and over direct LDL-C measurement, except beta-quantification). Friedewald underestimates LDL-C when TG &gt; 150 or LDL &lt; 70 mg/dL — the exact range that drives treatment.
+    </div>
+    <div class="eq"><strong>Sampson/NIH (closed-form):</strong> <code>LDL-C = (TC ÷ 0.948) − (HDL ÷ 0.971) − [TG ÷ 8.56 + (TG × non-HDL) ÷ 2140 − TG² ÷ 16100] − 9.44</code></div>
+    <div class="eq"><strong>Martin/Hopkins:</strong> <code>LDL-C = TC − HDL − (TG ÷ adjustable factor)</code>; divisor comes from a 180-cell lookup of non-HDL × TG strata (range ~3.1–11.9). Most US labs now report one or both automatically. <strong>An interactive version of both calculators is included on page 2 of this guide.</strong></div>
+  </div>
+
+  <div class="section-title">Primary Prevention — Risk-Based Treatment (PREVENT-ASCVD)</div>
+  <div class="subtitle">Adults 30–79 without ASCVD or subclinical disease; LDL-C 70–189 mg/dL</div>
+  <table class="grid">
+    <thead><tr><th style="width:17%">Risk Category</th><th style="width:18%">10-yr ASCVD</th><th style="width:37%">Statin Recommendation</th><th style="width:28%">LDL-C / non-HDL-C Goal</th></tr></thead>
+    <tbody>
+      <tr><td>Low</td><td>&lt; 3%</td><td>Counseling only (if LDL-C &lt; 160; 30-yr risk &lt; 10% applies ages 30–59)</td><td>—</td></tr>
+      <tr><td>Low (elevated)</td><td>&lt; 3% with LDL 160–189 OR 30-yr ≥ 10%</td><td>Consider moderate-intensity statin</td><td>Borderline goals</td></tr>
+      <tr><td>Borderline</td><td>3% – &lt; 5%</td><td>Consider moderate-intensity statin; use enhancers/CAC</td><td>LDL &lt; 100  ·  non-HDL &lt; 130</td></tr>
+      <tr><td>Intermediate</td><td>5% – &lt; 10%</td><td>≥ Moderate-intensity (high-intensity at upper range)</td><td>LDL &lt; 100  ·  non-HDL &lt; 130</td></tr>
+      <tr><td>High</td><td>≥ 10%</td><td>High-intensity statin ± ezetimibe; add PCSK9 mAb / bempedoic acid if goal not met</td><td>LDL &lt; 70  ·  non-HDL &lt; 100</td></tr>
+      <tr><td>Secondary prevention — ASCVD</td><td>—</td><td>High-intensity statin; add ezetimibe, PCSK9 mAb, or bempedoic acid as needed</td><td>LDL &lt; 70  ·  non-HDL &lt; 100 (consider &lt; 55 / &lt; 85)</td></tr>
+      <tr><td>Very-high-risk ASCVD*</td><td>—</td><td>Max statin + ezetimibe and/or PCSK9 mAb; inclisiran if PCSK9 mAb not tolerated/available</td><td>LDL &lt; 55  ·  non-HDL &lt; 85  ·  ApoB &lt; 55 (optional)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-title teal">Coronary Artery Calcium (CAC) — Men ≥ 40, Women ≥ 45</div>
+  <table class="grid teal">
+    <thead><tr><th style="width:22%">CAC Score (Agatston)</th><th style="width:36%">Action</th><th style="width:42%">Goals</th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td>Defer statin; repeat CAC in 3–7 yr. Exceptions: FH, severe ↑LDL, DM + age &gt; 40, current smoker, or strong family history of premature ASCVD</td><td>Lifestyle</td></tr>
+      <tr><td>1–99 or &lt; 75th %ile</td><td>Moderate-intensity statin</td><td>LDL &lt; 100  ·  non-HDL &lt; 130</td></tr>
+      <tr><td>100–299 or ≥ 75th %ile</td><td>Statin first-line LLT</td><td>LDL &lt; 70  ·  non-HDL &lt; 100</td></tr>
+      <tr><td>300–999</td><td>Statin; consider intensification</td><td>LDL &lt; 70 (consider &lt; 55)  ·  non-HDL &lt; 100 (consider &lt; 85)</td></tr>
+      <tr><td>≥ 1000</td><td>Treat like established ASCVD</td><td>LDL &lt; 55  ·  non-HDL &lt; 85</td></tr>
+    </tbody>
+  </table>
+
+  <div class="cac-when">
+    <div class="title">When to Order CAC</div>
+    <strong>Order (COR 1):</strong> intermediate risk (5 – &lt; 10%) or selected borderline risk (3 – &lt; 5%) when statin decision is uncertain. &nbsp;
+    <strong>Consider (COR 2a):</strong> intermediate or high risk on therapy when LLT intensity is uncertain — CAC refines goals.<br />
+    <strong>Useful also in:</strong> younger adults with strong family history of premature ASCVD or elevated Lp(a); patients who prefer to avoid statins; incidental CAC on non-gated CT (COR 1). &nbsp;
+    <strong>Do NOT use to</strong> "de-risk" FH, severe ↑LDL, established ASCVD, or DM meeting criteria — they qualify for statin regardless.
+  </div>
+
+  <div class="section-title">Practice Pearls &amp; Special Populations</div>
+  <div class="cols">
+    <div class="col left">
+      <h4>Screening Pearls</h4>
+      <ul>
+        <li>Non-fasting lipid panel acceptable for screening &amp; routine monitoring.</li>
+        <li>Measure Lp(a) at least ONCE in every adult (Class I).</li>
+        <li>ApoB useful in patients on LLT, esp. ASCVD, T2DM, CKM, or ↑TG.</li>
+        <li>Confirm lab reports Martin/Hopkins or Sampson — not Friedewald.</li>
+      </ul>
+      <h4>PREVENT Replaces PCE</h4>
+      <p>Use the PREVENT-ASCVD equations for 10- and 30-year risk in adults 30–79 without ASCVD. More accurate across race/sex; incorporates kidney &amp; metabolic risk. PREVENT is required for the risk thresholds in the table above.</p>
+      <h4>Lp(a) Thresholds</h4>
+      <ul>
+        <li>≥ 125 nmol/L (50 mg/dL): risk-enhancer (~1.4×).</li>
+        <li>≥ 250 nmol/L (100 mg/dL): ~2× ASCVD risk.</li>
+        <li>Elevated Lp(a) + ASCVD not at goal on max statin → add PCSK9 mAb.</li>
+      </ul>
+      <h4>Not Recommended (COR 3)</h4>
+      <p><em>Dietary supplements should NOT be used to lower LDL-C or TG (limited, inconsistent data; no proven ASCVD benefit). Examples discussed in the guideline include red yeast rice, fish oil for LDL lowering, and plant sterols.</em></p>
+    </div>
+    <div class="col right">
+      <h4>Triglyceride Management</h4>
+      <ul>
+        <li>150–499 (primary prevention): PREVENT risk + lifestyle; consider statin.</li>
+        <li>≥ 150 with ASCVD off LDL/non-HDL goal on max statin: intensify LDL-lowering first.</li>
+        <li>≥ 500 (esp. ≥ 1000 despite diet): lifestyle + fibrate or high-dose omega-3 reasonable (COR 2a).</li>
+        <li>≥ 1000: aggressive TG-lowering; refer to RDN; olezarsen for familial chylomicronemia syndrome.</li>
+      </ul>
+      <p style="font-style:italic;color:var(--muted);">Statins remain the foundation across all TG categories.</p>
+      <h4>Severe ↑LDL / Suspected FH</h4>
+      <ul>
+        <li>LDL ≥ 190 mg/dL: high-intensity statin; add ezetimibe, PCSK9 mAb, and/or bempedoic acid based on residual gap.</li>
+        <li>Inclisiran reasonable if LDL ≥ 100 mg/dL on max statin ± ezetimibe.</li>
+        <li>Do NOT apply 10-/30-yr risk tools in HeFH.</li>
+        <li>Genetic panel reasonable if LDL ≥ 190 without secondary cause; cascade-screen first-degree relatives.</li>
+      </ul>
+      <h4>Diabetes Quick Cuts</h4>
+      <ul>
+        <li>Age 20–39: moderate-intensity statin may be reasonable (COR 2b) if long-duration DM + albuminuria, eGFR &lt; 60, retinopathy, neuropathy, or ABI &lt; 0.9.</li>
+        <li>Age 40–75: moderate-intensity statin, goal LDL &lt; 100; high-intensity if multiple risk factors (goal LDL &lt; 70).</li>
+        <li>Icosapent ethyl may be considered (COR 2b) if LDL &lt; 100, TG 150–499 on statin, and additional ASCVD risk factor(s).</li>
+        <li>Refer to lipid specialist for HoFH, refractory LDL on triple therapy, multi-statin intolerance, TG ≥ 1000, or for inclisiran/evinacumab/lomitapide.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footnote">
+    <strong>*VHR ASCVD:</strong> ≥ 2 major ASCVD events OR 1 major event + ≥ 2 high-risk conditions (age &gt; 65, CABG/PCI, smoking, DM, HF, HTN, or LDL &gt; 100 on max statin+ezetimibe). &nbsp;
+    <em>Source: Blumenthal et al., 2026 ACC/AHA Dyslipidemia Guideline (Circulation 2026).</em>
+  </div>
+
+  <div class="calc-section">
+    <h2>Interactive LDL-C Calculator — Martin/Hopkins &amp; Sampson/NIH</h2>
+
+    <div class="calc-inputs">
+      <div>
+        <label for="tc">Total cholesterol</label>
+        <div class="iw"><input id="tc" type="number" min="50" max="500" step="1" value="220" /><span class="unit">mg/dL</span></div>
+      </div>
+      <div>
+        <label for="hdl">HDL-C</label>
+        <div class="iw"><input id="hdl" type="number" min="10" max="150" step="1" value="45" /><span class="unit">mg/dL</span></div>
+      </div>
+      <div>
+        <label for="tg">Triglycerides</label>
+        <div class="iw"><input id="tg" type="number" min="20" max="1500" step="1" value="180" /><span class="unit">mg/dL</span></div>
+      </div>
+    </div>
+
+    <div class="nonhdl-row">
+      <span>Non–HDL-C (TC − HDL)</span>
+      <span class="v" id="nonhdl">— mg/dL</span>
+    </div>
+
+    <div class="results">
+      <div class="result-card">
+        <div class="result-head">
+          <span class="result-label">Martin/Hopkins LDL-C</span>
+          <span class="badge">2026 ACC/AHA</span>
+        </div>
+        <div class="result-value" id="mh-val">— <small>mg/dL</small></div>
+        <div class="result-detail" id="mh-detail">VLDL = TG ÷ adjustable factor</div>
+      </div>
+      <div class="result-card">
+        <div class="result-head">
+          <span class="result-label">Sampson/NIH LDL-C</span>
+          <span class="badge">2026 ACC/AHA</span>
+        </div>
+        <div class="result-value" id="sa-val">— <small>mg/dL</small></div>
+        <div class="result-detail">Closed-form polynomial</div>
+      </div>
+    </div>
+
+    <div class="alert info hide" id="goal-row"><span id="goal-text"></span></div>
+    <div class="alert warn hide" id="warn"><span id="warn-text"></span></div>
+
+    <div class="eq-ref">
+      <div><strong>Martin/Hopkins:</strong> LDL = TC − HDL − (TG ÷ adjustable factor); factor from a 180-cell lookup of non-HDL × TG strata (range 3.1–11.9).</div>
+      <div style="margin-top:4px;"><strong>Sampson/NIH:</strong> LDL = (TC ÷ 0.948) − (HDL ÷ 0.971) − [TG ÷ 8.56 + (TG × non-HDL) ÷ 2140 − TG² ÷ 16100] − 9.44</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  var MH = [
+    {min:0,max:49,    f:[3.5,3.4,3.3,3.3,3.2,3.1]},
+    {min:50,max:56,   f:[4.0,3.9,3.7,3.6,3.6,3.4]},
+    {min:57,max:61,   f:[4.3,4.1,4.0,3.9,3.8,3.6]},
+    {min:62,max:66,   f:[4.5,4.3,4.1,4.0,3.9,3.9]},
+    {min:67,max:71,   f:[4.7,4.4,4.3,4.2,4.1,3.9]},
+    {min:72,max:75,   f:[4.8,4.6,4.4,4.2,4.2,4.1]},
+    {min:76,max:79,   f:[4.9,4.6,4.5,4.3,4.3,4.2]},
+    {min:80,max:83,   f:[5.0,4.8,4.6,4.4,4.3,4.2]},
+    {min:84,max:87,   f:[5.1,4.8,4.6,4.5,4.4,4.3]},
+    {min:88,max:92,   f:[5.2,4.9,4.7,4.6,4.4,4.3]},
+    {min:93,max:96,   f:[5.3,5.0,4.8,4.7,4.5,4.4]},
+    {min:97,max:100,  f:[5.4,5.1,4.8,4.7,4.5,4.3]},
+    {min:101,max:105, f:[5.5,5.2,5.0,4.7,4.6,4.5]},
+    {min:106,max:110, f:[5.6,5.3,5.0,4.8,4.6,4.5]},
+    {min:111,max:115, f:[5.7,5.4,5.1,4.9,4.7,4.5]},
+    {min:116,max:120, f:[5.8,5.5,5.2,5.0,4.8,4.6]},
+    {min:121,max:126, f:[6.0,5.5,5.3,5.0,4.8,4.6]},
+    {min:127,max:132, f:[6.1,5.7,5.3,5.1,4.9,4.7]},
+    {min:133,max:138, f:[6.2,5.8,5.4,5.2,5.0,4.7]},
+    {min:139,max:146, f:[6.3,5.9,5.6,5.3,5.0,4.8]},
+    {min:147,max:154, f:[6.5,6.0,5.7,5.4,5.1,4.8]},
+    {min:155,max:163, f:[6.7,6.2,5.8,5.4,5.2,4.9]},
+    {min:164,max:173, f:[6.8,6.3,5.9,5.5,5.3,5.0]},
+    {min:174,max:185, f:[7.0,6.5,6.0,5.7,5.4,5.1]},
+    {min:186,max:201, f:[7.3,6.7,6.2,5.8,5.5,5.2]},
+    {min:202,max:220, f:[7.6,6.9,6.4,6.0,5.6,5.3]},
+    {min:221,max:247, f:[8.0,7.2,6.6,6.2,5.9,5.4]},
+    {min:248,max:292, f:[8.5,7.6,7.0,6.5,6.1,5.6]},
+    {min:293,max:399, f:[9.5,8.3,7.5,7.0,6.5,5.9]},
+    {min:400,max:99999,f:[11.9,10.0,8.8,8.1,7.5,6.7]}
+  ];
+
+  function nonHdlCol(n){
+    if (n < 100) return 0;
+    if (n <= 129) return 1;
+    if (n <= 159) return 2;
+    if (n <= 189) return 3;
+    if (n <= 219) return 4;
+    return 5;
+  }
+  function mhFactor(tg, nonHdl){
+    var col = nonHdlCol(nonHdl);
+    for (var i=0;i<MH.length;i++){
+      if (tg >= MH[i].min && tg <= MH[i].max) return MH[i].f[col];
+    }
+    return 5;
+  }
+
+  function calc(){
+    var tc = parseFloat(document.getElementById('tc').value);
+    var hdl = parseFloat(document.getElementById('hdl').value);
+    var tg = parseFloat(document.getElementById('tg').value);
+    var mhEl = document.getElementById('mh-val');
+    var saEl = document.getElementById('sa-val');
+    var mhDet = document.getElementById('mh-detail');
+    var nhEl = document.getElementById('nonhdl');
+    var warn = document.getElementById('warn');
+    var warnText = document.getElementById('warn-text');
+    var goalRow = document.getElementById('goal-row');
+    var goalText = document.getElementById('goal-text');
+
+    if (!(tc>0) || !(hdl>0) || !(tg>0)) {
+      mhEl.innerHTML = '— <small>mg/dL</small>';
+      saEl.innerHTML = '— <small>mg/dL</small>';
+      nhEl.textContent = '— mg/dL';
+      warn.classList.add('hide');
+      goalRow.classList.add('hide');
+      return;
+    }
+
+    var nonHdl = tc - hdl;
+    nhEl.textContent = Math.round(nonHdl) + ' mg/dL';
+
+    var f = mhFactor(tg, nonHdl);
+    var mh = tc - hdl - (tg / f);
+    var sa = (tc/0.948) - (hdl/0.971) - (tg/8.56 + (tg*nonHdl)/2140 - (tg*tg)/16100) - 9.44;
+
+    mhEl.innerHTML = Math.max(0, Math.round(mh)) + ' <small>mg/dL</small>';
+    saEl.innerHTML = Math.max(0, Math.round(sa)) + ' <small>mg/dL</small>';
+    mhDet.textContent = 'Factor = ' + f.toFixed(1) + ' (TG ' + tg + ', non-HDL ' + Math.round(nonHdl) + ')';
+
+    var ldl = mh;
+    var goalMsg = '';
+    if (ldl < 55) goalMsg = 'LDL < 55 — meets very-high-risk ASCVD goal.';
+    else if (ldl < 70) goalMsg = 'LDL < 70 — meets secondary-prevention and high-risk primary-prevention goal.';
+    else if (ldl < 100) goalMsg = 'LDL < 100 — meets borderline / intermediate-risk primary-prevention goal.';
+    else if (ldl >= 190) goalMsg = 'LDL ≥ 190 — severe hypercholesterolemia; high-intensity statin regardless of risk; consider FH workup.';
+    else if (ldl >= 160) goalMsg = 'LDL 160–189 — risk-enhancing range; consider moderate-intensity statin even if 10-yr risk < 3%.';
+
+    if (goalMsg) { goalRow.classList.remove('hide'); goalText.textContent = goalMsg; }
+    else { goalRow.classList.add('hide'); }
+
+    var msgs = [];
+    if (tg >= 400) msgs.push('TG ≥ 400 — interpret calculated LDL with caution; consider direct LDL measurement or apoB.');
+    if (tg >= 1000) msgs.push('TG ≥ 1000 — pancreatitis risk; aggressive TG-lowering and lipid-specialist referral.');
+
+    if (msgs.length) { warn.classList.remove('hide'); warnText.textContent = msgs.join(' '); }
+    else { warn.classList.add('hide'); }
+  }
+
+  ['tc','hdl','tg'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', calc);
+  });
+  calc();
+})();
+</script>
+</body>
+</html>
