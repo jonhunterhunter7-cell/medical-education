@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ACLS — Running the Code · Quick Sheet</title>
+<style>
+  :root {
+    color-scheme: light;
+    --ink: #111827;
+    --ink-soft: #374151;
+    --muted: #6b7280;
+    --rule: #d1d5db;
+    --accent: #1e40af;
+    --accent-soft: #eff6ff;
+    --warn: #92400e;
+    --warn-soft: #fef3c7;
+    --danger: #991b1b;
+    --danger-soft: #fee2e2;
+    --good: #166534;
+    --good-soft: #dcfce7;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #fafafa; color: var(--ink); }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 9.4px;
+    line-height: 1.32;
+  }
+  .sheet {
+    width: 8.5in;
+    min-height: 11in;
+    margin: 16px auto;
+    padding: 0.30in 0.32in;
+    background: white;
+    box-shadow: 0 2px 14px rgba(0,0,0,0.08);
+    border-radius: 4px;
+  }
+  header.title {
+    border-bottom: 1.5px solid var(--ink);
+    padding-bottom: 4px;
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  header.title h1 { font-size: 14.5px; margin: 0; letter-spacing: -0.01em; }
+  header.title .sub { font-size: 8.4px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .cols { column-count: 2; column-gap: 12px; }
+  @media (max-width: 720px) {
+    .sheet { width: auto; padding: 12px; }
+    .cols { column-count: 1; }
+    body { font-size: 12px; }
+  }
+  section.box {
+    break-inside: avoid;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 4px 6px 5px;
+    margin-bottom: 5px;
+    background: white;
+  }
+  section.box h2 {
+    font-size: 9.6px;
+    margin: 0 0 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1px;
+  }
+  section.box h2 .num { color: var(--muted); margin-right: 4px; }
+  section.accent { background: var(--accent-soft); border-color: var(--accent); }
+  section.warn { background: var(--warn-soft); border-color: var(--warn); }
+  section.warn h2 { color: var(--warn); }
+  section.danger { background: var(--danger-soft); border-color: var(--danger); }
+  section.danger h2 { color: var(--danger); }
+  section.good { background: var(--good-soft); border-color: var(--good); }
+  section.good h2 { color: var(--good); }
+  p { margin: 2px 0; }
+  ul, ol { padding-left: 14px; margin: 1px 0 2px; }
+  ul li, ol li { margin: 0.5px 0; }
+  table { width: 100%; border-collapse: collapse; margin: 2px 0; font-size: 8.9px; }
+  th, td { border: 1px solid var(--rule); padding: 2px 4px; vertical-align: top; text-align: left; }
+  th { background: #f3f4f6; font-weight: 600; }
+  strong.k { color: var(--accent); }
+  strong.d { color: var(--danger); }
+  strong.g { color: var(--good); }
+  .abbr-grid { column-count: 3; column-gap: 10px; font-size: 8.4px; line-height: 1.35; }
+  .abbr-grid div { break-inside: avoid; margin-bottom: 1px; }
+  .abbr-grid b { color: var(--accent); margin-right: 3px; }
+  .footer { margin-top: 4px; font-size: 7.8px; color: var(--muted); text-align: center; border-top: 1px solid var(--rule); padding-top: 3px; }
+  @media print {
+    body { background: white; font-size: 8.6px; line-height: 1.28; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .sheet { box-shadow: none; margin: 0; width: auto; min-height: auto; padding: 0.28in 0.30in; border-radius: 0; }
+    section.box { margin-bottom: 4px; padding: 3px 5px 4px; }
+    section.box h2 { font-size: 9px; }
+    table { font-size: 8.4px; }
+    th, td { padding: 1.5px 3px; }
+    .abbr-grid { font-size: 7.8px; column-count: 4; }
+    @page { size: letter portrait; margin: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<header class="title">
+  <h1>ACLS — Running the Code · Quick Sheet</h1>
+  <span class="sub">AHA 2025 Guidelines · Print one page</span>
+</header>
+
+<section class="box" style="margin-bottom:6px;">
+  <h2><span class="num">0</span>Adult cardiac arrest algorithm — flowchart</h2>
+  <svg viewBox="0 0 740 268" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Adult cardiac arrest universal algorithm" style="width:100%;height:auto;display:block;margin:2px auto;">
+    <defs>
+      <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0,0 L10,5 L0,10 Z" fill="#374151"/>
+      </marker>
+    </defs>
+    <style>
+      .svg-lbl { font: 700 11px sans-serif; fill: #111827; }
+      .svg-lblw { font: 700 11px sans-serif; fill: #ffffff; }
+      .svg-stp { font: 500 10px sans-serif; fill: #1a1f2b; }
+      .svg-stpw { font: 500 10px sans-serif; fill: #ffffff; }
+      .svg-ttl { font: 700 10.5px sans-serif; }
+      .svg-mute { font: 500 9.5px sans-serif; fill: #6b7280; }
+    </style>
+
+    <rect x="270" y="6" width="200" height="34" rx="4" fill="#1e40af"/>
+    <text x="370" y="22" text-anchor="middle" class="svg-lblw">Cardiac arrest recognized</text>
+    <text x="370" y="34" text-anchor="middle" class="svg-stpw">High-quality CPR + pads + monitor</text>
+
+    <line x1="370" y1="40" x2="370" y2="58" stroke="#374151" stroke-width="1.6" marker-end="url(#ah)"/>
+
+    <polygon points="370,60 470,92 370,124 270,92" fill="#fef3c7" stroke="#92400e" stroke-width="1.5"/>
+    <text x="370" y="88" text-anchor="middle" class="svg-lbl">Rhythm check?</text>
+    <text x="370" y="102" text-anchor="middle" class="svg-stp">every 2 min</text>
+
+    <path d="M270,92 L160,92 L160,142" stroke="#374151" stroke-width="1.6" fill="none" marker-end="url(#ah)"/>
+    <text x="215" y="84" text-anchor="middle" class="svg-ttl" fill="#991b1b">SHOCKABLE</text>
+    <text x="215" y="108" text-anchor="middle" class="svg-stp">VF · pVT</text>
+
+    <path d="M470,92 L580,92 L580,142" stroke="#374151" stroke-width="1.6" fill="none" marker-end="url(#ah)"/>
+    <text x="525" y="84" text-anchor="middle" class="svg-ttl" fill="#1e40af">NON-SHOCKABLE</text>
+    <text x="525" y="108" text-anchor="middle" class="svg-stp">Asystole · PEA</text>
+
+    <rect x="15" y="144" width="290" height="98" rx="4" fill="#fee2e2" stroke="#991b1b" stroke-width="1.5"/>
+    <text x="160" y="160" text-anchor="middle" class="svg-ttl" fill="#991b1b">VF / pVT — actions</text>
+    <text x="25" y="178" class="svg-stp">1. SHOCK 120–200 J biphasic (360 J mono)</text>
+    <text x="25" y="192" class="svg-stp">2. CPR × 2 min · IV/IO access</text>
+    <text x="25" y="206" class="svg-stp">3. After 2nd shock → Epi 1 mg q3–5 min</text>
+    <text x="25" y="220" class="svg-stp">4. After 3rd shock → Amio 300 mg → 150 mg</text>
+    <text x="25" y="234" class="svg-stp">   (lidocaine alt; Mg 2 g if torsades)</text>
+
+    <rect x="435" y="144" width="290" height="98" rx="4" fill="#eff6ff" stroke="#1e40af" stroke-width="1.5"/>
+    <text x="580" y="160" text-anchor="middle" class="svg-ttl" fill="#1e40af">Asystole / PEA — actions</text>
+    <text x="445" y="178" class="svg-stp">1. DO NOT shock · continue CPR</text>
+    <text x="445" y="192" class="svg-stp">2. Epi 1 mg IV/IO ASAP, then q3–5 min</text>
+    <text x="445" y="206" class="svg-stp">3. Aggressive H's &amp; T's hunt (§4)</text>
+    <text x="445" y="220" class="svg-stp">4. Confirm asystole in 2 leads (fine VF mimics)</text>
+    <text x="445" y="234" class="svg-stp">5. PoCUS at next pulse check (&lt; 10 s)</text>
+
+    <path d="M160,242 L160,256 L370,256 L370,124" stroke="#6b7280" stroke-width="1.4" fill="none" stroke-dasharray="3,3" marker-end="url(#ah)"/>
+    <path d="M580,242 L580,256 L375,256" stroke="#6b7280" stroke-width="1.4" fill="none" stroke-dasharray="3,3"/>
+    <text x="370" y="266" text-anchor="middle" class="svg-mute">Loop · pulse + rhythm every 2 min until ROSC or termination</text>
+
+    <rect x="630" y="58" width="105" height="34" rx="4" fill="#dcfce7" stroke="#166534" stroke-width="1.5"/>
+    <text x="682" y="74" text-anchor="middle" class="svg-ttl" fill="#166534">If ROSC</text>
+    <text x="682" y="86" text-anchor="middle" class="svg-stp">→ §7 Post-arrest</text>
+  </svg>
+</section>
+
+<div class="cols">
+
+<section class="box danger">
+  <h2><span class="num">1</span>Adult Cardiac Arrest — universal flow</h2>
+  <ol>
+    <li>Verify unresponsive · activate code · start <strong class="d">high-quality CPR</strong>.</li>
+    <li>Attach pads / monitor <strong class="d">ASAP</strong> — read rhythm.</li>
+    <li>Branch to <strong class="k">Shockable</strong> (VF / pVT) <em>or</em> <strong class="k">Non-shockable</strong> (asystole / PEA).</li>
+    <li>Pulse + rhythm checks every <strong class="d">2 min</strong>; switch compressor each cycle.</li>
+    <li>Treat <strong class="k">H's &amp; T's</strong> in parallel.</li>
+    <li>If ROSC → post-arrest care (§7).</li>
+  </ol>
+  <p><strong class="d">High-quality CPR:</strong> rate <strong>100–120/min</strong>; depth <strong>2–2.4 in (5–6 cm)</strong> — <strong>avoid &gt; 6 cm (2025)</strong>; full chest recoil; minimize interruptions (compression fraction &gt; 60%); firm surface; 30:2 pre-airway; 1 breath / 6 sec (10/min) post-airway. Avoid hyperventilation. Continuous waveform <strong class="k">EtCO₂</strong>: confirms tube, gauges CPR quality, signals ROSC.</p>
+  <p><strong class="k">Unified 6-link Chain of Survival (2025):</strong> recognition → activation → high-quality CPR → early defibrillation → post-arrest care → recovery.</p>
+</section>
+
+<section class="box accent">
+  <h2><span class="num">2</span>VF / pulseless VT (Shockable)</h2>
+  <ol>
+    <li><strong class="d">SHOCK</strong> 120–200 J biphasic (or 360 J mono); resume CPR <em>immediately</em> × 2 min.</li>
+    <li>Rhythm check → if persistent VF/pVT, <strong class="d">SHOCK</strong> again. Establish IV/IO.</li>
+    <li><strong class="k">Epinephrine 1 mg IV/IO q3–5 min</strong> (after 2nd shock).</li>
+    <li>Resume CPR × 2 min → rhythm check → <strong class="d">SHOCK</strong> if persistent.</li>
+    <li><strong class="k">Amiodarone 300 mg IV bolus</strong> (after 3rd shock); repeat 150 mg once. <em>Or</em> <strong class="k">lidocaine 1–1.5 mg/kg</strong>, then 0.5–0.75 mg/kg.</li>
+    <li>Treat reversible causes (§4). Consider advanced airway (ETT or supraglottic).</li>
+    <li><strong class="k">Refractory VF:</strong> vector change &amp; double-sequential defibrillation usefulness <strong class="d">NOT established</strong> (2025; recurrent VF after a successful shock is more common than true shock failure); consider IV β-blocker (esmolol), Mg if torsades, eCPR if program available.</li>
+  </ol>
+</section>
+
+<section class="box accent">
+  <h2><span class="num">3</span>Asystole / PEA (Non-shockable)</h2>
+  <ol>
+    <li>CPR continues; <strong class="d">do NOT shock</strong>.</li>
+    <li><strong class="k">Epinephrine 1 mg IV/IO ASAP</strong>, then q3–5 min.</li>
+    <li>Aggressive H's &amp; T's hunt — PEA is a cause-driven rhythm.</li>
+    <li>Confirm asystole in ≥ 2 leads / increase gain — fine VF can mimic.</li>
+    <li>Consider advanced airway; capnography (EtCO₂ &lt; 10 mmHg with high-quality CPR for 20 min and no reversible cause = poor prognosis → discuss termination).</li>
+    <li>Bedside echo (PoCUS) at pulse check (&lt; 10 sec): tamponade, RV strain, cardiac standstill.</li>
+  </ol>
+</section>
+
+<section class="box warn">
+  <h2><span class="num">4</span>Reversible causes — H's &amp; T's</h2>
+  <table>
+    <tr><th>H's</th><th>T's</th></tr>
+    <tr><td><strong>Hypovolemia</strong> — IVF, blood</td><td><strong>Tension PTX</strong> — needle decompress (2nd ICS MCL or 5th ICS AAL) → chest tube</td></tr>
+    <tr><td><strong>Hypoxia</strong> — O₂, airway</td><td><strong>Tamponade</strong> — pericardiocentesis (PoCUS-guided)</td></tr>
+    <tr><td><strong>H+ acidosis</strong> — ventilate; bicarb if pre-existing acidosis or TCA OD</td><td><strong>Toxins</strong> — naloxone (opioid), bicarb (TCA), Ca + insulin/glucose (CCB/BB), digoxin Fab, intralipid (LAST)</td></tr>
+    <tr><td><strong>Hyper-/hypoK⁺</strong> — Ca gluconate, insulin/D50, bicarb / replete K⁺ &amp; Mg</td><td><strong>Thrombosis — pulmonary (PE)</strong> — alteplase 50 mg IV; CPR ≥ 60–90 min after</td></tr>
+    <tr><td><strong>Hypothermia</strong> — rewarm; "not dead until warm and dead"</td><td><strong>Thrombosis — coronary (MI)</strong> — emergent PCI post-ROSC</td></tr>
+    <tr><td><strong>Hypoglycemia</strong> — D50 25–50 mL IV</td><td><strong>Trauma</strong> — control hemorrhage; resuscitative thoracotomy if penetrating</td></tr>
+  </table>
+</section>
+
+<section class="box">
+  <h2><span class="num">5</span>Bradycardia (HR &lt; 50, symptomatic)</h2>
+  <ol>
+    <li>Assess perfusion: hypotension, AMS, ischemic pain, acute HF, shock?</li>
+    <li><strong class="k">Atropine 1 mg IV q3–5 min, max 3 mg</strong> (2020 update; previously 0.5 mg).</li>
+    <li>If atropine fails or unstable → <strong class="k">transcutaneous pacing</strong> + analgesia/sedation.</li>
+    <li>Or chronotropic infusion: <strong>dopamine 5–20 mcg/kg/min</strong> or <strong>epinephrine 2–10 mcg/min</strong>.</li>
+    <li>Treat cause (ischemia, drug effect, ↑K, hypothyroid). Transvenous pacing if persistent.</li>
+    <li><em>Avoid atropine</em> in 2°-Mobitz II / 3° block with wide QRS — escape may worsen; pace.</li>
+  </ol>
+</section>
+
+<section class="box">
+  <h2><span class="num">6</span>Tachycardia with pulse (HR &gt; 150 typical)</h2>
+  <p><strong class="d">Unstable</strong> (hypotension, AMS, ischemia, acute HF) → <strong class="d">synchronized cardioversion</strong>:</p>
+  <table>
+    <tr><th>Rhythm</th><th>Energy (biphasic)</th></tr>
+    <tr><td>Narrow regular (SVT, atrial flutter)</td><td>50–100 J</td></tr>
+    <tr><td>Narrow irregular (AF)</td><td>120–200 J</td></tr>
+    <tr><td>Wide regular (monomorphic VT)</td><td>100 J</td></tr>
+    <tr><td>Wide <strong class="d">irregular</strong> (poly VT, AF + WPW)</td><td><strong class="d">DEFIB unsynchronized</strong></td></tr>
+  </table>
+  <p><strong class="k">Stable</strong>:</p>
+  <ul>
+    <li><strong>Narrow regular:</strong> vagal → <strong>adenosine 6 mg → 12 mg → 12 mg</strong> rapid IV push + flush.</li>
+    <li><strong>Narrow irregular (AF/flutter):</strong> rate control (diltiazem, metoprolol); anticoagulate per CHA₂DS₂-VASc.</li>
+    <li><strong>Wide regular monomorphic VT:</strong> <strong>amiodarone 150 mg over 10 min</strong> (may repeat); or procainamide; or sotalol. Adenosine OK if presumed SVT-with-aberrancy.</li>
+    <li><strong>Wide irregular:</strong> assume polymorphic VT or pre-excited AF — <strong class="d">avoid AV-nodal blockers</strong>; Mg 2 g for torsades; cardiovert.</li>
+  </ul>
+</section>
+
+<section class="box good">
+  <h2><span class="num">7</span>Post-ROSC care</h2>
+  <ul>
+    <li><strong class="g">Airway/Breathing:</strong> SpO₂ <strong>94–98% (2025)</strong> or PaO₂ 60–105 mmHg (avoid hyperoxia); PaCO₂ 35–45; 10 breaths/min; <strong>do not hyperventilate</strong>.</li>
+    <li><strong class="g">Hemodynamics:</strong> SBP &gt; 90 / MAP &gt; 65 — IVF + norepinephrine 0.1–0.5 mcg/kg/min, epinephrine 0.1–0.5 mcg/kg/min, or dopamine 5–20 mcg/kg/min.</li>
+    <li><strong class="g">12-lead ECG</strong> immediately. <strong>STEMI / new LBBB / shock-refractory VT/VF / suspected ACS</strong> → emergent cath.</li>
+    <li><strong class="g">Temperature control (2025):</strong> 32–37.5 °C × <strong>≥ 36 h</strong> if comatose. Shift from routine hypothermia → active fever prevention / controlled normothermia. Acceptable: 32–34 °C → 36–37.5 °C, OR 36–37.5 °C alone. Avoid fever × 72 h.</li>
+    <li>Glucose 140–180; treat seizures (continuous EEG if comatose); neuroprognostication only after ≥ 72 h (longer if TTM).</li>
+  </ul>
+</section>
+
+<section class="box">
+  <h2><span class="num">8</span>Drug doses (cardiac arrest &amp; peri-arrest)</h2>
+  <table>
+    <tr><th>Drug</th><th>Indication</th><th>Dose</th></tr>
+    <tr><td>Epinephrine</td><td>Arrest</td><td><strong class="k">1 mg IV/IO q3–5 min</strong></td></tr>
+    <tr><td>Epinephrine</td><td>Brady / post-ROSC</td><td>2–10 mcg/min infusion</td></tr>
+    <tr><td>Amiodarone</td><td>VF/pVT</td><td>300 mg bolus → 150 mg ×1</td></tr>
+    <tr><td>Amiodarone</td><td>Stable VT</td><td>150 mg over 10 min; 1 mg/min × 6 h, then 0.5 mg/min</td></tr>
+    <tr><td>Lidocaine</td><td>VF/pVT (alt)</td><td>1–1.5 mg/kg → 0.5–0.75 mg/kg; max 3 mg/kg</td></tr>
+    <tr><td>Atropine</td><td>Symptomatic brady</td><td>1 mg IV q3–5 min, max 3 mg</td></tr>
+    <tr><td>Adenosine</td><td>Stable narrow-regular SVT</td><td>6 mg → 12 mg → 12 mg fast IV push</td></tr>
+    <tr><td>Magnesium sulfate</td><td>Torsades / hypoMg</td><td>1–2 g IV over 10–20 min</td></tr>
+    <tr><td>Calcium gluconate (10%)</td><td>HyperK, hypoCa, CCB OD</td><td>1 g (10 mL) IV; CaCl₂ via central line</td></tr>
+    <tr><td>Sodium bicarbonate</td><td>Pre-existing acidosis, TCA OD, hyperK</td><td>1 mEq/kg IV</td></tr>
+    <tr><td>Naloxone</td><td>Opioid OD</td><td>0.4–2 mg IV/IM/IN</td></tr>
+    <tr><td>Dextrose 50%</td><td>Hypoglycemia</td><td>25 g (50 mL) IV</td></tr>
+    <tr><td>Alteplase</td><td>Suspected massive PE</td><td>50 mg IV bolus during arrest</td></tr>
+  </table>
+  <p><strong class="d">Not recommended routinely:</strong> vasopressin (2015); atropine for asystole/PEA; bicarb, Ca, Mg, steroids unless specific indication (reaffirmed 2025); <em>sotalol</em> in arrest. <strong class="k">2025:</strong> IV access preferred over IO (IO acceptable when IV not promptly obtainable); mechanical CPR <em>not</em> routine — only when manual CPR not feasible (e.g., transport).</p>
+</section>
+
+<section class="box accent">
+  <h2><span class="num">9</span>Energy doses</h2>
+  <table>
+    <tr><th>Indication</th><th>Energy (biphasic)</th></tr>
+    <tr><td>Defib VF/pVT</td><td>120–200 J (or device-specific); subsequent ≥ same</td></tr>
+    <tr><td>Defib VF/pVT (monophasic)</td><td>360 J</td></tr>
+    <tr><td>Sync cardiovert SVT / atrial flutter</td><td>50–100 J</td></tr>
+    <tr><td>Sync cardiovert AF</td><td>120–200 J</td></tr>
+    <tr><td>Sync cardiovert monomorphic VT</td><td>100 J</td></tr>
+    <tr><td>Polymorphic VT / pre-excited AF</td><td>Defib (unsynchronized)</td></tr>
+    <tr><td>Pediatric defib</td><td>2 J/kg → 4 J/kg → up to 10 J/kg</td></tr>
+  </table>
+</section>
+
+<section class="box danger">
+  <h2><span class="num">10</span>Pearls — running the code</h2>
+  <ul>
+    <li><strong class="d">Compressions over everything.</strong> Compression fraction &gt; 60% predicts ROSC.</li>
+    <li>Pulse check ≤ <strong>10 sec</strong>; if uncertain, resume CPR.</li>
+    <li><strong class="d">Don't stop CPR for IV access or intubation.</strong></li>
+    <li>EtCO₂ <strong>sudden ↑ &gt; 10 mmHg</strong> = ROSC (check pulse).</li>
+    <li>EtCO₂ &lt; 10 mmHg after 20 min good CPR with no reversible cause → consider termination.</li>
+    <li>Defib first if <strong>witnessed VF/pVT</strong> with pads ready (don't delay shock for CPR).</li>
+    <li>Stack chest compressions <em>during</em> charging to minimize peri-shock pause.</li>
+    <li>Hands-off only for shock + pulse/rhythm check; everything else (epi, intubation, IV) continues compressions.</li>
+    <li>"Asystole" — confirm leads attached, gain up, two leads — fine VF mimics.</li>
+    <li>PEA → <strong class="d">think volume + reversible cause</strong> first; bedside echo at next pulse check.</li>
+    <li>Refractory VF: vector change / double-sequential defib <strong class="d">usefulness not established (2025)</strong> — recurrent VF after a successful shock is more common than shock failure; consider esmolol, Mg, eCPR.</li>
+    <li><strong class="d">Mechanical CPR devices</strong> not routine (2025) — consider only when manual CPR not feasible/safe (e.g., transport).</li>
+    <li><strong class="d">Electrical pacing not useful</strong> in established cardiac arrest (2025) — pacing is for symptomatic bradycardia, not pulseless rhythms.</li>
+    <li><strong class="k">IV access preferred over IO</strong> (2025); IO acceptable when IV cannot be obtained promptly.</li>
+    <li>Pregnancy ≥ 20 wk: <strong class="d">left uterine displacement</strong>; <strong class="d">perimortem C-section by 4 min</strong> if no ROSC.</li>
+    <li>Hyperkalemia arrest: Ca gluconate first (membrane stabilization), then insulin/D50, bicarb.</li>
+    <li>TCA OD with wide QRS: NaHCO₃ 1–2 mEq/kg until QRS narrows or pH 7.5.</li>
+    <li>β-blocker / CCB OD: glucagon, calcium, high-dose insulin euglycemia (1 U/kg bolus → 1 U/kg/h).</li>
+    <li>Local-anesthetic toxicity (LAST): <strong>intralipid 20%</strong> 1.5 mL/kg bolus → 0.25 mL/kg/min.</li>
+    <li>Coronary perfusion pressure &gt; 15 mmHg needed for ROSC (aortic diastolic – RA diastolic).</li>
+  </ul>
+</section>
+
+<section class="box">
+  <h2><span class="num">11</span>Team leadership &amp; closed-loop</h2>
+  <ul>
+    <li>Designate <strong class="k">code leader</strong>; leader stands at foot of bed, hands off.</li>
+    <li>Roles: <strong>compressor (×2 swap q2 min)</strong>, airway, monitor/defib, IV/IO + meds, recorder, leader, family liaison.</li>
+    <li><strong class="k">Closed-loop</strong> orders: "Epi 1 mg IV — given by Sara at 10:14."</li>
+    <li>Verbalize at each pulse check: rhythm, time of last epi, time of last shock, EtCO₂, H's &amp; T's status.</li>
+    <li>Family presence with a dedicated support person if requested.</li>
+    <li><strong class="k">Debrief</strong> — immediate or delayed (formal recommendation, 2025); document times, drugs, shocks, ROSC time.</li>
+  </ul>
+</section>
+
+<section class="box warn">
+  <h2><span class="num">12</span>When to stop</h2>
+  <ul>
+    <li>Sustained ROSC.</li>
+    <li>Rhythm asystole &gt; 20 min with high-quality CPR, EtCO₂ &lt; 10 mmHg, no reversible cause.</li>
+    <li>Reversible causes addressed and refractory.</li>
+    <li>Documented advance directive (DNR/POLST) discovered.</li>
+    <li>Provider safety threatened.</li>
+    <li>Special: hypothermia &amp; toxin/PE/pregnancy → CPR longer; eCPR if program available.</li>
+  </ul>
+</section>
+
+</div>
+
+<section class="box" style="margin-top:2px;">
+  <h2><span class="num">13</span>Abbreviations</h2>
+  <div class="abbr-grid">
+    <div><b>AAL</b>anterior axillary line</div>
+    <div><b>ACLS</b>Advanced Cardiovascular Life Support</div>
+    <div><b>ACS</b>acute coronary syndrome</div>
+    <div><b>AF</b>atrial fibrillation</div>
+    <div><b>AHA</b>American Heart Association</div>
+    <div><b>AMS</b>altered mental status</div>
+    <div><b>AP</b>anterior–posterior (pad position)</div>
+    <div><b>BB</b>beta blocker</div>
+    <div><b>BLS</b>basic life support</div>
+    <div><b>Ca</b>calcium · <b>CaCl₂</b>calcium chloride</div>
+    <div><b>CCB</b>calcium-channel blocker</div>
+    <div><b>CHA₂DS₂-VASc</b>AF stroke-risk score</div>
+    <div><b>CPR</b>cardiopulmonary resuscitation</div>
+    <div><b>D50</b>50% dextrose</div>
+    <div><b>DNR</b>do-not-resuscitate</div>
+    <div><b>eCPR</b>extracorporeal CPR (VA-ECMO)</div>
+    <div><b>EEG</b>electroencephalogram</div>
+    <div><b>ETT</b>endotracheal tube</div>
+    <div><b>EtCO₂</b>end-tidal CO₂ (capnography)</div>
+    <div><b>HF</b>heart failure</div>
+    <div><b>HR</b>heart rate</div>
+    <div><b>ICS</b>intercostal space</div>
+    <div><b>IO</b>intraosseous</div>
+    <div><b>IV</b>intravenous · <b>IVF</b>IV fluids</div>
+    <div><b>K⁺</b>potassium · <b>Mg</b>magnesium</div>
+    <div><b>LAST</b>local-anesthetic systemic toxicity</div>
+    <div><b>LBBB</b>left bundle branch block</div>
+    <div><b>MAP</b>mean arterial pressure</div>
+    <div><b>MCL</b>midclavicular line</div>
+    <div><b>MI</b>myocardial infarction</div>
+    <div><b>NaHCO₃</b>sodium bicarbonate</div>
+    <div><b>OD</b>overdose</div>
+    <div><b>PCI</b>percutaneous coronary intervention</div>
+    <div><b>PE</b>pulmonary embolism</div>
+    <div><b>PEA</b>pulseless electrical activity</div>
+    <div><b>POLST</b>physician orders for life-sustaining tx</div>
+    <div><b>PoCUS</b>point-of-care ultrasound</div>
+    <div><b>pVT</b>pulseless ventricular tachycardia</div>
+    <div><b>PTX</b>pneumothorax</div>
+    <div><b>RA</b>right atrium</div>
+    <div><b>ROSC</b>return of spontaneous circulation</div>
+    <div><b>RV</b>right ventricle</div>
+    <div><b>SBP</b>systolic blood pressure</div>
+    <div><b>SpO₂</b>peripheral oxygen saturation</div>
+    <div><b>STEMI</b>ST-elevation MI</div>
+    <div><b>SVT</b>supraventricular tachycardia</div>
+    <div><b>TCA</b>tricyclic antidepressant</div>
+    <div><b>TTM</b>targeted temperature management</div>
+    <div><b>VA-ECMO</b>veno-arterial extracorporeal membrane oxygenation</div>
+    <div><b>VF</b>ventricular fibrillation</div>
+    <div><b>VT</b>ventricular tachycardia</div>
+    <div><b>WPW</b>Wolff-Parkinson-White</div>
+  </div>
+</section>
+
+<div class="footer">
+  Anchored to AHA 2025 Guidelines for CPR &amp; ECC (Circulation, Oct 2025) · ILCOR consensus statements. Educational use; defer to local protocols and current AHA labeling at the bedside.
+</div>
+
+</div>
+</body>
+</html>
