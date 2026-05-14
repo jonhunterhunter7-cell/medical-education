@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnostic Reasoning Under Uncertainty — IM Resident Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+  :root {
+    --navy: #1a2d4f;
+    --navy-dark: #0f1d36;
+    --blue-dark: #1e4d8c;
+    --blue-mid: #2e6dbe;
+    --blue-light: #5b9bd5;
+    --blue-pale: #dce9f8;
+    --teal: #2a7d8c;
+    --teal-light: #4aabb8;
+    --teal-pale: #d9f0f5;
+    --green-mid: #3a8a63;
+    --green-pale: #d4edda;
+    --orange: #c0622a;
+    --orange-pale: #fce5d4;
+    --red: #a52a2a;
+    --red-pale: #f5d6d6;
+    --amber: #c07a20;
+    --amber-pale: #fdf0d5;
+    --purple: #5b4a8a;
+    --purple-pale: #e8e0f5;
+    --gray-light: #f4f6f9;
+    --gray-mid: #e2e7ee;
+    --gray-border: #cdd5e0;
+    --text-dark: #1a2030;
+    --text-mid: #3a4558;
+    --text-light: #6a7488;
+    --white: #ffffff;
+    --shadow: 0 2px 8px rgba(26,45,79,0.10);
+    --shadow-lg: 0 4px 18px rgba(26,45,79,0.16);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: #eef2f7;
+    color: var(--text-dark);
+    line-height: 1.55;
+    font-size: 15px;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    max-width: 1280px;
+    margin: 0 auto;
+    min-height: 100vh;
+  }
+
+  /* SIDEBAR */
+  aside {
+    background: var(--navy);
+    color: white;
+    padding: 28px 22px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  aside .brand {
+    font-family: 'Source Serif 4', serif;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.25;
+    padding-bottom: 14px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+  }
+  aside .brand small {
+    display: block;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--blue-light);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+  aside nav a {
+    display: block;
+    color: rgba(255,255,255,0.78);
+    text-decoration: none;
+    padding: 7px 10px;
+    font-size: 13px;
+    border-left: 2px solid transparent;
+    border-radius: 0 4px 4px 0;
+    margin-bottom: 2px;
+    transition: all 0.15s;
+  }
+  aside nav a:hover {
+    background: rgba(255,255,255,0.06);
+    color: white;
+    border-left-color: var(--blue-light);
+  }
+  aside nav a.active {
+    background: rgba(91,155,213,0.18);
+    color: white;
+    border-left-color: var(--blue-light);
+    font-weight: 600;
+  }
+  aside nav .num {
+    display: inline-block;
+    width: 22px;
+    color: var(--blue-light);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* MAIN */
+  main {
+    background: white;
+    padding: 40px 56px 60px;
+    box-shadow: var(--shadow-lg);
+  }
+
+  header.title-bar {
+    border-bottom: 3px solid var(--blue-mid);
+    padding-bottom: 22px;
+    margin-bottom: 32px;
+  }
+  header.title-bar .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--teal);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 8px;
+  }
+  header.title-bar h1 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 30px;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  header.title-bar .subtitle {
+    font-family: 'Source Serif 4', serif;
+    font-style: italic;
+    color: var(--text-mid);
+    font-size: 16px;
+  }
+
+  section {
+    margin-bottom: 44px;
+    scroll-margin-top: 20px;
+  }
+  section h2 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--gray-mid);
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  section h2 .sec-num {
+    color: var(--blue-mid);
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Source Sans 3', sans-serif;
+    letter-spacing: 0.05em;
+  }
+  section h3 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--navy);
+    margin: 20px 0 10px;
+  }
+  section p { margin-bottom: 12px; color: var(--text-dark); }
+  section ul, section ol { margin: 8px 0 14px 22px; }
+  section li { margin-bottom: 6px; }
+  section strong { color: var(--navy); font-weight: 600; }
+  section em { font-style: italic; color: var(--text-mid); }
+
+  /* CALLOUTS */
+  .callout {
+    border-left: 4px solid;
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 14px 0;
+    font-size: 14.5px;
+  }
+  .callout .label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 5px;
+  }
+  .callout p:last-child { margin-bottom: 0; }
+
+  .pearl { background: var(--amber-pale); border-color: var(--amber); }
+  .pearl .label { color: var(--amber); }
+  .warning { background: var(--red-pale); border-color: var(--red); }
+  .warning .label { color: var(--red); }
+  .info { background: var(--blue-pale); border-color: var(--blue-mid); }
+  .info .label { color: var(--blue-dark); }
+  .tip { background: var(--teal-pale); border-color: var(--teal); }
+  .tip .label { color: var(--teal); }
+  .quote { background: var(--purple-pale); border-color: var(--purple); font-family: 'Source Serif 4', serif; font-style: italic; }
+  .quote .label { color: var(--purple); font-style: normal; font-family: 'Source Sans 3', sans-serif; }
+
+  /* TABLES */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 13.5px;
+    background: white;
+    border: 1px solid var(--gray-border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  th {
+    background: var(--navy);
+    color: white;
+    text-align: left;
+    padding: 10px 14px;
+    font-weight: 600;
+    font-size: 12.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  td {
+    padding: 9px 14px;
+    border-top: 1px solid var(--gray-mid);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: var(--gray-light); }
+
+  /* BIAS CARDS */
+  .bias-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin: 14px 0;
+  }
+  .bias {
+    border: 1px solid var(--gray-border);
+    border-left: 4px solid var(--orange);
+    border-radius: 6px;
+    padding: 12px 16px;
+    background: var(--white);
+  }
+  .bias h4 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .bias .example {
+    font-size: 13.5px;
+    color: var(--text-mid);
+    font-style: italic;
+  }
+
+  /* DUAL PROCESS */
+  .dual {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 14px 0;
+  }
+  .dual .col {
+    border: 1px solid var(--gray-border);
+    border-radius: 8px;
+    padding: 16px 18px;
+  }
+  .dual .col.s1 { background: var(--orange-pale); border-color: var(--orange); }
+  .dual .col.s2 { background: var(--teal-pale); border-color: var(--teal); }
+  .dual h4 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--navy);
+  }
+  .dual h4 small {
+    display: block;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 10.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-mid);
+  }
+  .dual ul { margin: 6px 0 0 20px; font-size: 13.5px; }
+
+  /* TECHNIQUE LIST */
+  .techniques {
+    margin: 14px 0;
+  }
+  .technique {
+    border-bottom: 1px solid var(--gray-mid);
+    padding: 14px 0;
+  }
+  .technique:last-child { border-bottom: none; }
+  .technique h4 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .technique h4::before {
+    content: "▸";
+    color: var(--blue-mid);
+    font-size: 13px;
+  }
+
+  /* QUESTION LIST */
+  .questions {
+    background: var(--gray-light);
+    border-left: 4px solid var(--blue-mid);
+    padding: 16px 22px;
+    border-radius: 0 6px 6px 0;
+    margin: 14px 0;
+  }
+  .questions ul { margin-left: 18px; }
+  .questions li {
+    font-family: 'Source Serif 4', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+
+  /* ROUTINE BOXES */
+  .routines {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 14px 0;
+  }
+  .routine {
+    background: white;
+    border: 1px solid var(--gray-border);
+    border-top: 3px solid var(--teal);
+    border-radius: 6px;
+    padding: 14px 16px;
+  }
+  .routine h4 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--teal);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+  }
+  .routine p {
+    font-size: 13.5px;
+    margin-bottom: 0;
+    color: var(--text-dark);
+  }
+  .routine em {
+    display: block;
+    margin-top: 6px;
+    font-size: 13px;
+    color: var(--text-mid);
+  }
+
+  footer.doc-foot {
+    margin-top: 50px;
+    padding-top: 22px;
+    border-top: 2px solid var(--gray-mid);
+    font-size: 12px;
+    color: var(--text-light);
+    text-align: center;
+  }
+
+  @media print {
+    body { background: white; font-size: 11pt; }
+    .layout { grid-template-columns: 1fr; }
+    aside { display: none; }
+    main { box-shadow: none; padding: 20px; }
+    section { page-break-inside: avoid; }
+  }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    aside { position: relative; height: auto; }
+    main { padding: 28px 22px; }
+    .dual, .routines { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <aside>
+    <div class="brand">
+      <small>IM Resident Guide</small>
+      Diagnostic Reasoning Under Uncertainty
+    </div>
+    <nav>
+      <a href="#s1"><span class="num">1.</span>The Core Problem</a>
+      <a href="#s2"><span class="num">2.</span>Dual-Process Theory</a>
+      <a href="#s3"><span class="num">3.</span>Pre-Test Probability</a>
+      <a href="#s4"><span class="num">4.</span>Likelihood Ratios</a>
+      <a href="#s5"><span class="num">5.</span>Cognitive Biases</a>
+      <a href="#s6"><span class="num">6.</span>Error-Reduction Techniques</a>
+      <a href="#s7"><span class="num">7.</span>When to Stop Testing</a>
+      <a href="#s8"><span class="num">8.</span>Calibration</a>
+      <a href="#s9"><span class="num">9.</span>Illness Scripts</a>
+      <a href="#s10"><span class="num">10.</span>Metacognition</a>
+      <a href="#s11"><span class="num">11.</span>Feedback Loops</a>
+      <a href="#s12"><span class="num">12.</span>Practical Routines</a>
+      <a href="#s13"><span class="num">13.</span>Resources</a>
+    </nav>
+  </aside>
+
+  <main>
+
+    <header class="title-bar">
+      <div class="eyebrow">Internal Medicine Resident Guide · Clinical Reasoning</div>
+      <h1>Diagnostic Reasoning Under Uncertainty</h1>
+      <div class="subtitle">The hardest skill in medicine. Feedback is rare, slow, and often wrong.</div>
+    </header>
+
+    <!-- 1 -->
+    <section id="s1">
+      <h2><span class="sec-num">01</span>The Core Problem</h2>
+      <p>Medical education trains you to memorize diseases. Clinical medicine asks you to reason about patients. These are not the same skill.</p>
+      <div class="dual">
+        <div class="col s1">
+          <h4>Disease-Based Thinking <small>What you learned in school</small></h4>
+          <p style="font-style:italic;font-family:'Source Serif 4',serif;">"What are the causes of hyponatremia?"</p>
+        </div>
+        <div class="col s2">
+          <h4>Patient-Based Thinking <small>What clinical medicine requires</small></h4>
+          <p style="font-style:italic;font-family:'Source Serif 4',serif;">"Why does <strong>this</strong> patient have hyponatremia, given everything else I know?"</p>
+        </div>
+      </div>
+      <p>The second is harder. It requires you to integrate, weight, and revise — not recall.</p>
+    </section>
+
+    <!-- 2 -->
+    <section id="s2">
+      <h2><span class="sec-num">02</span>Dual-Process Theory</h2>
+      <p>Two systems run in parallel when you see a patient.</p>
+      <div class="dual">
+        <div class="col s1">
+          <h4>System 1 <small>Fast · Intuitive · Pattern recognition</small></h4>
+          <ul>
+            <li>"This looks like CHF."</li>
+            <li>Built from experience</li>
+            <li>Fast, often right</li>
+            <li>Fails on atypical presentations</li>
+          </ul>
+        </div>
+        <div class="col s2">
+          <h4>System 2 <small>Slow · Analytic · Hypothesis testing</small></h4>
+          <ul>
+            <li>Working through differentials</li>
+            <li>Probability, weighting evidence</li>
+            <li>Effortful, more accurate on complex cases</li>
+            <li>Exhausting if used on everything</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout pearl">
+        <div class="label">★ Where Errors Happen</div>
+        <p>Experts use System 1 most of the time and switch to System 2 when something feels off. Novices use System 2 for everything (slow, exhausting). <strong>Mid-trainees over-rely on System 1 before they have the pattern library to support it</strong> — this is when most diagnostic errors happen.</p>
+      </div>
+      <p><strong>The skill:</strong> Knowing when to switch to System 2. Triggers include atypical features, treatment failure, multiple comorbidities, and the feeling that something doesn't fit.</p>
+    </section>
+
+    <!-- 3 -->
+    <section id="s3">
+      <h2><span class="sec-num">03</span>Pre-Test Probability</h2>
+      <p>Every test result must be interpreted against what you already believed.</p>
+      <table>
+        <thead><tr><th>Pre-Test Probability</th><th>Test Result</th><th>Interpretation</th></tr></thead>
+        <tbody>
+          <tr><td>Low</td><td>Positive</td><td>Likely <strong>false positive</strong></td></tr>
+          <tr><td>High</td><td>Negative</td><td>Likely <strong>false negative</strong></td></tr>
+          <tr><td>Middle of differential</td><td>Either</td><td>Most informative</td></tr>
+        </tbody>
+      </table>
+      <p>This is why screening tests in low-prevalence populations generate so many false positives, and why a "negative" D-dimer in a patient with a Wells score of 6 is dangerous.</p>
+      <div class="callout tip">
+        <div class="label">✓ Practical Rule</div>
+        <p>Before ordering a test, ask: "What will I do if it's positive? What will I do if it's negative?" If the answer is the same, <strong>don't order it.</strong></p>
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section id="s4">
+      <h2><span class="sec-num">04</span>Likelihood Ratios — The Tool Most Residents Skip</h2>
+      <p>Sensitivity and specificity tell you about the test. <strong>Likelihood ratios tell you about the patient.</strong></p>
+      <div class="callout info">
+        <div class="label">ℹ Formula</div>
+        <p style="font-family:'Source Serif 4',serif;font-style:italic;text-align:center;font-size:16px;">Post-test odds = Pre-test odds × LR</p>
+      </div>
+      <h3>Useful Shortcuts</h3>
+      <table>
+        <thead><tr><th>Value</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td>LR+ &gt;10 or LR− &lt;0.1</td><td>Result substantially changes probability</td></tr>
+          <tr><td>LR ≈ 1</td><td>Useless test — doesn't change anything</td></tr>
+          <tr><td>LR+ 2–5 or LR− 0.2–0.5</td><td>Modest effect</td></tr>
+        </tbody>
+      </table>
+      <p>You don't need to do the math. You need to know which tests have strong LRs.</p>
+      <ul>
+        <li><strong>High LR+ tests:</strong> HIV ELISA, pregnancy test, ANA in lupus</li>
+        <li><strong>High LR− tests:</strong> D-dimer (in low-risk PE), troponin (in low-risk chest pain)</li>
+        <li><strong>Weak tests:</strong> ESR, CRP, isolated lab values without clinical context</li>
+      </ul>
+    </section>
+
+    <!-- 5 -->
+    <section id="s5">
+      <h2><span class="sec-num">05</span>The Common Cognitive Biases</h2>
+      <p>Know them by name. Naming them lets you catch yourself.</p>
+      <div class="bias-grid">
+        <div class="bias">
+          <h4>Anchoring</h4>
+          <p>Locking onto the first diagnosis and failing to revise.</p>
+          <p class="example">ED says "CHF exacerbation"; you accept it and miss the PE.</p>
+        </div>
+        <div class="bias">
+          <h4>Premature Closure</h4>
+          <p>Stopping the differential when you have one good fit, before considering alternatives.</p>
+        </div>
+        <div class="bias">
+          <h4>Availability Bias</h4>
+          <p>Overweighting diagnoses you saw recently.</p>
+          <p class="example">You just admitted a TTP case; now every thrombocytopenia looks like TTP.</p>
+        </div>
+        <div class="bias">
+          <h4>Confirmation Bias</h4>
+          <p>Seeking data that supports your working diagnosis; discounting data that contradicts it.</p>
+        </div>
+        <div class="bias">
+          <h4>Diagnostic Momentum</h4>
+          <p>Inheriting a diagnosis from a prior team and stopping the search.</p>
+          <p class="example">"Outside hospital called it sepsis." Did they?</p>
+        </div>
+        <div class="bias">
+          <h4>Search Satisficing</h4>
+          <p>Finding one abnormality and stopping.</p>
+          <p class="example">Pneumonia on CT — but also the pulmonary nodule you didn't comment on.</p>
+        </div>
+        <div class="bias">
+          <h4>Framing Effect</h4>
+          <p>"90% survival" vs "10% mortality" influences decisions differently despite being identical data.</p>
+        </div>
+        <div class="bias">
+          <h4>Base-Rate Neglect</h4>
+          <p>Ignoring how common a disease is. Zebras exist, but if you hear hoofbeats, it's probably a horse.</p>
+        </div>
+        <div class="bias">
+          <h4>Affective Bias</h4>
+          <p>Liking or disliking a patient influences your workup. Studies show this is real and unconscious.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 -->
+    <section id="s6">
+      <h2><span class="sec-num">06</span>Techniques That Reduce Errors</h2>
+      <div class="techniques">
+        <div class="technique">
+          <h4>Forced Reconsideration</h4>
+          <p>After committing to a diagnosis, ask: <em>"What else could this be? What would I miss if I'm wrong?"</em> Out loud. On rounds. Build it into your routine.</p>
+        </div>
+        <div class="technique">
+          <h4>The Differential of Three</h4>
+          <p>For every problem, generate at least three diagnoses: <strong>most likely</strong>, <strong>most dangerous</strong>, <strong>most treatable</strong>. If you can only think of one, you haven't thought enough.</p>
+        </div>
+        <div class="technique">
+          <h4>Diagnostic Timeout</h4>
+          <p>Before discharge, transfer, or major treatment decision: pause and reconsider. <em>"If this patient bounces back in 72 hours, what will I have missed?"</em></p>
+        </div>
+        <div class="technique">
+          <h4>Explicit Probability Estimation</h4>
+          <p>Force yourself to assign a number. <em>"I think this is 70% CHF, 20% PE, 10% pneumonia."</em> It feels uncomfortable. That discomfort is the point — it surfaces uncertainty you'd otherwise hide.</p>
+        </div>
+        <div class="technique">
+          <h4>Seek Disconfirming Evidence</h4>
+          <p>Don't just look for findings that fit. Actively look for findings that don't. The data that doesn't fit is often where the diagnosis lives.</p>
+        </div>
+        <div class="technique">
+          <h4>Re-Take the History</h4>
+          <p>The single highest-yield diagnostic intervention. Go back to the bedside, ask again, ask differently. Most missed diagnoses had clues in the history that weren't elicited.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7 -->
+    <section id="s7">
+      <h2><span class="sec-num">07</span>When to Stop Testing</h2>
+      <p>The hardest call in medicine. Three useful frames.</p>
+      <table>
+        <thead><tr><th>Frame</th><th>Application</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Threshold model</strong></td>
+            <td>There's a probability above which you treat and below which you don't. Testing only matters if it moves you across that threshold.</td>
+          </tr>
+          <tr>
+            <td><strong>Cost-benefit</strong></td>
+            <td>Each test has cost: money, time, false positives, incidentalomas, patient discomfort, downstream testing. Is the marginal information worth it?</td>
+          </tr>
+          <tr>
+            <td><strong>Tolerance for uncertainty</strong></td>
+            <td>You will never get to 100%. Pick a threshold appropriate to consequence. Missed PE warrants more workup than missed costochondritis.</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout warning">
+        <div class="label">⚠ Stop-Testing Heuristics</div>
+        <ul style="margin-bottom:0;">
+          <li>The result won't change management</li>
+          <li>Pre-test probability is already very low or very high</li>
+          <li>You're testing to reassure yourself, not the patient</li>
+          <li>You're testing because the consultant suggested it without a clear question</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 8 -->
+    <section id="s8">
+      <h2><span class="sec-num">08</span>Calibration — Knowing What You Don't Know</h2>
+      <p>Most residents are overconfident. Studies consistently show physicians' subjective certainty correlates poorly with diagnostic accuracy.</p>
+      <h3>Calibration Practices</h3>
+      <ul>
+        <li><strong>Track your predictions.</strong> Write down your top diagnosis and your confidence (%). Review when the final diagnosis is known. A pattern emerges.</li>
+        <li><strong>Ask for the final diagnosis</strong> on patients you sign out or transfer. Most residents never close the loop, so they never learn.</li>
+        <li><strong>When you're wrong, do an autopsy on your reasoning</strong> — not the patient. Where did the thinking break down? Anchoring? Missing data? Wrong frame?</li>
+      </ul>
+      <div class="callout quote">
+        <div class="label">Bottom Line</div>
+        <p>The goal isn't to be right more often. It's to be uncertain when you should be.</p>
+      </div>
+    </section>
+
+    <!-- 9 -->
+    <section id="s9">
+      <h2><span class="sec-num">09</span>The Illness Script Framework</h2>
+      <p>Experts store diseases as scripts with three parts.</p>
+      <div class="dual" style="grid-template-columns:1fr 1fr 1fr;">
+        <div class="col s2">
+          <h4>1. Predisposing <small>Who gets it</small></h4>
+        </div>
+        <div class="col s2">
+          <h4>2. Pathophysiology <small>How it works</small></h4>
+        </div>
+        <div class="col s2">
+          <h4>3. Clinical <small>What shows up</small></h4>
+        </div>
+      </div>
+      <p>Novices store diseases as lists of symptoms. Lists fail on atypical presentations. Scripts adapt.</p>
+      <h3>Building Scripts</h3>
+      <ul>
+        <li>For every diagnosis you make, write down the script in your own words</li>
+        <li>Note features that <em>don't</em> fit — atypical presentations expand your script</li>
+        <li>Compare similar diseases (e.g., the four causes of granulomatous lung disease) by what distinguishes them, not what they share</li>
+      </ul>
+      <p>Over time, you accumulate scripts. That's expertise.</p>
+    </section>
+
+    <!-- 10 -->
+    <section id="s10">
+      <h2><span class="sec-num">10</span>Metacognition — Thinking About Your Thinking</h2>
+      <p>The skill that separates good clinicians from great ones.</p>
+      <div class="questions">
+        <p style="font-family:'Source Sans 3',sans-serif;font-style:normal;font-weight:600;color:var(--navy);font-size:13px;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Questions to Ask Yourself in Real Time</p>
+        <ul>
+          <li>Why do I believe this diagnosis?</li>
+          <li>What evidence would change my mind?</li>
+          <li>Am I anchored on something the ED told me?</li>
+          <li>What's the second-best explanation?</li>
+          <li>If a colleague presented this case to me, would I accept their reasoning?</li>
+          <li>Am I tired, hungry, frustrated, or rushed? (These degrade judgment measurably.)</li>
+        </ul>
+      </div>
+      <p>Metacognition is exhausting. You can't do it on every patient. Save it for the cases where the stakes are high or the picture is unclear.</p>
+    </section>
+
+    <!-- 11 -->
+    <section id="s11">
+      <h2><span class="sec-num">11</span>Feedback — Why This Skill Stays Underdeveloped</h2>
+      <p>Most diagnostic feedback in residency is:</p>
+      <ul>
+        <li><strong>Outcome-based</strong> — the patient got better, so I must have been right</li>
+        <li><strong>Delayed</strong> — months later, if at all</li>
+        <li><strong>Filtered</strong> — you hear about your wins, not your misses</li>
+      </ul>
+      <h3>To Get Real Feedback</h3>
+      <ul>
+        <li>Follow up on every patient you transfer or discharge — call them, check the chart</li>
+        <li>Present diagnostic dilemmas at M&amp;M with honest reflection</li>
+        <li>Ask attendings specifically: <em>"What would you have done differently in my workup?"</em> Not <em>"Did I do okay?"</em></li>
+        <li>Find a peer to do case-based reasoning practice with — VINDICATE, illness scripts, pre-test probability exercises</li>
+      </ul>
+      <div class="callout warning">
+        <div class="label">⚠ Hard Truth</div>
+        <p>The residents who become good diagnosticians actively seek bad news. The ones who don't, stagnate at the level of pattern-matching.</p>
+      </div>
+    </section>
+
+    <!-- 12 -->
+    <section id="s12">
+      <h2><span class="sec-num">12</span>Practical Routines</h2>
+      <div class="routines">
+        <div class="routine">
+          <h4>Morning Routine</h4>
+          <p>For each patient, restate the problem list, the working diagnosis, and the alternatives.</p>
+          <em>Out loud or on paper. Resist inheriting last night's framing.</em>
+        </div>
+        <div class="routine">
+          <h4>Pre-Rounding Question</h4>
+          <p>"What's the one thing I might be missing on this patient?"</p>
+        </div>
+        <div class="routine">
+          <h4>Sign-Out</h4>
+          <p>Communicate uncertainty, not just plans.</p>
+          <em>"I'm 70% sure this is CAP, but I haven't ruled out PE. If they desat overnight, the differential should reopen."</em>
+        </div>
+        <div class="routine">
+          <h4>Discharge Timeout</h4>
+          <p>"If this patient comes back in a week, what will it have been?"</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 13 -->
+    <section id="s13">
+      <h2><span class="sec-num">13</span>Recommended Resources</h2>
+      <div class="callout tip">
+        <div class="label">📚 Core Reading</div>
+        <ul style="margin-bottom:0;">
+          <li><strong>How Doctors Think</strong> — Jerome Groopman. Standard reading on diagnostic error.</li>
+          <li><strong>Thinking, Fast and Slow</strong> — Daniel Kahneman. The original dual-process work.</li>
+          <li><strong>NEJM Clinical Problem-Solving series.</strong> Best free training in reasoning aloud.</li>
+          <li><strong>Human Diagnosis Project.</strong> Practice cases with explicit reasoning frameworks.</li>
+          <li><strong>JAMA Rational Clinical Examination series.</strong> Likelihood ratios for physical exam findings.</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer class="doc-foot">
+      IM Resident Educational Guide · Internal use · Verify against institutional protocols and current guidelines.
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('aside nav a');
+  function updateActive() {
+    let current = '';
+    sections.forEach(s => {
+      const top = s.getBoundingClientRect().top;
+      if (top < 200) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }
+  window.addEventListener('scroll', updateActive);
+  updateActive();
+</script>
+
+</body>
+</html>
