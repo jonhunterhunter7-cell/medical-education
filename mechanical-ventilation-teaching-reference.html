@@ -15,7 +15,23 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Invasive Mechanical Ventilation — PCCM Teaching Reference</title>
+<title>Invasive Mechanical Ventilation — Bedside Reference</title>
+<meta name="description" content="Physiology-first teaching reference on invasive mechanical ventilation for IM residents, hospitalists, and PCCM fellows. Free under CC BY-NC 4.0." />
+<meta name="author" content="Bedside Reference" />
+<!-- Open Graph (Slack, iMessage, LinkedIn, Facebook unfurls) -->
+<meta property="og:type" content="book" />
+<meta property="og:site_name" content="Bedside Reference" />
+<meta property="og:title" content="Invasive Mechanical Ventilation — Bedside Reference" />
+<meta property="og:description" content="Physiology-first teaching reference for IM residents, hospitalists, and PCCM fellows. Free under CC BY-NC 4.0." />
+<meta property="og:image" content="figures/og-card.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Invasive Mechanical Ventilation — A Teaching Reference. Bedside Reference, Vol. I, May 2026." />
+<!-- Twitter / X card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Invasive Mechanical Ventilation — Bedside Reference" />
+<meta name="twitter:description" content="Physiology-first teaching reference for IM residents, hospitalists, and PCCM fellows. Free under CC BY-NC 4.0." />
+<meta name="twitter:image" content="figures/og-card.png" />
 <style>
   :root {
     color-scheme: light;
@@ -76,6 +92,110 @@
   header.hero h1 { font-size: 32px; line-height: 1.15; margin: 6px 0 8px; letter-spacing: -0.01em; }
   header.hero p.lede { color: var(--ink-soft); font-size: 16.5px; margin: 0; }
   header.hero .meta { margin-top: 14px; color: var(--muted); font-size: 13px; }
+
+  /* ============ FRONT-MATTER (how-to-read + disclaimer) ============ */
+  .front-matter {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 18px;
+    margin: 0 0 18px;
+  }
+  @media (max-width: 920px) {
+    .front-matter { grid-template-columns: 1fr; }
+  }
+  .how-to-read, .disclaimer-block {
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 14px 18px;
+    background: var(--surface);
+  }
+  .how-to-read .ftm-title, .disclaimer-block .ftm-title {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin: 0 0 8px;
+  }
+  .how-to-read h3 {
+    font-size: 17px;
+    margin: 0 0 10px;
+    letter-spacing: -0.005em;
+  }
+  .how-to-read .modes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 0;
+  }
+  @media (max-width: 720px) {
+    .how-to-read .modes { grid-template-columns: 1fr; }
+  }
+  .how-to-read .mode {
+    border-left: 3px solid var(--accent);
+    padding: 4px 0 4px 10px;
+  }
+  .how-to-read .mode-num {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .how-to-read .mode-name {
+    font-weight: 600;
+    font-size: 14.5px;
+    margin: 2px 0 4px;
+    color: var(--ink);
+  }
+  .how-to-read .mode p {
+    margin: 0;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .disclaimer-block {
+    background: var(--warn-soft);
+    border-color: #e8d5a3;
+  }
+  .disclaimer-block .ftm-title { color: var(--warn); }
+  .disclaimer-block p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  .disclaimer-block p + p { margin-top: 8px; }
+
+  /* ============ FOOTER ============ */
+  footer.colophon {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--rule);
+    margin-top: 48px;
+    padding: 28px 0 12px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  footer.colophon .brand-line {
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  footer.colophon a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  footer.colophon a:hover { text-decoration: underline; }
+  footer.colophon .foot-nav {
+    margin-top: 10px;
+    color: var(--muted);
+  }
+  footer.colophon .foot-nav a { color: var(--muted); }
+  footer.colophon .foot-nav a:hover { color: var(--accent); }
+
   nav.toc {
     position: sticky;
     /* Sit below the always-sticky toolbar (~50 px) plus a small buffer. */
@@ -174,16 +294,20 @@
     position: relative;
   }
   .figure img:hover { filter: brightness(1.04); transform: scale(1.005); }
-  /* Click-to-expand hint */
+  /* Click-to-expand hint — shown ONLY on figures that the lightbox actually
+     attached to (JS adds the `.figure-zoomable` class after wiring handlers).
+     Interactive widgets, iframes, calculators, and any figure whose content
+     isn't zoomable get no badge — preventing the misleading "click to expand"
+     hint over things that don't expand. */
   .figure { position: relative; }
-  .figure::before {
+  .figure.figure-zoomable::before {
     content: "⤢ click to expand";
     position: absolute; top: 18px; right: 22px; z-index: 2;
     background: rgba(0,0,0,0.55); color: #fff;
     font-size: 10.5px; padding: 2px 7px; border-radius: 3px;
     pointer-events: none; opacity: 0; transition: opacity 0.15s;
   }
-  .figure:hover::before { opacity: 1; }
+  .figure.figure-zoomable:hover::before { opacity: 1; }
   /* SVG figures (matplotlib/inline) — render full width */
   .figure svg { max-height: none; cursor: default; }
   .figure .cap { font-size: 12.5px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
@@ -622,7 +746,7 @@
     background: rgba(255,255,255,0.18);
     color: #fff;
   }
-  .lib-card.lib-card-all-text { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+  .lib-card.lib-card-all .lib-card-all-text { display: flex; flex-direction: column; flex: 1; min-width: 0; }
   @media (max-width: 600px) {
     .lib-card.lib-card-all { flex-direction: column; align-items: flex-start; }
   }
@@ -1502,6 +1626,46 @@
     a[href^="http"]::after { content: ""; }  /* don't print URLs by default */
     .pearl, .pitfall, .note, .phys, .takeaways { background: #f8f8f8 !important; border-color: #888 !important; }
     table { font-size: 9pt; }
+    /* High-yield reference cards — one card per printed page. Each card is
+       intended to be torn out / posted at a bedside. Page break BEFORE each
+       card except the first (so the first card prints with the chapter header
+       on page 1). page-break-inside is NOT forced to avoid, since some cards
+       (e.g., the PEEP/FiO₂ ladders) are taller than a single sheet.
+       NOTE: selectors target the class (.reference-cards), not the id, so
+       they also apply to the per-chapter print clone (which strips ids). */
+    section.chap.reference-cards > details.chap-acc + details.chap-acc {
+      page-break-before: always;
+      break-before: page;
+    }
+    section.chap.reference-cards > details.chap-acc {
+      /* Force open in print regardless of UI state */
+      display: block;
+    }
+    section.chap.reference-cards > details.chap-acc > summary {
+      list-style: none;
+    }
+    section.chap.reference-cards > details.chap-acc > summary > h4 {
+      font-size: 14pt;
+      margin-top: 0;
+    }
+    /* Force every <details> inside reference-cards to expand for print, even
+       if the browser hasn't opened them in screen view. */
+    section.chap.reference-cards details:not([open]) > *:not(summary) {
+      display: revert !important;
+    }
+    /* Each card's body must not split mid-content. The card itself is allowed
+       to span pages only if taller than a sheet (PEEP/FiO₂ ladder). */
+    section.chap.reference-cards > details.chap-acc { page-break-inside: auto; }
+    section.chap.reference-cards > details.chap-acc > summary {
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+    /* Hide chapter h3 and lead paragraph in print — the per-chapter print
+       header already states "High-yield reference cards", so repeating the
+       title + lead just wastes vertical space and pushes Card 1's table
+       onto page 2. With these hidden, Card 1 starts at the top of page 1. */
+    section.chap.reference-cards > h3,
+    section.chap.reference-cards > p.lead { display: none !important; }
     /* Hide the calculator widget on default print (interactive only). The
        calculator's own Print button uses a temporary cloned widget appended
        directly to <body>; in that mode we hide every other body child. */
@@ -1641,21 +1805,17 @@
   section.chap[data-part="part9"] > h3 { border-left-color: var(--part9-accent); }
   section.chap[data-part="appendix"] > h3 { border-left-color: var(--rule); }
 
-  /* G — Sticky thead. The existing th already has a solid background (#f5f7fa);
-     dark mode uses --surface via inheritance. We just turn on sticky positioning
-     and tuck them below the toolbar + crumb. */
-  table thead th {
-    position: sticky;
-    top: var(--sticky-top, 76px);
-    z-index: 5;
-    /* Make sure the cell paints fully over content scrolling beneath it. */
-    background-clip: padding-box;
-  }
-  /* Print mode: drop sticky positioning so headers don't repeat awkwardly. */
-  @media print {
-    table thead th { position: static; }
-  }
-  body.printing-chapter table thead th { position: static; }
+  /* G — Sticky thead removed.
+     Previously: `table thead th { position: sticky; top: 76px; }`.
+     Bug: as the user scrolled past a table's natural thead position, the
+     thead detached and floated at viewport y=76, visually clipping the
+     first body row (see the explicit local override on the ARDSnet ladder
+     table further down for the original symptom). The marginal benefit for
+     a handful of long tables (abbreviations, drug reference) didn't justify
+     the systematic first-row clipping across many short tables, so the
+     global rule has been dropped. If a future long table needs sticky
+     headers, scope it locally with its own selector and wrap it in an
+     overflow-scrolling container so sticky is bounded to that container. */
 
 
   /* ============== STYLE POLISH (D · E) ============== */
@@ -2416,6 +2576,7 @@
   <button class="lb-close" id="lb-close" aria-label="Close">×</button>
   <img id="lb-img" alt=""/>
   <div id="lb-svg-host" style="display:none; max-width:95vw; max-height:95vh;"></div>
+  <div id="lb-table-host" style="display:none; width:95vw; max-width:1400px; max-height:95vh; overflow:auto; background:#fff; border-radius:8px; padding:24px 28px; box-shadow:0 4px 32px rgba(0,0,0,0.4);"></div>
 </div>
 
 <div class="lib-overlay" id="lib-overlay" role="dialog" aria-modal="true" aria-label="Library — pick a Part">
@@ -2550,10 +2711,10 @@
 <div class="layout">
 
 <header class="hero">
-  <div class="eyebrow">Critical Care · Teaching Reference</div>
+  <div class="eyebrow">Bedside Reference · Critical Care</div>
   <h1>Invasive Mechanical Ventilation</h1>
-  <p class="lede">A progressive curriculum for trainees and bedside clinicians, anchored at the level of pulmonary &amp; critical-care practice. Builds from respiratory physiology through machine anatomy, mode mechanics, waveform interpretation, disease-specific strategies, advanced concepts (driving pressure, transpulmonary pressure, mechanical power, prone positioning, extracorporeal membrane oxygenation [ECMO]), and liberation, ending in bedside troubleshooting and clinical cases.</p>
-  <div class="meta">Compiled May 2026 · Last reviewed May 2026 · Reflects ATS / ESICM / SCCM (American Thoracic Society / European Society of Intensive Care Medicine / Society of Critical Care Medicine) ARDS practice guideline 2024 and the Global Definition of ARDS 2023</div>
+  <p class="lede">Mechanical ventilation as a teaching reference, written for the people learning to manage vented patients — from the <strong>IM resident</strong> covering nights to the <strong>hospitalist</strong> running a stepdown to the <strong>PCCM fellow</strong> building toward independent ICU practice. Physiology-first and decision-driven: the framework to walk up to a ventilator, read the screen, and pick the next change without guessing. Coverage spans physiology, mode mechanics, waveforms, disease-specific strategy, advanced concepts (driving pressure, transpulmonary pressure, mechanical power, prone, ECMO), and liberation, ending in bedside troubleshooting and cases.</p>
+  <div class="meta">Vol. I · Compiled May 2026 · Last reviewed May 2026 · Reflects ATS / ESICM / SCCM ARDS practice guideline 2024 and the Global Definition of ARDS 2023</div>
   <div class="hero-stats" id="hero-stats">
     <div class="stat"><span class="stat-num" id="hs-chapters">—</span><span class="stat-lbl">chapters</span></div>
     <div class="stat"><span class="stat-num" id="hs-parts">—</span><span class="stat-lbl">parts</span></div>
@@ -2563,6 +2724,36 @@
     <div class="stat"><span class="stat-num" id="hs-figures">—</span><span class="stat-lbl">figures</span></div>
   </div>
 </header>
+
+<section class="front-matter" aria-label="Reading guidance and disclaimer">
+  <div class="how-to-read" id="how-to-read">
+    <div class="ftm-title">How to read</div>
+    <h3>Three ways in</h3>
+    <div class="modes">
+      <div class="mode">
+        <div class="mode-num">① Linear</div>
+        <div class="mode-name">Cover to cover</div>
+        <p>Parts I–IX build sequentially. ~14 h end-to-end.</p>
+      </div>
+      <div class="mode">
+        <div class="mode-num">② Reference</div>
+        <div class="mode-name">Look up &amp; out</div>
+        <p>Start from <a href="#reference-cards">high-yield cards</a> or the <a href="#cheatsheet">bedside cheat sheet</a>. Chapters stand alone.</p>
+      </div>
+      <div class="mode">
+        <div class="mode-num">③ Bedside</div>
+        <div class="mode-name">Patient in front of you</div>
+        <p>Jump to <a href="#c40">cases (Ch 40)</a>, <a href="#c39">troubleshooting (Ch 39)</a>, or the disease chapter in <a href="#part4">Part IV</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <aside class="disclaimer-block" id="disclaimer" aria-label="Medical disclaimer">
+    <div class="ftm-title">Disclaimer</div>
+    <p>This reference is for <strong>educational use only</strong>. It does not constitute medical advice and is not a substitute for clinical judgment, institutional protocols, or the care of a qualified clinician at the bedside.</p>
+    <p>Drug doses, equipment specifications, contraindications, and practice patterns change. Verify every clinically actionable detail against primary sources, current guidelines, and your institution's standards before applying it to a patient. Content reflects evidence and consensus as of May 2026. <em>Bedside Reference</em> accepts no liability for outcomes arising from use of this material. By reading further, you acknowledge these terms.</p>
+  </aside>
+</section>
 
 <nav class="toc" aria-label="Contents">
   <a class="part-link" href="#cheatsheet"><h4>★ Bedside cheat sheet</h4></a>
@@ -2640,6 +2831,7 @@
   </ol>
   <a class="part-link" href="#appendix"><h4>Appendix</h4></a>
   <ol>
+    <li><a href="#reference-cards">High-yield reference cards</a></li>
     <li><a href="#drugs">Drug dosing reference</a></li>
     <li><a href="#equations">Equations &amp; numbers</a></li>
     <li><a href="#c_alarms">Alarm reference</a></li>
@@ -2706,7 +2898,7 @@
     <li>FiO₂ ≤ 0.5, PEEP ≤ 8, SpO₂ ≥ 92%</li>
     <li>Adequate cough, manageable secretions, follows commands</li>
     <li>Underlying cause improving</li>
-    <li>If ALL met → SBT (PSV 0–5 / PEEP 5 × 30–120 min)</li>
+    <li>If ALL met → SBT: PSV 5–8 over PEEP 5 (most common variant) <em>or</em> PSV 0 + PEEP 0, T-piece (most rigorous); both acceptable; 30–120 min</li>
     <li>SBT pass = RR &lt; 35, RSBI &lt; 105, VT &gt; 4 mL/kg PBW, no distress</li>
     <li>Cuff leak adequate + airway protection → extubate; high-risk → post-extubation HFNC + NIV</li>
   </ol>
@@ -2826,7 +3018,7 @@
       <tr><td>Acid-base</td><td>pH &gt; 7.30</td><td>Treat acidosis or hypercapnia first</td></tr>
       <tr><td>Mental status</td><td>Follows commands; RASS −1 to +1</td><td>Wean sedation first (SAT); treat delirium</td></tr>
       <tr><td>Cough / secretions</td><td>Adequate cough; suctioning &gt; q2h not needed</td><td>Treat infection; physical therapy</td></tr>
-      <tr><td>All YES</td><td colspan="2">→ SBT (PSV 0–5 / PEEP 5 × 30–120 min). Pass = RR &lt; 35, RSBI &lt; 105, VT &gt; 4 mL/kg PBW, no distress.</td></tr>
+      <tr><td>All YES</td><td colspan="2">→ SBT: PSV 5–8 over PEEP 5 (most common) <em>or</em> PSV 0 + PEEP 0, T-piece (most rigorous); both acceptable; 30–120 min. Pass = RR &lt; 35, RSBI &lt; 105, VT &gt; 4 mL/kg PBW, no distress.</td></tr>
     </tbody>
   </table>
         </div>
@@ -4108,7 +4300,10 @@
 
         <line id="ifohb-p50line" x1="0" y1="158" x2="0" y2="260" stroke="#f59e0b" stroke-width="1.4" stroke-dasharray="3,2"/>
         <circle id="ifohb-p50dot" cx="0" cy="158" r="6" fill="#f59e0b" stroke="white" stroke-width="2"/>
-        <text id="ifohb-p50label" x="0" y="278" text-anchor="middle" font-size="10" font-weight="600" fill="#b45309">P₅₀</text>
+<!-- P₅₀ inline label removed — was overlapping either the curve (when placed near
+     the marker) or the x-tick labels (when placed below the axis). The stat
+     panel above the chart already shows the current P₅₀ value, and the amber
+     dot + dashed line locate it on the curve. -->
 
         <line x1="187" y1="158" x2="187" y2="260" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="2,3"/>
         <circle cx="187" cy="158" r="4" fill="#94a3b8"/>
@@ -4209,8 +4404,10 @@
         var p50x = xP(p50);
         els.p50line.setAttribute('x1', p50x); els.p50line.setAttribute('x2', p50x);
         els.p50dot.setAttribute('cx', p50x);
-        els.p50label.setAttribute('x', p50x);
-        els.p50label.textContent = 'P₅₀ ' + p50.toFixed(1);
+        if (els.p50label) {
+          els.p50label.setAttribute('x', p50x);
+          els.p50label.textContent = 'P₅₀ ' + p50.toFixed(1);
+        }
         var sat90x = xP(pao90);
         els.sat90line.setAttribute('x1', sat90x); els.sat90line.setAttribute('x2', sat90x);
         els.sat90dot.setAttribute('cx', sat90x);
@@ -4322,6 +4519,107 @@
       <tr><td><strong>PaCO₂</strong></td><td>Arterial partial pressure of CO₂</td><td>mmHg</td></tr>
     </tbody>
   </table>
+
+  <div class="figure">
+    <svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Flowchart: where does every breath go? Tidal volume V_T splits into alveolar ventilation V_A (gas exchange) and dead space V_d (ventilated but no gas exchange). Dead space has three compartments: anatomic (~150 mL, airways), alveolar (variable, ventilated alveoli with no perfusion), and apparatus (~50 to 100 mL, circuit and ETT lumen). Each compartment lists bedside drivers and the lever clinicians can adjust." style="max-width:900px; width:100%; height:auto; display:block; margin:0 auto; font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;">
+      <defs>
+        <marker id="ds-arr-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#4a5568"/>
+        </marker>
+        <linearGradient id="ds-good" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#dcfce7"/><stop offset="100%" stop-color="#bcedc8"/></linearGradient>
+        <linearGradient id="ds-wast" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#fef3c7"/><stop offset="100%" stop-color="#fbe39c"/></linearGradient>
+        <linearGradient id="ds-comp1" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#f1f5f9"/><stop offset="100%" stop-color="#dde6ef"/></linearGradient>
+        <linearGradient id="ds-comp2" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#fef9c3"/><stop offset="100%" stop-color="#f4e5a0"/></linearGradient>
+        <linearGradient id="ds-comp3" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#e6f1fb"/><stop offset="100%" stop-color="#cadcef"/></linearGradient>
+      </defs>
+
+      <!-- Title -->
+      <text x="450" y="24" text-anchor="middle" font-size="17" font-weight="700" fill="#1f3a5f">Where does every breath go?</text>
+      <text x="450" y="44" text-anchor="middle" font-size="11" font-style="italic" fill="#64748b">Every V<tspan baseline-shift="sub" font-size="0.7em">T</tspan> divides into V<tspan baseline-shift="sub" font-size="0.7em">A</tspan> (gas exchange) and V<tspan baseline-shift="sub" font-size="0.7em">d</tspan> (dead space)</text>
+
+      <!-- Root: V_T -->
+      <rect x="325" y="64" width="250" height="58" rx="8" fill="#1f3a5f"/>
+      <text x="450" y="86" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Every breath — V<tspan baseline-shift="sub" font-size="0.75em">T</tspan></text>
+      <text x="450" y="106" text-anchor="middle" font-size="10.5" fill="#bcd4ec">≈ 6 mL/kg PBW · ~360 mL adult</text>
+
+      <!-- Connector down + split -->
+      <path d="M 450 122 L 450 144 M 210 144 L 690 144 M 210 144 L 210 170 M 690 144 L 690 170" stroke="#4a5568" stroke-width="1.4" fill="none"/>
+      <path d="M 210 168 L 210 174" stroke="#4a5568" stroke-width="1.4" marker-end="url(#ds-arr-a)"/>
+      <path d="M 690 168 L 690 174" stroke="#4a5568" stroke-width="1.4" marker-end="url(#ds-arr-a)"/>
+
+      <!-- V_A box (green family — gas exchange) -->
+      <rect x="60" y="178" width="300" height="100" rx="8" fill="url(#ds-good)" stroke="#5da169" stroke-width="1.4"/>
+      <text x="210" y="200" text-anchor="middle" font-size="13" font-weight="700" fill="#1d5a2c">V<tspan baseline-shift="sub" font-size="0.75em">A</tspan> — alveolar ventilation</text>
+      <text x="210" y="222" text-anchor="middle" font-size="11" font-weight="600" fill="#1d5a2c">= (V<tspan baseline-shift="sub" font-size="0.75em">T</tspan> − V<tspan baseline-shift="sub" font-size="0.75em">d</tspan>) × RR</text>
+      <text x="210" y="244" text-anchor="middle" font-size="10.5" fill="#1f3a5f">Reaches gas-exchanging alveoli.</text>
+      <text x="210" y="262" text-anchor="middle" font-size="10.5" fill="#1f3a5f">Drives PaCO₂.</text>
+
+      <!-- V_d box (amber family — wasted) -->
+      <rect x="540" y="178" width="300" height="100" rx="8" fill="url(#ds-wast)" stroke="#c79f3a" stroke-width="1.4"/>
+      <text x="690" y="200" text-anchor="middle" font-size="13" font-weight="700" fill="#7a5a14">V<tspan baseline-shift="sub" font-size="0.75em">d</tspan> — dead space</text>
+      <text x="690" y="222" text-anchor="middle" font-size="11" font-weight="600" fill="#7a5a14">anatomic + alveolar + apparatus</text>
+      <text x="690" y="244" text-anchor="middle" font-size="10.5" fill="#1f3a5f">Ventilated, no gas exchange.</text>
+      <text x="690" y="262" text-anchor="middle" font-size="10.5" fill="#1f3a5f">Three compartments ↓</text>
+
+      <!-- Connector V_d → three compartments -->
+      <path d="M 690 278 L 690 300 M 170 300 L 690 300 M 170 300 L 170 320 M 450 300 L 450 320 M 690 300 L 690 320" stroke="#4a5568" stroke-width="1.4" fill="none"/>
+      <path d="M 170 318 L 170 324" stroke="#4a5568" stroke-width="1.4" marker-end="url(#ds-arr-a)"/>
+      <path d="M 450 318 L 450 324" stroke="#4a5568" stroke-width="1.4" marker-end="url(#ds-arr-a)"/>
+      <path d="M 690 318 L 690 324" stroke="#4a5568" stroke-width="1.4" marker-end="url(#ds-arr-a)"/>
+
+      <!-- Anatomic compartment -->
+      <rect x="40" y="328" width="260" height="252" rx="8" fill="url(#ds-comp1)" stroke="#64748b" stroke-width="1.4"/>
+      <text x="170" y="350" text-anchor="middle" font-size="13" font-weight="700" fill="#1f3a5f">Anatomic</text>
+      <text x="170" y="368" text-anchor="middle" font-size="11" font-weight="600" fill="#475569">≈ 2 mL/kg · ~150 mL adult</text>
+      <line x1="55" y1="380" x2="285" y2="380" stroke="#cbd5e0" stroke-width="0.6"/>
+      <text x="55" y="398" font-size="10.5" font-weight="600" fill="#1f3a5f">What it is</text>
+      <text x="55" y="414" font-size="10" fill="#1f3a5f">Conducting airways from upper</text>
+      <text x="55" y="428" font-size="10" fill="#1f3a5f">airway to carina. No alveoli.</text>
+      <text x="55" y="452" font-size="10.5" font-weight="600" fill="#1f3a5f">Bedside drivers</text>
+      <text x="55" y="468" font-size="10" fill="#1f3a5f">• Patient size (PBW)</text>
+      <text x="55" y="482" font-size="10" fill="#1f3a5f">• Tracheostomy bypasses</text>
+      <text x="55" y="496" font-size="10" fill="#1f3a5f">  ~50 mL of upper airway</text>
+      <text x="55" y="520" font-size="10.5" font-weight="600" fill="#1f3a5f">Lever you can pull</text>
+      <text x="55" y="536" font-size="10" font-style="italic" fill="#475569">Mostly fixed. Trach helps in</text>
+      <text x="55" y="550" font-size="10" font-style="italic" fill="#475569">long-term wean candidates.</text>
+
+      <!-- Alveolar compartment -->
+      <rect x="320" y="328" width="260" height="252" rx="8" fill="url(#ds-comp2)" stroke="#c79f3a" stroke-width="1.4"/>
+      <text x="450" y="350" text-anchor="middle" font-size="13" font-weight="700" fill="#7a5a14">Alveolar</text>
+      <text x="450" y="368" text-anchor="middle" font-size="11" font-weight="600" fill="#7a5a14">Variable · rises in disease</text>
+      <line x1="335" y1="380" x2="565" y2="380" stroke="#e0c994" stroke-width="0.6"/>
+      <text x="335" y="398" font-size="10.5" font-weight="600" fill="#7a5a14">What it is</text>
+      <text x="335" y="414" font-size="10" fill="#1f3a5f">Alveoli ventilated but not</text>
+      <text x="335" y="428" font-size="10" fill="#1f3a5f">perfused (West Zone 1).</text>
+      <text x="335" y="452" font-size="10.5" font-weight="600" fill="#7a5a14">Bedside drivers</text>
+      <text x="335" y="468" font-size="10" fill="#1f3a5f">• Pulmonary embolism</text>
+      <text x="335" y="482" font-size="10" fill="#1f3a5f">• High PEEP (capillary squeeze)</text>
+      <text x="335" y="496" font-size="10" fill="#1f3a5f">• Hypovolemia / low CO</text>
+      <text x="335" y="510" font-size="10" fill="#1f3a5f">• Hyperinflation, ARDS</text>
+      <text x="335" y="534" font-size="10.5" font-weight="600" fill="#7a5a14">Lever you can pull</text>
+      <text x="335" y="550" font-size="10" font-style="italic" fill="#475569">Treat the cause: anticoag/lyse</text>
+      <text x="335" y="564" font-size="10" font-style="italic" fill="#475569">PE; trim PEEP; restore CO.</text>
+
+      <!-- Apparatus compartment -->
+      <rect x="600" y="328" width="260" height="252" rx="8" fill="url(#ds-comp3)" stroke="#1f5f99" stroke-width="1.4"/>
+      <text x="730" y="350" text-anchor="middle" font-size="13" font-weight="700" fill="#1f5f99">Apparatus</text>
+      <text x="730" y="368" text-anchor="middle" font-size="11" font-weight="600" fill="#1f5f99">~50–100 mL · you control this</text>
+      <line x1="615" y1="380" x2="845" y2="380" stroke="#a8c6e5" stroke-width="0.6"/>
+      <text x="615" y="398" font-size="10.5" font-weight="600" fill="#1f5f99">What it is</text>
+      <text x="615" y="414" font-size="10" fill="#1f3a5f">Circuit between Y-piece and</text>
+      <text x="615" y="428" font-size="10" fill="#1f3a5f">carina; rebreathed each breath.</text>
+      <text x="615" y="452" font-size="10.5" font-weight="600" fill="#1f5f99">Bedside drivers</text>
+      <text x="615" y="468" font-size="10" fill="#1f3a5f">• HME (~60 mL typical)</text>
+      <text x="615" y="482" font-size="10" fill="#1f3a5f">• Catheter mount length</text>
+      <text x="615" y="496" font-size="10" fill="#1f3a5f">• Inline filters / adapters</text>
+      <text x="615" y="510" font-size="10" fill="#1f3a5f">• ETT lumen distal to carina</text>
+      <text x="615" y="534" font-size="10.5" font-weight="600" fill="#1f5f99">Lever you can pull</text>
+      <text x="615" y="550" font-size="10" font-style="italic" fill="#1d5a2c">Swap HME → heated humid;</text>
+      <text x="615" y="564" font-size="10" font-style="italic" fill="#1d5a2c">shorten mount; drop filters.</text>
+    </svg>
+    <div class="cap"><b>Figure 4.1a — Where every breath goes.</b> Tidal volume V<sub>T</sub> splits into V<sub>A</sub> (alveolar ventilation, the only fraction that drives PaCO₂) and V<sub>d</sub> (dead space — ventilated but no gas exchange). V<sub>d</sub> has three compartments: anatomic (airways, mostly fixed), alveolar (rises in PE, ↑ PEEP, low CO, hyperinflation), and apparatus (HME, Y-piece, catheter mount, ETT lumen — the compartment you can directly shrink at the bedside). When PaCO₂ won't fall on adequate minute ventilation, the answer is usually in the alveolar or apparatus compartment.</div>
+  </div>
+
   <p><strong>Anatomic dead space</strong> ≈ 2 mL/kg (~150 mL adult). <strong>Physiologic dead space</strong> = anatomic + alveolar; the alveolar component rises in pulmonary embolism (PE), low-output states, high PEEP, hyperinflation, and ARDS.</p>
   <div class="pearl"><strong>Apparatus dead space — the bedside lever you can actually adjust</strong>Dead space added by the circuit itself — HME (heat-and-moisture exchanger), Y-piece, connectors, catheter mount, and the ETT lumen distal to the carina — totals ~ 50–100 mL on most setups and is the only dead-space compartment under direct clinical control. In a 70-kg adult on 6 mL/kg PBW (V<sub>T</sub> ≈ 360 mL), a single 60-mL HME wastes ~ 17% of every breath as rebreathed gas — V̇<sub>A</sub> falls, PaCO₂ climbs, and the patient compensates with a higher RR (which then erodes T<sub>e</sub> and drives auto-PEEP in obstructive disease). Whenever PaCO₂ rises out of proportion to the set V̇<sub>E</sub>, look at the circuit before changing the vent: switching from an HME to heated humidification, shortening the catheter mount, or removing inline filters typically buys back 30–60 mL of V<sub>T</sub> per breath. See also <a class="xref" href="#c37" data-xref-chap="37">§37</a> on humidification choices.</div>
   <p>The <strong>Bohr-Enghoff dead-space equation</strong> at the bedside:</p>
@@ -4346,6 +4644,124 @@
     </tbody>
   </table>
   <div class="pearl"><strong>The PaCO₂ rose on the same vent — what changed?</strong>If V<sub>E</sub> is unchanged and PaCO₂ rose, the production side (VCO₂) probably increased: new fever, new sepsis, new agitation, recently fed, just gave bicarb. If V<sub>E</sub> dropped (asynchrony, missed triggers, sedation), V<sub>A</sub> is the cause. If neither changed, dead space (V<sub>d</sub>/V<sub>T</sub>) probably did — re-check for PE, hyperinflation, or volume depletion.</div>
+
+  <div class="figure">
+    <svg viewBox="0 0 920 780" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagnostic flowchart: PaCO2 rose on stable vent, what changed? Walk three questions in order. Q1: did V_E change? If yes, causes are asynchrony, sedation deepened, mode or setting change, circuit leak. Q2: did V̇_CO2 change? If yes, causes are fever, new sepsis or SIRS, shivering or agitation, recent feeding or overfeeding, bicarbonate. Q3: did V_d over V_T change? If yes, causes are PE, recent PEEP increase, hypovolemia or low CO, hyperinflation or auto-PEEP, new HME or circuit change. If all three are no, recheck the ABG itself for sampling or analytical error." style="max-width:920px; width:100%; height:auto; display:block; margin:0 auto; font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;">
+      <defs>
+        <marker id="ds-arr-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#4a5568"/>
+        </marker>
+        <linearGradient id="ds2-stem" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#fef9e7"/><stop offset="100%" stop-color="#fdf0c8"/></linearGradient>
+        <linearGradient id="ds2-caus1" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#fbe6e6"/><stop offset="100%" stop-color="#f4d3d3"/></linearGradient>
+        <linearGradient id="ds2-caus2" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#fef3c7"/><stop offset="100%" stop-color="#fbe39c"/></linearGradient>
+        <linearGradient id="ds2-caus3" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#dbe8f5"/><stop offset="100%" stop-color="#bcd4ec"/></linearGradient>
+      </defs>
+
+      <!-- Title -->
+      <text x="460" y="24" text-anchor="middle" font-size="17" font-weight="700" fill="#1f3a5f">PaCO₂ rose on stable vent — what changed?</text>
+      <text x="460" y="44" text-anchor="middle" font-size="11" font-style="italic" fill="#64748b">Walk three questions in order. Most rises come from V̇<tspan baseline-shift="sub" font-size="0.7em">CO₂</tspan> or V<tspan baseline-shift="sub" font-size="0.7em">d</tspan>/V<tspan baseline-shift="sub" font-size="0.7em">T</tspan>, not from the vent.</text>
+
+      <!-- Root banner -->
+      <rect x="240" y="62" width="440" height="50" rx="8" fill="#1f3a5f"/>
+      <text x="460" y="85" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">PaCO₂ ↑ on the same V<tspan baseline-shift="sub" font-size="0.75em">E</tspan> setting</text>
+      <text x="460" y="102" text-anchor="middle" font-size="10.5" fill="#bcd4ec">Master equation: PaCO₂ ∝ V̇<tspan baseline-shift="sub" font-size="0.75em">CO₂</tspan> / V<tspan baseline-shift="sub" font-size="0.75em">A</tspan></text>
+
+      <!-- ============= Q1 ============= -->
+      <path d="M 460 112 L 460 138" stroke="#4a5568" stroke-width="1.4" marker-end="url(#ds-arr-b)" fill="none"/>
+      <rect x="240" y="144" width="440" height="64" rx="8" fill="url(#ds2-stem)" stroke="#c79f3a" stroke-width="1.4"/>
+      <text x="460" y="167" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7a5a14">Q1 · Did V<tspan baseline-shift="sub" font-size="0.75em">E</tspan> actually change?</text>
+      <text x="460" y="186" text-anchor="middle" font-size="10.5" fill="#1f3a5f">Compare set vs. delivered V<tspan baseline-shift="sub" font-size="0.75em">T</tspan> × RR.</text>
+      <text x="460" y="200" text-anchor="middle" font-size="10.5" fill="#1f3a5f">Watch the vent's V<tspan baseline-shift="sub" font-size="0.75em">E</tspan> trace.</text>
+
+      <!-- Q1 yes branch (right) -->
+      <path d="M 680 176 L 716 176" stroke="#4a5568" stroke-width="1.4" marker-end="url(#ds-arr-b)" fill="none"/>
+      <text x="698" y="169" font-size="10" font-weight="700" fill="#9b2c2c">yes</text>
+      <rect x="718" y="138" width="190" height="100" rx="8" fill="url(#ds2-caus1)" stroke="#9b2c2c" stroke-width="1.4"/>
+      <text x="813" y="158" text-anchor="middle" font-size="11" font-weight="700" fill="#9b2c2c">↓ V<tspan baseline-shift="sub" font-size="0.75em">A</tspan> (delivery)</text>
+      <text x="728" y="174" font-size="9.5" fill="#1f3a5f">• Asynchrony / missed trigger</text>
+      <text x="728" y="188" font-size="9.5" fill="#1f3a5f">• Sedation deepened</text>
+      <text x="728" y="202" font-size="9.5" fill="#1f3a5f">• Setting or mode change</text>
+      <text x="728" y="216" font-size="9.5" fill="#1f3a5f">• Circuit / cuff leak</text>
+      <text x="728" y="230" font-size="9.5" fill="#1f3a5f">• Auto-PEEP truncating</text>
+
+      <!-- Q1 no → Q2 -->
+      <path d="M 460 208 L 460 256" stroke="#4a5568" stroke-width="1.4" marker-end="url(#ds-arr-b)" fill="none"/>
+      <text x="475" y="240" font-size="10" font-weight="700" fill="#475569">no</text>
+
+      <!-- ============= Q2 ============= -->
+      <rect x="240" y="262" width="440" height="64" rx="8" fill="url(#ds2-stem)" stroke="#c79f3a" stroke-width="1.4"/>
+      <text x="460" y="285" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7a5a14">Q2 · Did V̇<tspan baseline-shift="sub" font-size="0.75em">CO₂</tspan> change?</text>
+      <text x="460" y="304" text-anchor="middle" font-size="10.5" fill="#1f3a5f">Production side. The most common cause</text>
+      <text x="460" y="318" text-anchor="middle" font-size="10.5" fill="#1f3a5f">of unexpected ICU hypercapnia.</text>
+
+      <!-- Q2 yes branch -->
+      <path d="M 680 294 L 716 294" stroke="#4a5568" stroke-width="1.4" marker-end="url(#ds-arr-b)" fill="none"/>
+      <text x="698" y="287" font-size="10" font-weight="700" fill="#7a5a14">yes</text>
+      <rect x="718" y="256" width="190" height="100" rx="8" fill="url(#ds2-caus2)" stroke="#c79f3a" stroke-width="1.4"/>
+      <text x="813" y="276" text-anchor="middle" font-size="11" font-weight="700" fill="#7a5a14">↑ V̇<tspan baseline-shift="sub" font-size="0.75em">CO₂</tspan> (production)</text>
+      <text x="728" y="292" font-size="9.5" fill="#1f3a5f">• Fever (+10–13%/°C)</text>
+      <text x="728" y="306" font-size="9.5" fill="#1f3a5f">• New sepsis / SIRS</text>
+      <text x="728" y="320" font-size="9.5" fill="#1f3a5f">• Shivering, agitation</text>
+      <text x="728" y="334" font-size="9.5" fill="#1f3a5f">• Overfeeding / high carb</text>
+      <text x="728" y="348" font-size="9.5" fill="#1f3a5f">• Bicarbonate infusion</text>
+
+      <!-- Q2 no → Q3 -->
+      <path d="M 460 326 L 460 374" stroke="#4a5568" stroke-width="1.4" marker-end="url(#ds-arr-b)" fill="none"/>
+      <text x="475" y="358" font-size="10" font-weight="700" fill="#475569">no</text>
+
+      <!-- ============= Q3 ============= -->
+      <rect x="240" y="380" width="440" height="64" rx="8" fill="url(#ds2-stem)" stroke="#c79f3a" stroke-width="1.4"/>
+      <text x="460" y="403" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7a5a14">Q3 · Did V<tspan baseline-shift="sub" font-size="0.75em">d</tspan>/V<tspan baseline-shift="sub" font-size="0.75em">T</tspan> change?</text>
+      <text x="460" y="422" text-anchor="middle" font-size="10.5" fill="#1f3a5f">Capnography: rising PaCO₂−EtCO₂ gap</text>
+      <text x="460" y="436" text-anchor="middle" font-size="10.5" fill="#1f3a5f">= more dead space.</text>
+
+      <!-- Q3 yes branch -->
+      <path d="M 680 412 L 716 412" stroke="#4a5568" stroke-width="1.4" marker-end="url(#ds-arr-b)" fill="none"/>
+      <text x="698" y="405" font-size="10" font-weight="700" fill="#1f5f99">yes</text>
+      <rect x="718" y="374" width="190" height="100" rx="8" fill="url(#ds2-caus3)" stroke="#1f5f99" stroke-width="1.4"/>
+      <text x="813" y="394" text-anchor="middle" font-size="11" font-weight="700" fill="#1f5f99">↑ V<tspan baseline-shift="sub" font-size="0.75em">d</tspan>/V<tspan baseline-shift="sub" font-size="0.75em">T</tspan> (dead space)</text>
+      <text x="728" y="410" font-size="9.5" fill="#1f3a5f">• PE (↑ a−ET CO₂ gap)</text>
+      <text x="728" y="424" font-size="9.5" fill="#1f3a5f">• Recent PEEP increase</text>
+      <text x="728" y="438" font-size="9.5" fill="#1f3a5f">• Hypovolemia / low CO</text>
+      <text x="728" y="452" font-size="9.5" fill="#1f3a5f">• Hyperinflation / auto-PEEP</text>
+      <text x="728" y="466" font-size="9.5" fill="#1f3a5f">• New HME / mount</text>
+
+      <!-- Q3 no → terminal -->
+      <path d="M 460 444 L 460 492" stroke="#4a5568" stroke-width="1.4" marker-end="url(#ds-arr-b)" fill="none"/>
+      <text x="475" y="476" font-size="10" font-weight="700" fill="#475569">no</text>
+      <rect x="240" y="498" width="440" height="62" rx="8" fill="#f5f7fa" stroke="#cbd5e0" stroke-width="1.2"/>
+      <text x="460" y="520" text-anchor="middle" font-size="12" font-weight="700" fill="#1f3a5f">All three buckets ruled out</text>
+      <text x="460" y="540" text-anchor="middle" font-size="10.5" font-style="italic" fill="#475569">Recheck the ABG itself</text>
+      <text x="460" y="554" text-anchor="middle" font-size="10.5" font-style="italic" fill="#475569">(sample, transport, analyzer) before changing settings.</text>
+
+      <!-- ============= Footer cross-refs ============= -->
+      <rect x="40" y="588" width="840" height="170" rx="8" fill="#fff" stroke="#cbd5e0" stroke-width="1"/>
+      <text x="460" y="610" text-anchor="middle" font-size="12" font-weight="700" fill="#1f3a5f">Three buckets — at a glance</text>
+      <line x1="60" y1="620" x2="860" y2="620" stroke="#e2e8f0" stroke-width="0.6"/>
+
+      <!-- Column 1: V_A -->
+      <text x="60" y="640" font-size="10.5" font-weight="700" fill="#9b2c2c">↓ V<tspan baseline-shift="sub" font-size="0.75em">A</tspan> (delivery)</text>
+      <text x="60" y="657" font-size="10" fill="#1f3a5f">Vent isn't reaching the alveoli.</text>
+      <text x="60" y="671" font-size="10" fill="#1f3a5f">Fix: trigger, leak, sedation,</text>
+      <text x="60" y="685" font-size="10" fill="#1f3a5f">mode.</text>
+      <text x="60" y="710" font-size="10" font-style="italic" fill="#475569">Deep dive: Ch 11, 17, 18, 37.2a</text>
+
+      <!-- Column 2: V̇CO₂ -->
+      <text x="320" y="640" font-size="10.5" font-weight="700" fill="#7a5a14">↑ V̇<tspan baseline-shift="sub" font-size="0.75em">CO₂</tspan> (production)</text>
+      <text x="320" y="657" font-size="10" fill="#1f3a5f">Demand is up; vent is fine.</text>
+      <text x="320" y="671" font-size="10" fill="#1f3a5f">Fix: cool, treat sepsis,</text>
+      <text x="320" y="685" font-size="10" fill="#1f3a5f">sedate, reduce carb load.</text>
+      <text x="320" y="710" font-size="10" font-style="italic" fill="#475569">Deep dive: Ch 4.1a (full drivers)</text>
+
+      <!-- Column 3: V_d/V_T -->
+      <text x="580" y="640" font-size="10.5" font-weight="700" fill="#1f5f99">↑ V<tspan baseline-shift="sub" font-size="0.75em">d</tspan>/V<tspan baseline-shift="sub" font-size="0.75em">T</tspan> (dead space)</text>
+      <text x="580" y="657" font-size="10" fill="#1f3a5f">More of each breath wasted.</text>
+      <text x="580" y="671" font-size="10" fill="#1f3a5f">Fix the cause: anticoag PE,</text>
+      <text x="580" y="685" font-size="10" fill="#1f3a5f">trim PEEP, restore CO.</text>
+      <text x="580" y="710" font-size="10" font-style="italic" fill="#475569">Deep dive: Ch 3.2a, 17 (hyperinflation)</text>
+    </svg>
+    <div class="cap"><b>Figure 4.1b — PaCO₂ diagnostic flowchart.</b> Three sequential questions partition the cause into a bucket: ↓ delivery (V<sub>A</sub>), ↑ production (V̇<sub>CO₂</sub>), or ↑ waste (V<sub>d</sub>/V<sub>T</sub>). The most common ICU answer is bucket 2 — fever, sepsis, shivering, or overfeeding. The bucket diagnosed determines the fix; the fix is rarely "turn up the vent."</div>
+  </div>
   </details>
   <details class="chap-acc" data-acc-id="c4-h4-2" open>
     <summary>
@@ -4643,8 +5059,9 @@
           activePath.setAttribute('d', buildCurvePath(p50));
           const xy = pt(p50, 50);
           p50Line.setAttribute('x1', xy[0]); p50Line.setAttribute('y1', xy[1]); p50Line.setAttribute('x2', xy[0]); p50Line.setAttribute('y2', 240);
-          p50Label.setAttribute('x', xy[0] + 4); p50Label.setAttribute('y', xy[1] - 4);
-          p50Label.textContent = 'P₅₀ = ' + p50.toFixed(0);
+          // Inline P₅₀ label removed — was overlapping the curve. The Live
+          // Conditions panel shows the current P₅₀ value; the dashed line +
+          // marker dot locate it on the curve.
           const lungSat = 100 * Math.pow(100, 2.7) / (Math.pow(100, 2.7) + Math.pow(p50, 2.7));
           const ll = pt(100, lungSat); lungPoint.setAttribute('cx', ll[0]); lungPoint.setAttribute('cy', ll[1]);
           const tissueSat = 100 * Math.pow(40, 2.7) / (Math.pow(40, 2.7) + Math.pow(p50, 2.7));
@@ -4932,7 +5349,7 @@
     </summary>
 
 <div class="figure">
-    <img src="fig_05_01_flow_volume_loops.png" alt="Pulmonary flow-volume loops infographic. Three main patterns shown as plots of flow (L/s) versus volume (L), with expiration above the zero line and inspiration below; loops start at total lung capacity (TLC) and expire to residual volume (RV). Normal loop: rapid rise to high PEF, smooth concave expiratory limb, symmetric inspiratory limb. Obstructive pattern (asthma, COPD): decreased PEF, markedly scooped concave expiratory limb, ↓ FEF50 and ↓ FEV1, RV increased from air trapping. Restrictive pattern (pulmonary fibrosis, chest-wall disorders): normal or near-normal peak flow, narrow loop from reduced lung volumes, steep expiratory limb, ↓ TLC and ↓ FVC, FEV1/FVC normal or increased. Three special upper-airway obstruction patterns: fixed UAO (tracheal/subglottic stenosis, large tracheal tumor) — plateau on both limbs; variable extrathoracic obstruction (vocal-cord dysfunction, laryngeal tumor) — flattened inspiratory limb, normal expiratory; variable intrathoracic obstruction (tracheomalacia, intrathoracic tumor) — flattened expiratory limb, normal inspiratory." style="max-width:100%; height:auto; display:block; margin:0 auto;"/>
+    <img src="figures/fig_05_01_flow_volume_loops.png" alt="Pulmonary flow-volume loops infographic. Three main patterns shown as plots of flow (L/s) versus volume (L), with expiration above the zero line and inspiration below; loops start at total lung capacity (TLC) and expire to residual volume (RV). Normal loop: rapid rise to high PEF, smooth concave expiratory limb, symmetric inspiratory limb. Obstructive pattern (asthma, COPD): decreased PEF, markedly scooped concave expiratory limb, ↓ FEF50 and ↓ FEV1, RV increased from air trapping. Restrictive pattern (pulmonary fibrosis, chest-wall disorders): normal or near-normal peak flow, narrow loop from reduced lung volumes, steep expiratory limb, ↓ TLC and ↓ FVC, FEV1/FVC normal or increased. Three special upper-airway obstruction patterns: fixed UAO (tracheal/subglottic stenosis, large tracheal tumor) — plateau on both limbs; variable extrathoracic obstruction (vocal-cord dysfunction, laryngeal tumor) — flattened inspiratory limb, normal expiratory; variable intrathoracic obstruction (tracheomalacia, intrathoracic tumor) — flattened expiratory limb, normal inspiratory." style="max-width:100%; height:auto; display:block; margin:0 auto;"/>
     <div class="cap"><b>Figure 5.1 — Pulmonary flow-volume loops.</b> Flow (L/s) on the y-axis, volume (L) on the x-axis; expiration above the zero line, inspiration below; loops start at total lung capacity (TLC), expire to residual volume (RV), then inspire back to TLC. <strong>Normal</strong> — rapid rise to high PEF, smooth concave expiratory limb, symmetric inspiratory limb, normal FVC. <strong>Obstructive</strong> (asthma, COPD) — decreased PEF, markedly scooped concave expiratory limb from airflow limitation, ↓ FEF₅₀ and ↓ FEV₁, RV increased from air trapping. <strong>Restrictive</strong> (pulmonary fibrosis, chest-wall disorders) — normal or near-normal peak flow, narrow loop from reduced lung volumes, steep expiratory limb, ↓ TLC and ↓ FVC, FEV₁/FVC normal or ↑. <strong>Fixed UAO</strong> (tracheal/subglottic stenosis, large tracheal tumor) — plateau on both inspiratory and expiratory limbs, suggesting a fixed obstruction at or below the level of the vocal cords. <strong>Variable extrathoracic</strong> (vocal-cord dysfunction, laryngeal tumor) — flattened inspiratory limb, normal expiratory limb (obstruction outside the thorax limits flow on inspiration). <strong>Variable intrathoracic</strong> (tracheomalacia, intrathoracic tumor) — flattened expiratory limb, normal inspiratory limb (obstruction inside the thorax limits flow on expiration). Key point: loop shape distinguishes obstructive (scooped) from restrictive (small but tall) patterns.<sup class="cite"><a href="#r30">30</a></sup></div>
   </div>
   </details>
@@ -5653,7 +6070,7 @@
       <h4>7.1 The static P-V loop — anatomy of the curve</h4>
     </summary>
   <div class="figure">
-    <img src="fig_07_01_pv_loop.png" alt="Pressure–volume loop. Y-axis: volume (L). X-axis: pressure (cmH2O). A closed sigmoidal loop with two limbs: the inflation (inspiratory) limb on the bottom and the deflation (expiratory) limb on top, separated by a shaded hysteresis area. Markers indicate the lower inflection point on the inflation limb, the upper inflection point at the start of overdistension, and the beaking plateau near peak airway pressure (Paw). The volume axis is bracketed to show tidal volume (V_T). The pressure axis is divided into four operational zones with colored backgrounds: PEEP (blue), alveolar recruitment and airway resistance (orange), optimal compliance — compliant lung (green), and alveolar overdistension (red)." style="max-width:900px; display:block; margin:0 auto;"/>
+    <img src="figures/fig_07_01_pv_loop.png" alt="Pressure–volume loop. Y-axis: volume (L). X-axis: pressure (cmH2O). A closed sigmoidal loop with two limbs: the inflation (inspiratory) limb on the bottom and the deflation (expiratory) limb on top, separated by a shaded hysteresis area. Markers indicate the lower inflection point on the inflation limb, the upper inflection point at the start of overdistension, and the beaking plateau near peak airway pressure (Paw). The volume axis is bracketed to show tidal volume (V_T). The pressure axis is divided into four operational zones with colored backgrounds: PEEP (blue), alveolar recruitment and airway resistance (orange), optimal compliance — compliant lung (green), and alveolar overdistension (red)." style="max-width:900px; display:block; margin:0 auto;"/>
     <div class="cap"><b>Figure 7.1 — The pressure–volume loop.</b> The <strong>inflation (inspiratory) limb</strong> climbs from the origin through the <strong>lower inflection point</strong> — where recruitment is largely complete and the curve steepens into its linear, best-compliance segment — and then through the <strong>upper inflection point</strong> (the start of overdistension) into the flat <strong>"beaking"</strong> plateau at <strong>peak airway pressure (P<sub>aw</sub>)</strong>. The <strong>deflation (expiratory) limb</strong> returns above the inflation limb because surfactant and viscoelastic forces hold alveoli open at lower pressures than were needed to open them; the shaded area between the limbs is <strong>hysteresis</strong> — energy dissipated per cycle. The pressure axis decomposes into four operational zones: <em>PEEP</em>, <em>alveolar recruitment &amp; airway resistance</em>, <em>optimal compliance (compliant lung)</em>, and <em>alveolar overdistension</em>; tidal breaths belong in the third zone (see <a class="xref" href="#c7" data-xref-chap="7">§7.5</a> for the bedside corollaries).</div>
   </div>
   </details>
@@ -5666,7 +6083,7 @@
   <p>Figure 7.1 collapses a breath into a single P-V trace, but the cycle is actually driven by five distinct pressures, each tracking lung volume differently. Reading the ventilator waveforms in Part III and interpreting esophageal manometry (<a class="xref" href="#c29" data-xref-chap="29">§29</a>) both start here.</p>
 
   <div class="figure">
-    <img src="fig_07_02_mechanics_five_pressures.png" alt="Mechanics of breathing infographic. Y-axis: pressure (cmH2O); x-axis: lung volume (L) from RV through FRC to TLC. Five curves are plotted: alveolar pressure (PA) oscillates slightly above and below zero to drive airflow; pleural pressure (Ppl) is always negative, becomes most negative at TLC; transpulmonary pressure (PL = PA − Ppl) is the lung's distending pressure and is greatest at TLC; chest wall recoil pressure (PCW) is negative below ~70 percent vital capacity (outward recoil) and crosses zero around 70 percent; airway opening pressure (Paw) is positive whenever airways are open. Reference values are tabulated at FRC, end inspiration, and end expiration. Clinical correlates: loss of negative Ppl in pneumothorax drops PL and the lung collapses; increased Ppl in obesity or ascites drops PL and reduces operating lung volumes; increased lung compliance gives greater volume change per PL; increased chest wall stiffness gives more negative PCW for a given volume; increased airway resistance raises the Paw needed to open the airway." style="max-width:100%; height:auto; display:block; margin:0 auto;"/>
+    <img src="figures/fig_07_02_mechanics_five_pressures.png" alt="Mechanics of breathing infographic. Y-axis: pressure (cmH2O); x-axis: lung volume (L) from RV through FRC to TLC. Five curves are plotted: alveolar pressure (PA) oscillates slightly above and below zero to drive airflow; pleural pressure (Ppl) is always negative, becomes most negative at TLC; transpulmonary pressure (PL = PA − Ppl) is the lung's distending pressure and is greatest at TLC; chest wall recoil pressure (PCW) is negative below ~70 percent vital capacity (outward recoil) and crosses zero around 70 percent; airway opening pressure (Paw) is positive whenever airways are open. Reference values are tabulated at FRC, end inspiration, and end expiration. Clinical correlates: loss of negative Ppl in pneumothorax drops PL and the lung collapses; increased Ppl in obesity or ascites drops PL and reduces operating lung volumes; increased lung compliance gives greater volume change per PL; increased chest wall stiffness gives more negative PCW for a given volume; increased airway resistance raises the Paw needed to open the airway." style="max-width:100%; height:auto; display:block; margin:0 auto;"/>
     <div class="cap"><b>Figure 7.2 — Mechanics of breathing: five pressures across the respiratory cycle.</b> <strong>P<sub>A</sub></strong> (alveolar) oscillates slightly above and below zero to drive airflow. <strong>P<sub>pl</sub></strong> (pleural) is always negative and becomes <em>most</em> negative at TLC. <strong>P<sub>L</sub></strong> (transpulmonary, P<sub>A</sub> − P<sub>pl</sub>) is the distending pressure of the lung and is greatest at TLC. <strong>P<sub>CW</sub></strong> (chest-wall recoil) is negative below ~70% VC (chest wall pulls outward) and crosses zero near 70%. <strong>P<sub>aw</sub></strong> (airway opening) is positive whenever airways are open. <em>Clinical correlates:</em> loss of negative P<sub>pl</sub> (pneumothorax) drops P<sub>L</sub> and the lung collapses; increased P<sub>pl</sub> (obesity, ascites) drops P<sub>L</sub> and shrinks operating volumes — the physiologic rationale for esophageal manometry (<a class="xref" href="#c29" data-xref-chap="29">§29</a>).</div>
   </div>
   </details>
@@ -6287,7 +6704,7 @@
 
   <h5>11.1.3 When PSV is the right mode</h5>
   <ul>
-    <li><strong>Spontaneous breathing trial</strong> (PS 0–5 + PEEP 0–5; see <a class="xref" href="#c36" data-xref-chap="36">§36</a>).</li>
+    <li><strong>Spontaneous breathing trial</strong> — PSV 5–8 over PEEP 5 is the most common variant; PSV 0 + PEEP 0 (T-piece) is the most rigorous; both are acceptable. See <a class="xref" href="#c36" data-xref-chap="36">§36</a>.</li>
     <li><strong>Bridging from A/C to extubation</strong> when sedation is lightening and drive is intact.</li>
     <li><strong>Post-op recovery</strong> with intact respiratory drive.</li>
     <li><strong>Difficulty weaning from PRVC / A/C</strong> — PSV often outperforms when the issue is asynchrony.</li>
@@ -6325,7 +6742,7 @@
     <tbody>
       <tr><td>Sedated, paralyzed, no drive</td><td>A/C-VC or A/C-PC</td><td>Vent does all the work; predictable</td></tr>
       <tr><td>Light sedation, intact drive, stable mechanics</td><td>PSV 8–12</td><td>Patient sets rate; vent unloads</td></tr>
-      <tr><td>Daily readiness check</td><td>PSV 0–5 (SBT)</td><td>Tests liberation readiness; see <a class="xref" href="#c36" data-xref-chap="36">§36</a></td></tr>
+      <tr><td>Daily readiness check</td><td>PSV 5–8 / PEEP 5 (most common) or T-piece (most rigorous)</td><td>Tests liberation readiness; both variants acceptable; see <a class="xref" href="#c36" data-xref-chap="36">§36</a></td></tr>
       <tr><td>Mid-recovery, drive variable</td><td>PRVC or PSV with backup</td><td>Adaptive support during fluctuating effort</td></tr>
       <tr><td>Failed PSV with asynchrony</td><td>Back to A/C (VC or PC)</td><td>Asynchrony in PSV usually reflects mismatch between patient drive and the cycle/trigger settings — return to a controlled mode to reset rather than chasing a partial solution.</td></tr>
     </tbody>
@@ -6341,7 +6758,7 @@
       <li>Cycle threshold is the most under-titrated knob — raise it (35–45%) in COPD/asthma so the breath ends before the patient pushes out; lower it (10–15%) in stiff lung so the breath isn't cut short. Default 25% works for most. Full tuning table in <a class="xref" href="#c18" data-xref-chap="18">§18.6a</a>.</li>
       <li>PSV requires intact respiratory drive — set apnea backup. Sedation, brainstem injury, post-arrest drive depression are reasons to stay in A/C.</li>
       <li>SIMV underperformed PSV in the 1990s weaning trials; it persists out of habit, especially in pediatric ICU. Outcomes are not dramatically worse with sound overall management, but PSV is the more efficient weaning path.</li>
-      <li>For SBT, use PSV 0–5 + PEEP 5; this is the default test for liberation readiness (<a class="xref" href="#c36" data-xref-chap="36">§36</a>).</li>
+      <li>For SBT, use PSV 5–8 over PEEP 5 (most common variant) or PSV 0 + PEEP 0 (T-piece, most rigorous); both are acceptable. Default test for liberation readiness (<a class="xref" href="#c36" data-xref-chap="36">§36</a>).</li>
     </ul>
   </div>
 </section>
@@ -6371,7 +6788,7 @@
   </ul>
   <p>Used as a rescue or alternative in moderate-severe ARDS at experienced centers; randomized data are mixed, with some signal for improved oxygenation and shorter ventilator days.<sup class="cite"><a href="#r4">4</a></sup></p>
   <div class="figure">
-    <img src="fig_12_01_aprv_waveforms.png" alt="APRV pressure and flow tracings. Upper panel: airway pressure sustained at P_high 25 cmH2O for T_high 4.0 s with small dips from spontaneous breaths superimposed; periodic brief releases to P_low (set 0) lasting T_low 0.6 s. Actual end-expiratory pressure during T_low reaches only ~8 cmH2O — the intrinsic PEEP that prevents derecruitment. Lower panel: matching flow tracing showing inspiratory spike at start of each P_high cycle and large expiratory deflection at each release, with release terminated before flow returns to baseline (titrate to ~75% of peak expiratory flow rate in practice)." style="max-width:100%; height:auto; display:block; margin:0 auto;"/>
+    <img src="figures/fig_12_01_aprv_waveforms.png" alt="APRV pressure and flow tracings. Upper panel: airway pressure sustained at P_high 25 cmH2O for T_high 4.0 s with small dips from spontaneous breaths superimposed; periodic brief releases to P_low (set 0) lasting T_low 0.6 s. Actual end-expiratory pressure during T_low reaches only ~8 cmH2O — the intrinsic PEEP that prevents derecruitment. Lower panel: matching flow tracing showing inspiratory spike at start of each P_high cycle and large expiratory deflection at each release, with release terminated before flow returns to baseline (titrate to ~75% of peak expiratory flow rate in practice)." style="max-width:100%; height:auto; display:block; margin:0 auto;"/>
     <div class="cap"><b>Figure 12.1 — APRV pressure and flow tracings.</b> The pressure scalar shows sustained <strong>P<sub>high</sub></strong> (25–30 cmH₂O) interrupted by brief releases toward <strong>P<sub>low</sub> set = 0</strong>, lasting <strong>T<sub>low</sub></strong> (0.4–0.8 s). Crucially, airway pressure <em>never reaches</em> the set P<sub>low</sub> — T<sub>low</sub> is deliberately shorter than the lung's expiratory time constant, so exhalation is truncated and a substantial end-expiratory pressure (typically 5–10 cmH₂O) remains. This residual is the intrinsic PEEP that maintains recruitment. The patient breathes spontaneously throughout — spontaneous efforts appear as small pressure deflections superimposed on the P<sub>high</sub> plateau. T<sub>low</sub> is titrated so that expiratory flow terminates at ~75% of peak expiratory flow rate — the trick that makes APRV work.</div>
   </div>
   </details>
@@ -9154,7 +9571,7 @@
 
 <p>Positive-pressure ventilation does not just oxygenate — it changes preload, afterload, and the transmural pressures the heart sees. Understanding this is what separates the pulmonologist from the critical-care physician at the bedside.</p>
   <div class="figure">
-    <img src="fig_29_01_cardiopulmonary_interactions.png" alt="Cardiopulmonary interactions of positive-pressure ventilation — effects on lungs, heart mechanisms, and net hemodynamic effects" style="max-width:100%; height:auto; display:block; margin:0 auto;"/>
+    <img src="figures/fig_29_01_cardiopulmonary_interactions.png" alt="Cardiopulmonary interactions of positive-pressure ventilation — effects on lungs, heart mechanisms, and net hemodynamic effects" style="max-width:100%; height:auto; display:block; margin:0 auto;"/>
     <div class="cap"><b>Figure 29.1 — Cardiopulmonary interactions of positive-pressure ventilation.</b> ↑ intrathoracic pressure has predictable, chamber-specific effects: venous return falls (RA), pulmonary vascular resistance rises (RV), LA filling drops as a downstream consequence, and LV transmural pressure falls — meaning the LV ejects against a lower effective afterload. Exploited therapeutically in cardiogenic pulmonary edema; problematic in hypovolemia and RV failure.</div>
   </div>
   <h5>Practical implications</h5>
@@ -9529,11 +9946,101 @@
   <h3><span class="num">34</span>Intubation &amp; airway management</h3>
   <p class="lead">Every patient on a vent was intubated at some point. The intubation itself is often the highest-risk procedure in their entire ICU course — peri-intubation hypotension, hypoxemia, and aspiration kill more patients than the disease that brought them in. The ventilator strategy that follows is downstream of how well you set up that single procedure.</p>
 
-  
-  
   <details class="chap-acc" data-acc-id="c34-h4-1" open>
     <summary>
-      <h4>34.1 The pre-intubation 7 P's</h4>
+      <h4>34.1 Should I intubate? — the decision algorithm</h4>
+    </summary>
+
+  <p>Before any RSI checklist comes the question whether to intubate at all. Three questions, asked in order, cover virtually every adult acute respiratory failure case. The third is the one most often skipped.</p>
+
+  <div class="figure">
+    <svg viewBox="0 0 960 660" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three-question decision algorithm for whether to intubate: airway protection (Q1), failing physiology and first-line non-invasive option (Q2), and trajectory safety for a 1-2 hour trial (Q3)." style="max-width:960px; width:100%; height:auto; display:block; margin:0 auto; font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;">
+      <defs>
+        <marker id="dec-arr-c34" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#5a8ab8"/>
+        </marker>
+        <linearGradient id="dec-go-bg-c34" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#fbe6e6"/><stop offset="100%" stop-color="#f4d3d3"/></linearGradient>
+        <linearGradient id="dec-trial-bg-c34" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#dcfce7"/><stop offset="100%" stop-color="#bcedc8"/></linearGradient>
+        <linearGradient id="dec-watch-bg-c34" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#fef3c7"/><stop offset="100%" stop-color="#fbe39c"/></linearGradient>
+      </defs>
+      <text x="480" y="22" text-anchor="middle" font-size="16" font-weight="700" fill="#1f3a5f">Should I intubate? — the decision algorithm</text>
+      <text x="480" y="40" text-anchor="middle" font-size="10.5" font-style="italic" fill="#64748b">Three questions in order. Q3 is the one most often skipped.</text>
+      <rect x="280" y="56" width="400" height="56" rx="6" fill="#1f3a5f"/>
+      <text x="480" y="78" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Q1.  Can the patient protect the airway?</text>
+      <text x="480" y="96" text-anchor="middle" font-size="10" fill="#bcd4ec">GCS ≤ 8 · loss of cough/swallow/gag · hematemesis · expanding airway lesion</text>
+      <path d="M 320 112 L 320 132 L 175 132 L 175 162" stroke="#9b2c2c" stroke-width="2" fill="none" marker-end="url(#dec-arr-c34)"/>
+      <text x="248" y="126" text-anchor="middle" font-size="11" font-weight="700" fill="#9b2c2c">NO →</text>
+      <path d="M 640 112 L 640 132 L 720 132 L 720 162" stroke="#5da169" stroke-width="2" fill="none" marker-end="url(#dec-arr-c34)"/>
+      <text x="690" y="126" text-anchor="middle" font-size="11" font-weight="700" fill="#1d5a2c">YES →</text>
+      <rect x="20" y="162" width="310" height="186" rx="8" fill="url(#dec-go-bg-c34)" stroke="#9b2c2c" stroke-width="1.5"/>
+      <text x="175" y="184" text-anchor="middle" font-size="13" font-weight="700" fill="#9b2c2c">INTUBATE NOW</text>
+      <text x="175" y="199" text-anchor="middle" font-size="10" font-style="italic" fill="#64748b">no NIV/HFNC trial</text>
+      <text x="35" y="220" font-size="10.5" fill="#1f3a5f">• Airway threat (any of Q1)</text>
+      <text x="35" y="236" font-size="10.5" fill="#1f3a5f">• Respiratory or cardiac arrest</text>
+      <text x="35" y="252" font-size="10.5" fill="#1f3a5f">• Hemodynamic instability</text>
+      <text x="35" y="268" font-size="10.5" fill="#1f3a5f">• Severe agitation / non-cooperative</text>
+      <text x="35" y="284" font-size="10.5" fill="#1f3a5f">• Copious secretions / recent UGIB</text>
+      <text x="35" y="300" font-size="10.5" fill="#1f3a5f">• Worsening despite max NIV</text>
+      <rect x="35" y="316" width="280" height="22" rx="3" fill="#fff" stroke="#9b2c2c" stroke-width="0.6"/>
+      <text x="175" y="331" text-anchor="middle" font-size="10" font-weight="700" fill="#9b2c2c">→ Ch 34 prep (7 P's, §34.2)</text>
+      <rect x="560" y="162" width="380" height="56" rx="6" fill="#1f3a5f"/>
+      <text x="750" y="184" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Q2.  Which physiology is failing?</text>
+      <text x="750" y="202" text-anchor="middle" font-size="10" fill="#bcd4ec">hypoxemic · hypercapnic · cardiogenic edema · mixed</text>
+      <path d="M 650 218 L 650 246" stroke="#5a8ab8" stroke-width="1.5" fill="none" marker-end="url(#dec-arr-c34)"/>
+      <path d="M 850 218 L 850 246" stroke="#5a8ab8" stroke-width="1.5" fill="none" marker-end="url(#dec-arr-c34)"/>
+      <rect x="430" y="250" width="280" height="178" rx="8" fill="url(#dec-trial-bg-c34)" stroke="#5da169" stroke-width="1.4"/>
+      <text x="570" y="270" text-anchor="middle" font-size="12" font-weight="700" fill="#1d5a2c">HYPOXEMIC FAILURE</text>
+      <text x="570" y="284" text-anchor="middle" font-size="10" fill="#475569">non-COPD, non-edema; drive preserved</text>
+      <line x1="445" y1="292" x2="695" y2="292" stroke="#5da169" stroke-width="0.5"/>
+      <text x="570" y="308" text-anchor="middle" font-size="11" font-weight="700" fill="#1d5a2c">First-line: HFNC</text>
+      <text x="445" y="324" font-size="10" fill="#1f3a5f">FLORALI: ↓ intubation, ↓ 90-d</text>
+      <text x="445" y="338" font-size="10" fill="#1f3a5f">mortality vs std O₂ in P/F &lt; 200</text>
+      <text x="445" y="358" font-size="10" font-weight="600" fill="#1d5a2c">Re-check at 2, 6, 12 h:</text>
+      <text x="445" y="372" font-size="10" fill="#1f3a5f">ROX = (SpO₂/FiO₂) / RR</text>
+      <text x="445" y="386" font-size="10" fill="#1f3a5f">≥ 4.88 → continue HFNC</text>
+      <text x="445" y="400" font-size="10" font-weight="700" fill="#9b2c2c">&lt; 3.85 at 12 h → INTUBATE</text>
+      <text x="445" y="418" font-size="10" font-style="italic" fill="#64748b">Helmet NIV if ARDS-like (HENIVOT)</text>
+      <rect x="720" y="250" width="220" height="178" rx="8" fill="url(#dec-trial-bg-c34)" stroke="#5da169" stroke-width="1.4"/>
+      <text x="830" y="270" text-anchor="middle" font-size="12" font-weight="700" fill="#1d5a2c">HYPERCAPNIC</text>
+      <text x="830" y="284" text-anchor="middle" font-size="10" fill="#475569">COPD · OHS · NMD · CHF</text>
+      <line x1="732" y1="292" x2="930" y2="292" stroke="#5da169" stroke-width="0.5"/>
+      <text x="830" y="308" text-anchor="middle" font-size="11" font-weight="700" fill="#1d5a2c">First-line: BiPAP</text>
+      <text x="732" y="324" font-size="10" fill="#1f3a5f">Plant 2000: ↓ 50% intubation,</text>
+      <text x="732" y="338" font-size="10" fill="#1f3a5f">↓ 40% mortality (COPD exac.)</text>
+      <text x="732" y="358" font-size="10" font-weight="600" fill="#1d5a2c">Re-check at 1, 2 h:</text>
+      <text x="732" y="372" font-size="10" font-weight="700" fill="#9b2c2c">HACOR &gt; 5 at 1 h → INTUBATE</text>
+      <text x="732" y="386" font-size="10" fill="#1f3a5f">pH falling, RR ↑, mental</text>
+      <text x="732" y="400" font-size="10" fill="#1f3a5f">status worse → INTUBATE</text>
+      <text x="732" y="418" font-size="10" font-style="italic" fill="#64748b">Cardiogenic edema: CPAP 8–12</text>
+      <rect x="20" y="450" width="920" height="56" rx="6" fill="#1f3a5f"/>
+      <text x="480" y="472" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Q3.  Is the TRAJECTORY safe enough to wait for a 1–2 h trial?</text>
+      <text x="480" y="492" text-anchor="middle" font-size="10.5" font-style="italic" fill="#bcd4ec">"Anticipated decline" is the most under-recognized intubation indication — tube before the patient codes, not after.</text>
+      <rect x="20" y="520" width="450" height="130" rx="8" fill="url(#dec-watch-bg-c34)" stroke="#c79f3a" stroke-width="1.4"/>
+      <text x="245" y="540" text-anchor="middle" font-size="12" font-weight="700" fill="#7a5a14">Trajectory safe → trial NIV/HFNC</text>
+      <text x="35" y="560" font-size="10.5" fill="#1f3a5f">• Stable or improving over last 30–60 min</text>
+      <text x="35" y="576" font-size="10.5" fill="#1f3a5f">• No escalating sepsis or expanding ICH</text>
+      <text x="35" y="592" font-size="10.5" fill="#1f3a5f">• Patient cooperative, tolerates mask</text>
+      <text x="35" y="608" font-size="10.5" fill="#1f3a5f">• Clinician can reassess in 1–2 h</text>
+      <rect x="35" y="620" width="420" height="20" rx="3" fill="#fff" stroke="#c79f3a" stroke-width="0.6"/>
+      <text x="245" y="634" text-anchor="middle" font-size="10" font-weight="700" fill="#7a5a14">→ start NIV/HFNC per Q2; re-evaluate at 1–2 h</text>
+      <rect x="490" y="520" width="450" height="130" rx="8" fill="url(#dec-go-bg-c34)" stroke="#9b2c2c" stroke-width="1.4"/>
+      <text x="715" y="540" text-anchor="middle" font-size="12" font-weight="700" fill="#9b2c2c">Trajectory bad → intubate now</text>
+      <text x="505" y="560" font-size="10.5" fill="#1f3a5f">• Worsening despite optimal medical therapy</text>
+      <text x="505" y="576" font-size="10.5" fill="#1f3a5f">• Escalating sepsis, expanding ICH, flail chest</text>
+      <text x="505" y="592" font-size="10.5" fill="#1f3a5f">• High WOB stealing cardiac output</text>
+      <text x="505" y="608" font-size="10.5" fill="#1f3a5f">• Severe metabolic acidosis with resp comp</text>
+      <rect x="505" y="620" width="420" height="20" rx="3" fill="#fff" stroke="#9b2c2c" stroke-width="0.6"/>
+      <text x="715" y="634" text-anchor="middle" font-size="10" font-weight="700" fill="#9b2c2c">→ proceed to Ch 34 prep (7 P's, §34.2)</text>
+    </svg>
+    <div class="cap"><b>Figure 34.1 — The intubation decision algorithm.</b> Three questions in order. Q1 (airway protection) is a yes/no gate; "no" mandates intubation without a trial. Q2 (which physiology is failing) determines the first-line non-invasive option: HFNC for hypoxemic failure (FLORALI; ROX rule at 12 h), BiPAP for hypercapnic failure (Plant 2000; HACOR rule at 1 h), CPAP or BiPAP for cardiogenic pulmonary edema. Q3 (trajectory) is the most under-recognized — even when Q1 and Q2 favor a trial, a deteriorating patient gets the tube now rather than coding during the trial.</div>
+  </div>
+
+  <div class="pearl"><strong>The trajectory question in one sentence</strong>"If this patient sits on NIV for the next 90 minutes, are they going to look the same, better, or worse?" If the honest answer is "worse," intubate now. Most preventable peri-intubation arrests happen because the team waited for a number to confirm what the trajectory had already told them.</div>
+  </details>
+
+  <details class="chap-acc" data-acc-id="c34-h4-3" open>
+    <summary>
+      <h4>34.2 The pre-intubation 7 P's</h4>
     </summary>
 
 <p>An adapted RSI checklist that every team should run before pushing drugs:</p>
@@ -9547,13 +10054,13 @@
       <tr><td><strong>Paralysis with induction</strong></td><td>Induction agent + neuromuscular blocker, simultaneous push</td><td>See Ch 34.2 for selection. Standard: ketamine 1.5–2 mg/kg + rocuronium 1.2 mg/kg.</td></tr>
       <tr><td><strong>Position &amp; protection</strong></td><td>Sniffing position, ear-to-sternal-notch alignment</td><td>Ramp obese patients with blankets. Cricoid pressure (Sellick) is no longer routinely recommended — controversial; release if view poor.</td></tr>
       <tr><td><strong>Placement &amp; proof</strong></td><td>Pass tube; confirm with EtCO₂ and bilateral breath sounds</td><td>Sustained capnography waveform = gold standard. CXR confirms depth (tip 2–4 cm above carina); auscultation alone is unreliable.</td></tr>
-      <tr><td><strong>Post-intubation management</strong></td><td>Sedation infusion, ventilator settings, anticipate hypotension</td><td>See Ch 32.4. Do NOT leave patient with bolus sedation only — start propofol/fentanyl drips immediately.</td></tr>
+      <tr><td><strong>Post-intubation management</strong></td><td>Sedation infusion, ventilator settings, anticipate hypotension</td><td>See §34.6. Do NOT leave patient with bolus sedation only — start propofol/fentanyl drips immediately.</td></tr>
     </tbody>
   </table>
   </details>
   <details class="chap-acc" data-acc-id="c34-h4-2" open>
     <summary>
-      <h4>34.2 Induction agent selection — match the agent to the physiology</h4>
+      <h4>34.3 Induction agent selection — match the agent to the physiology</h4>
     </summary>
 
 <table>
@@ -9577,9 +10084,9 @@
   </table>
   <div class="pearl"><strong>The "two-bag" rule</strong>For any unstable patient: have one bag of fluid running and one bag of pressor drawn before you push induction. Anticipate that BP will drop. Phenylephrine push-dose 50–200 mcg, epinephrine push-dose 5–20 mcg, or norepinephrine drip up.</div>
   </details>
-  <details class="chap-acc" data-acc-id="c34-h4-3" open>
+  <details class="chap-acc" data-acc-id="c34-h4-4" open>
     <summary>
-      <h4>34.3 The difficult airway — predict, plan, fail safely</h4>
+      <h4>34.4 The difficult airway — predict, plan, fail safely</h4>
     </summary>
 
 <p><strong>Predictors</strong> (LEMON):</p>
@@ -9593,15 +10100,15 @@
   <p><strong>Difficult-airway plan</strong> (have all three ready before any anticipated difficult intubation):</p>
   <ol>
     <li><strong>Plan A:</strong> Direct or video laryngoscopy with optimal positioning + bougie</li>
-    <li><strong>Plan B:</strong> Supraglottic device (LMA, i-gel) — temporary oxygenation/ventilation while regrouping</li>
+    <li><strong>Plan B:</strong> Supraglottic airway (laryngeal mask, second-generation supraglottic device with gastric channel) — temporary oxygenation/ventilation while regrouping</li>
     <li><strong>Plan C:</strong> Awake fiberoptic intubation if predictable in advance</li>
     <li><strong>Plan D ("can't intubate, can't oxygenate" — CICO):</strong> Surgical cricothyrotomy. <em>Don't delay.</em> If supraglottic device fails to oxygenate and patient is desaturating &lt; 80% on max efforts, cut.</li>
   </ol>
   <div class="pitfall"><strong>The "just one more attempt" trap</strong>Each failed laryngoscopy attempt causes airway trauma, edema, bleeding, and desaturation — making the next attempt harder. <em>Three attempts maximum</em> by the same operator before escalating (different operator, different blade, video, supraglottic, surgical). Multiple-attempt intubation is independently associated with worse outcomes.</div>
   </details>
-  <details class="chap-acc" data-acc-id="c34-h4-4" open>
+  <details class="chap-acc" data-acc-id="c34-h4-5" open>
     <summary>
-      <h4>34.4 Post-intubation hypotension — anticipate, don't react</h4>
+      <h4>34.5 Post-intubation hypotension — anticipate, don't react</h4>
     </summary>
 
 <p>Hypotension within 10 minutes of intubation occurs in ~30% of ED/ICU intubations and is associated with mortality. Three mechanisms — usually concurrent:</p>
@@ -9610,12 +10117,13 @@
     <li><strong>Loss of negative-pressure inspiration</strong> — switching from spontaneous (which augments venous return) to positive-pressure ventilation drops preload</li>
     <li><strong>Underlying disease</strong> — sepsis, hypovolemia, RV failure (especially massive PE — see §25.4)</li>
   </ol>
+  <p><em>In an obstructive patient (severe asthma, COPD exacerbation), the post-intubation collapse pattern is specifically <strong>stacked breaths from over-bagging</strong> — see <a class="xref" href="#c17" data-xref-chap="17">§17.3</a> for the "disconnect the circuit" rescue and the DOPES mnemonic.</em></p>
   <p><strong>Pre-intubation</strong>: shock index (HR/SBP) &gt; 0.8 predicts post-intubation hypotension. Pre-treat with crystalloid bolus + push-dose pressor.</p>
   <p><strong>Post-intubation immediately</strong>: if BP drops, give 500 mL crystalloid bolus, push-dose pressor (phenylephrine 100 mcg or epinephrine 10 mcg), and start a vasopressor drip if persistent. Sedation choice matters — switch from propofol to a less-vasoplegic regimen (fentanyl + dexmedetomidine, or low-dose ketamine drip in shock).</p>
   </details>
-  <details class="chap-acc" data-acc-id="c34-h4-5" open>
+  <details class="chap-acc" data-acc-id="c34-h4-6" open>
     <summary>
-      <h4>34.5 Initial post-intubation ventilator orders — the 30-second cookbook</h4>
+      <h4>34.6 Initial post-intubation ventilator orders — the 30-second cookbook</h4>
     </summary>
 
 <table>
@@ -9633,9 +10141,9 @@
   </table>
   <p>Then within the first hour: re-assess Pplat, driving pressure, P/F ratio, hemodynamics. Adjust to phenotype (ARDS bundle, obstructive recipe, etc.). See Part IV chapters for disease-specific tuning.</p>
   </details>
-  <details class="chap-acc" data-acc-id="c34-h4-6" open>
+  <details class="chap-acc" data-acc-id="c34-h4-7" open>
     <summary>
-      <h4>34.6 Humidification &amp; the ventilator circuit — HME vs heated humidifier</h4>
+      <h4>34.7 Humidification &amp; the ventilator circuit — HME vs heated humidifier</h4>
     </summary>
 
 <p>The upper airway normally heats and humidifies inspired gas to 37 °C and 100% relative humidity (44 mg H₂O/L) before it reaches the carina — the <strong>isothermic saturation boundary (ISB)</strong>. An ETT bypasses this entire system, delivering cold, dry compressed gas directly to the lower airway. Without humidification, the mucociliary escalator slows within minutes, secretions thicken and tenacious within hours, mucus plugging accelerates, and tracheobronchitis follows. Humidification is mandatory on every vent — only the method varies.</p>
@@ -9749,7 +10257,7 @@
       <tr><td><strong>Morphine</strong></td><td>1–10 mg/h (bolus 2–4 mg)</td><td>Histamine release → hypotension; active metabolites accumulate in renal failure (morphine-6-glucuronide → prolonged sedation). Less favored.</td></tr>
       <tr><td><strong>Remifentanil</strong></td><td>0.025–0.2 mcg/kg/min</td><td>Ultra-short acting (esterase metabolism, no accumulation). Rapidly weans for SBT but expensive and rebound pain on stopping.</td></tr>
       <tr><td><strong>Acetaminophen</strong></td><td>650–1000 mg PO/PR/IV q6h (max 4 g/day)</td><td>Underutilized adjunct. Reduces opioid needs by 20–30%.</td></tr>
-      <tr><td><strong>Ketorolac</strong></td><td>15–30 mg IV q6h × max 5 days</td><td>NSAID; useful for procedural pain. Avoid in renal disease, GI bleeding risk, age &gt; 65.</td></tr>
+      <tr><td><strong>Ketorolac</strong></td><td>15–30 mg IV q6h × max 5 days</td><td>NSAID; useful for procedural pain in <em>otherwise healthy</em> patients. <strong>Rarely the right choice in the acutely critically ill</strong> — most ICU patients have at least one absolute or relative contraindication: AKI risk in shock/hypovolemia, GI bleeding risk on stress-ulcer prophylaxis, platelet dysfunction, age &gt; 65, concurrent anticoagulation, or cardiovascular disease. Reach for IV acetaminophen as the opioid-sparing adjunct of first choice in the ICU.</td></tr>
     </tbody>
   </table>
   </details>
@@ -9788,7 +10296,7 @@
       <tr><td><strong>F</strong></td><td>Family engagement</td><td>Family present at rounds, visiting flexibility</td></tr>
     </tbody>
   </table>
-  <p>Implementation reduces ICU mortality, vent days, and long-term cognitive impairment.<sup class="cite"><a href="#r22">22</a></sup></p>
+  <p>Synthesized from the PADIS guidelines (Pain, Agitation/sedation, Delirium, Immobility, Sleep — Devlin 2018, <em>Crit Care Med</em>).<sup class="cite"><a href="#r49">49</a></sup> Implementation reduces ICU mortality, vent days, and long-term cognitive impairment.<sup class="cite"><a href="#r22">22</a></sup></p>
 
   <div class="pearl"><strong>The single most impactful sedation move</strong>If your ICU still defaults to a benzodiazepine drip, switch to propofol or dex. The mortality and delirium benefit is larger than nearly any disease-specific therapy you'll order.</div>
   </details>
@@ -9821,9 +10329,10 @@
   <div class="pearl"><strong>Pair the SBT with a spontaneous awakening trial (SAT)</strong>The 2008 ABC trial showed that <em>combining</em> a daily SAT (sedation interruption) with the SBT shortened ventilator days by 3 and 1-year mortality by 14% versus SBT alone.<sup class="cite"><a href="#r21">21</a></sup> Sequence: SAT first (turn off sedation if eligible — no active seizures, withdrawal, escalating shock, paralytics) → if patient remains comfortable, proceed to SBT. This is the foundation of the modern ICU liberation (ABCDEF) bundle.</div>
   <h5>How to perform</h5>
   <ul>
-    <li><strong>PSV trial</strong>: PSV 5–8 cmH₂O over PEEP 5 × 30–120 min — the most common modern method.</li>
-    <li><strong>T-piece</strong>: zero PS, no PEEP — most rigorous; usually 30 min.</li>
-    <li><strong>Automatic tube compensation (ATC)</strong>: machine offsets ETT resistance; alternative to low PSV.</li>
+    <li><strong>PSV trial — most common variant:</strong> PSV 5–8 cmH₂O over PEEP 5 × 30–120 min.</li>
+    <li><strong>T-piece — most rigorous variant:</strong> PSV 0 + PEEP 0 (no support), usually 30 min.</li>
+    <li><strong>Both are acceptable</strong> — choose by institutional preference and patient context (PSV gentler; T-piece more closely mimics post-extubation conditions).</li>
+    <li><strong>Automatic tube compensation (ATC):</strong> machine offsets ETT resistance; alternative to low PSV.</li>
   </ul>
   <h5>Predictors of success</h5>
   <ul>
@@ -9946,7 +10455,7 @@
     <h5>Key takeaways</h5>
     <ul>
       <li>Daily readiness screen first; SBT only when criteria met. Skipping the screen = wasted SBT and demoralizing failures.</li>
-      <li>SBT settings: PSV 0–5 / PEEP 5 (or T-piece) × 30–120 minutes.</li>
+      <li>SBT settings: PSV 5–8 over PEEP 5 (most common variant) <em>or</em> PSV 0 + PEEP 0, T-piece (most rigorous); both are acceptable; 30–120 minutes.</li>
       <li>Pass = RR &lt; 35, RSBI &lt; 105, VT &gt; 4 mL/kg PBW, no distress, hemodynamics stable.</li>
       <li>Pair the SBT with a SAT (sedation interruption) the same morning — the ABC approach reduces vent days and mortality.<sup class="cite"><a href="#r21">21</a></sup></li>
       <li>Reasons SBTs fail are usually fixable (cardiac, fluid, neuro, mechanical, metabolic — including overfeeding and hypophosphatemia) — diagnose the failure mode rather than just retrying.</li>
@@ -10050,7 +10559,7 @@
       <tr><td>Cost</td><td>Higher (OR time)</td><td>Lower</td></tr>
     </tbody>
   </table>
-  <p>Most ICU tracheostomies in 2024 are bedside PDT in eligible patients. Contraindications to PDT: emergency airway, cervical spine instability, infected neck tissue, abnormal anatomy, severe coagulopathy, anticipated difficult airway.</p>
+  <p>Most ICU tracheostomies in current practice are bedside PDT in eligible patients. Contraindications to PDT: emergency airway, cervical spine instability, infected neck tissue, abnormal anatomy, severe coagulopathy, anticipated difficult airway.</p>
   </details>
   <details class="chap-acc" data-acc-id="c37-h4-6" open>
     <summary>
@@ -10064,7 +10573,7 @@
       <tr><td><strong>Cuffed</strong></td><td>Required for positive-pressure ventilation; reduces aspiration. Default in ICU.</td></tr>
       <tr><td><strong>Uncuffed</strong></td><td>Spontaneously breathing chronic patient; allows speech and reduces tracheal mucosal pressure injury.</td></tr>
       <tr><td><strong>Fenestrated</strong></td><td>Hole in the cannula above the cuff allows airflow up through vocal cords for speech (with cuff down). Risk: granulation tissue at fenestration.</td></tr>
-      <tr><td><strong>Adjustable flange (Bivona, etc.)</strong></td><td>For obese / high-BMI patients where standard tube is too short.</td></tr>
+      <tr><td><strong>Adjustable-flange / extended-shaft</strong></td><td>For obese / high-BMI patients where standard tube is too short.</td></tr>
       <tr><td><strong>Double-cannula</strong> (most adult trachs)</td><td>Inner cannula removable for cleaning without changing the outer tube. Standard.</td></tr>
       <tr><td><strong>Single-cannula</strong></td><td>Pediatric or specialty; requires complete change for cleaning.</td></tr>
     </tbody>
@@ -10241,7 +10750,7 @@
   
   <details class="chap-acc" data-acc-id="c38-h4-1" open>
     <summary>
-      <h4>Pre-withdrawal</h4>
+      <h4>38.1 Pre-withdrawal</h4>
     </summary>
 
 <ul>
@@ -10254,7 +10763,7 @@
   </details>
   <details class="chap-acc" data-acc-id="c38-h4-2" open>
     <summary>
-      <h4>Pharmacologic preparation</h4>
+      <h4>38.2 Pharmacologic preparation</h4>
     </summary>
 
 <table>
@@ -10272,7 +10781,7 @@
   </details>
   <details class="chap-acc" data-acc-id="c38-h4-3" open>
     <summary>
-      <h4>The withdrawal procedure</h4>
+      <h4>38.3 The withdrawal procedure</h4>
     </summary>
 
 <ol>
@@ -10286,7 +10795,7 @@
   </details>
   <details class="chap-acc" data-acc-id="c38-h4-4" open>
     <summary>
-      <h4>Common pitfalls</h4>
+      <h4>38.4 Common pitfalls</h4>
     </summary>
 
 <ul>
@@ -10304,20 +10813,120 @@
 
 <section class="chap" id="c39" data-part="part8">
   <h3><span class="num">39</span>Troubleshooting at the bedside</h3>
-  
-  
+  <p class="lead">When the alarm goes off, the patient drops their saturation, or the chest stops rising, three rules apply: <em>look at the patient before the screen</em>, <em>FiO₂ to 1.0 buys time</em>, and <em>if you can't tell what's wrong, disconnect the circuit and bag</em>. The figure below is the single page to consult; the subsections that follow are the deep dives.</p>
+
+  <div class="figure">
+    <svg viewBox="0 0 1000 760" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bedside troubleshooting flowchart for ventilator alarms — first move banner, then three branches (pressure alarm, volume/flow alarm, gas exchange), an obstructive crash emergency callout, and bottom action rows for acute hypoxemia and unexpected hypercapnia plus a cross-reference map." style="max-width:1000px; width:100%; height:auto; display:block; margin:0 auto; font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;">
+      <defs>
+        <marker id="ts-arr-c39" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#5a8ab8"/>
+        </marker>
+        <linearGradient id="ts-press-c39" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#fbe6e6"/><stop offset="100%" stop-color="#f4d3d3"/></linearGradient>
+        <linearGradient id="ts-vol-c39" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#fef3c7"/><stop offset="100%" stop-color="#fbe39c"/></linearGradient>
+        <linearGradient id="ts-gas-c39" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#dbe8f5"/><stop offset="100%" stop-color="#bcd4ec"/></linearGradient>
+        <linearGradient id="ts-action-c39" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#dcfce7"/><stop offset="100%" stop-color="#bcedc8"/></linearGradient>
+      </defs>
+      <text x="500" y="22" text-anchor="middle" font-size="17" font-weight="700" fill="#1f3a5f">Bedside troubleshooting flowchart</text>
+      <text x="500" y="40" text-anchor="middle" font-size="11" font-style="italic" fill="#64748b">Something just changed. First move always. Then triage by what changed.</text>
+      <rect x="40" y="56" width="920" height="58" rx="8" fill="#9b2c2c"/>
+      <text x="500" y="78" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">FIRST MOVE — always, in this order</text>
+      <text x="500" y="98" text-anchor="middle" font-size="11.5" fill="#fff">Look at the patient → FiO₂ to 1.0 → confirm chest rise + EtCO₂ → if no chest rise: <tspan font-weight="700">DISCONNECT</tspan> from vent, bag with PEEP valve at slow rate (RR 6–8)</text>
+      <rect x="40" y="130" width="300" height="48" rx="6" fill="#1f3a5f"/>
+      <text x="190" y="151" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Pressure alarm</text>
+      <text x="190" y="169" text-anchor="middle" font-size="10.5" fill="#bcd4ec">PIP up · high-pressure alarm sounding</text>
+      <rect x="40" y="186" width="300" height="216" rx="8" fill="url(#ts-press-c39)" stroke="#9b2c2c" stroke-width="1.4"/>
+      <text x="190" y="208" text-anchor="middle" font-size="11.5" font-weight="700" fill="#9b2c2c">Two-question algorithm (§16)</text>
+      <text x="190" y="224" text-anchor="middle" font-size="10.5" fill="#1f3a5f">Q1. Is PIP high?  Q2. Is P-plat high?</text>
+      <line x1="55" y1="232" x2="325" y2="232" stroke="#9b2c2c" stroke-width="0.6" opacity="0.5"/>
+      <text x="55" y="250" font-size="10.5" font-weight="600" fill="#9b2c2c">PIP↑, P-plat normal → resistance</text>
+      <text x="55" y="266" font-size="10" fill="#1f3a5f">• kinked / bitten / plugged ETT</text>
+      <text x="55" y="282" font-size="10" fill="#1f3a5f">• secretions → suction</text>
+      <text x="55" y="298" font-size="10" fill="#1f3a5f">• bronchospasm → bronchodilator</text>
+      <text x="55" y="314" font-size="10" fill="#1f3a5f">• water in circuit → drain</text>
+      <text x="55" y="336" font-size="10.5" font-weight="600" fill="#9b2c2c">PIP↑, P-plat↑ → compliance</text>
+      <text x="55" y="352" font-size="10" fill="#1f3a5f">• PTX (POCUS, breath sounds)</text>
+      <text x="55" y="368" font-size="10" fill="#1f3a5f">• mucus-plug atelectasis</text>
+      <text x="55" y="384" font-size="10" fill="#1f3a5f">• edema · ARDS progression</text>
+      <text x="55" y="397" font-size="10" fill="#1f3a5f">• abdominal HTN (bladder pressure)</text>
+      <rect x="350" y="130" width="300" height="48" rx="6" fill="#1f3a5f"/>
+      <text x="500" y="151" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Volume / flow alarm</text>
+      <text x="500" y="169" text-anchor="middle" font-size="10.5" fill="#bcd4ec">low V_T · low V̇_E · low PIP · apnea</text>
+      <rect x="350" y="186" width="300" height="216" rx="8" fill="url(#ts-vol-c39)" stroke="#c79f3a" stroke-width="1.4"/>
+      <text x="500" y="208" text-anchor="middle" font-size="11.5" font-weight="700" fill="#7a5a14">Where is the leak?</text>
+      <text x="500" y="224" text-anchor="middle" font-size="10.5" fill="#1f3a5f">Compare V_Ti vs V_Te; check pilot pressure</text>
+      <line x1="365" y1="232" x2="635" y2="232" stroke="#c79f3a" stroke-width="0.6" opacity="0.5"/>
+      <text x="365" y="250" font-size="10" fill="#1f3a5f">• Circuit disconnect → reconnect</text>
+      <text x="365" y="266" font-size="10" fill="#1f3a5f">• Cuff leak → check pilot pressure</text>
+      <text x="380" y="280" font-size="9.5" fill="#64748b">  inflate to 20–30 cmH₂O; replace if</text>
+      <text x="380" y="292" font-size="9.5" fill="#64748b">  cuff requires &gt; baseline volume</text>
+      <text x="365" y="308" font-size="10" fill="#1f3a5f">• Tube migration (out the cords)</text>
+      <text x="365" y="324" font-size="10" fill="#1f3a5f">• Cracked HME / loose connection</text>
+      <text x="365" y="340" font-size="10" fill="#1f3a5f">• Bronchopleural fistula</text>
+      <text x="380" y="354" font-size="9.5" fill="#64748b">  refractory leak despite intact cuff</text>
+      <text x="365" y="370" font-size="10" fill="#1f3a5f">• Apnea / failed trigger →</text>
+      <text x="380" y="384" font-size="9.5" fill="#64748b">  check sensitivity, sedation, drive</text>
+      <text x="365" y="398" font-size="9.5" font-style="italic" fill="#7a5a14">Deep dive: §37.2a (cuff), §18 (trigger)</text>
+      <rect x="660" y="130" width="300" height="48" rx="6" fill="#1f3a5f"/>
+      <text x="810" y="151" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Gas exchange</text>
+      <text x="810" y="169" text-anchor="middle" font-size="10.5" fill="#bcd4ec">SpO₂ drop · PaCO₂ rising · pH falling</text>
+      <rect x="660" y="186" width="300" height="216" rx="8" fill="url(#ts-gas-c39)" stroke="#1f5f99" stroke-width="1.4"/>
+      <text x="810" y="208" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1f5f99">Acute hypoxemia ddx</text>
+      <text x="810" y="222" text-anchor="middle" font-size="10" fill="#1f3a5f">("DOPE" or DOPES)</text>
+      <line x1="675" y1="232" x2="945" y2="232" stroke="#1f5f99" stroke-width="0.6" opacity="0.5"/>
+      <text x="675" y="250" font-size="10" fill="#1f3a5f">• <tspan font-weight="700">D</tspan>islodged ETT (mainstem, out)</text>
+      <text x="675" y="266" font-size="10" fill="#1f3a5f">• <tspan font-weight="700">O</tspan>bstructed (plug, kink, biting)</text>
+      <text x="675" y="282" font-size="10" fill="#1f3a5f">• <tspan font-weight="700">P</tspan>neumothorax (POCUS sliding)</text>
+      <text x="675" y="298" font-size="10" fill="#1f3a5f">• <tspan font-weight="700">E</tspan>quipment failure (circuit, vent)</text>
+      <text x="675" y="314" font-size="10" fill="#1f3a5f">• <tspan font-weight="700">S</tspan>tacked breaths (auto-PEEP)</text>
+      <text x="675" y="332" font-size="10" font-weight="600" fill="#1f5f99">Other:</text>
+      <text x="675" y="348" font-size="10" fill="#1f3a5f">• PE (ETCO₂ drops, PaCO₂–EtCO₂↑)</text>
+      <text x="675" y="364" font-size="10" fill="#1f3a5f">• Atelectasis (mucus plug)</text>
+      <text x="675" y="380" font-size="10" fill="#1f3a5f">• PFO opening (RV strain)</text>
+      <text x="675" y="396" font-size="10" fill="#1f3a5f">• Asynchrony / fighting vent</text>
+      <rect x="40" y="420" width="920" height="86" rx="8" fill="#1f3a5f"/>
+      <text x="500" y="442" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">EMERGENCY — Obstructive crash (asthma / COPD), the auto-PEEP killer</text>
+      <text x="500" y="462" text-anchor="middle" font-size="11" fill="#bcd4ec">Sudden post-intubation hypotension or hypoxemia in an obstructive patient → assume <tspan font-weight="700" fill="#fff">stacked breaths</tspan> until proven otherwise.</text>
+      <text x="500" y="482" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">DISCONNECT the circuit, let the chest passively empty 20–30 s, resume bagging RR 6–8, slow flow, long T_E.</text>
+      <text x="500" y="498" text-anchor="middle" font-size="10" font-style="italic" fill="#bcd4ec">Deep dive: §17.3 (induction collapse, DOPES, the disconnect rescue)</text>
+      <rect x="40" y="524" width="450" height="100" rx="8" fill="url(#ts-action-c39)" stroke="#5da169" stroke-width="1.4"/>
+      <text x="265" y="546" text-anchor="middle" font-size="12" font-weight="700" fill="#1d5a2c">Acute hypoxemia — first 2 minutes</text>
+      <text x="55" y="566" font-size="10.5" fill="#1f3a5f">1. FiO₂ to 1.0. Listen and look.</text>
+      <text x="55" y="582" font-size="10.5" fill="#1f3a5f">2. Suction. Bag with PEEP valve if needed.</text>
+      <text x="55" y="598" font-size="10.5" fill="#1f3a5f">3. POCUS — pleural sliding, B-lines, RV.</text>
+      <text x="55" y="614" font-size="10.5" fill="#1f3a5f">4. CXR for ETT depth + PTX + new infiltrate.</text>
+      <rect x="510" y="524" width="450" height="100" rx="8" fill="url(#ts-action-c39)" stroke="#5da169" stroke-width="1.4"/>
+      <text x="735" y="546" text-anchor="middle" font-size="12" font-weight="700" fill="#1d5a2c">Unexpected hypercapnia — three buckets</text>
+      <text x="525" y="566" font-size="10.5" fill="#1f3a5f">↑ VCO₂: fever, sepsis, shivering, seizures, overfeeding</text>
+      <text x="525" y="582" font-size="10.5" fill="#1f3a5f">↑ dead space: PE, low CO, high PEEP overdistension</text>
+      <text x="525" y="598" font-size="10.5" fill="#1f3a5f">↓ V̇_A: auto-PEEP, leak, sedation, NMD, mode change</text>
+      <text x="525" y="616" font-size="9.5" font-style="italic" fill="#1d5a2c">Deep dive: §4.1a (VCO₂ drivers), §17 (auto-PEEP), §18 (trigger/leak)</text>
+      <rect x="40" y="642" width="920" height="100" rx="6" fill="#fff" stroke="#cbd5e0" stroke-width="1"/>
+      <text x="500" y="664" text-anchor="middle" font-size="12" font-weight="700" fill="#1f3a5f">Cross-reference map</text>
+      <text x="60" y="684" font-size="10.5" fill="#1f3a5f"><tspan font-weight="700">§16</tspan> Three pressures · two-question algorithm</text>
+      <text x="60" y="700" font-size="10.5" fill="#1f3a5f"><tspan font-weight="700">§17</tspan> Auto-PEEP detection &amp; management · induction-collapse rescue (§17.3)</text>
+      <text x="60" y="716" font-size="10.5" fill="#1f3a5f"><tspan font-weight="700">§18</tspan> Triggering &amp; asynchrony (waveform patterns, cycle tuning at §18.6a)</text>
+      <text x="500" y="684" font-size="10.5" fill="#1f3a5f"><tspan font-weight="700">§14.7</tspan> Hold maneuvers (end-insp / end-exp) — measure P-plat &amp; total PEEP</text>
+      <text x="500" y="700" font-size="10.5" fill="#1f3a5f"><tspan font-weight="700">§19</tspan> POCUS — pleural sliding (PTX), B-lines, RV, diaphragm</text>
+      <text x="500" y="716" font-size="10.5" fill="#1f3a5f"><tspan font-weight="700">§37.2a</tspan> Cuff management · diagnosing a new air leak</text>
+    </svg>
+    <div class="cap"><b>Figure 39.1 — The single-page bedside troubleshooting flowchart.</b> The top red banner is the universal first move. Three branches triage by what changed (pressure alarm, volume/flow alarm, gas exchange). The central navy banner is the obstructive-crash emergency — disconnect the circuit and let the chest empty. The bottom green boxes are the two-minute action sequences for acute hypoxemia and the three-bucket framework for unexpected hypercapnia. The bottom cross-reference map points to the deep-dive sections for each.</div>
+  </div>
+
   <details class="chap-acc" data-acc-id="c39-h4-1" open>
     <summary>
       <h4>39.1 High-pressure alarm — DOPES / DOTTS</h4>
     </summary>
 
-<p>The mnemonic <strong>DOPES</strong> for sudden deterioration on the vent: <em>Displaced ETT · Obstruction · Pneumothorax (PTX) · Equipment failure · Stacked breaths (auto-PEEP).</em> The fix mnemonic is <strong>DOTTS</strong>: <em>Disconnect from vent (bag with PEEP valve and FiO₂ 1.0) · Oxygenate · Tube position (waveform capnography + auscultation) · Tweak the vent (or check it) · Sonography (point-of-care ultrasound [PoCUS] for PTX, ETT depth, pleural sliding).</em></p>
-  <p>Concrete approach when PIP alarms:</p>
+  <p>The mnemonic <strong>DOPE(S)</strong> for sudden deterioration on the vent: <em>Displaced ETT · Obstruction · Pneumothorax (PTX) · Equipment failure</em> — and the optional <em>Stacked breaths (auto-PEEP)</em>. Most teaching has used the four-letter "DOPE" since the 1990s ATLS / PALS era; the "S" was added later to highlight auto-PEEP as a distinct and reversible cause specifically in obstructive disease. Both versions are correct; use whichever you were trained on, but never skip the S when ventilating an asthma or COPD patient.</p>
+  <p>The fix mnemonic is <strong>DOTTS</strong>: <em>Disconnect from vent (bag with PEEP valve and FiO₂ 1.0) · Oxygenate · Tube position (waveform capnography + auscultation) · Tweak the vent (or check it) · Sonography (POCUS for PTX, ETT depth, pleural sliding).</em></p>
+  <p>Concrete approach when PIP alarms — the two-question algorithm (<a class="xref" href="#c16" data-xref-chap="16">§16</a>):</p>
   <ol>
-    <li>Look at PIP <em>and</em> Pplat. <em>If PIP↑ but Pplat normal</em> → resistance: suction, check ETT for kink/biting, consider bronchospasm, ETT cuff over-inflation.</li>
-    <li><em>If PIP↑ and Pplat↑</em> → compliance: PTX (auscultate, PoCUS, chest X-ray [CXR]), atelectasis (mucus plug — bronchoscopy), pulmonary edema (CXR, B-type natriuretic peptide [BNP]), abdominal hypertension (bladder pressure).</li>
-    <li>Address auto-PEEP if flow trace shows it (§17).</li>
+    <li>Look at PIP <em>and</em> P<sub>plat</sub>. <em>If PIP↑ but P<sub>plat</sub> normal</em> → resistance: suction, check ETT for kink/biting, consider bronchospasm, ETT cuff over-inflation.</li>
+    <li><em>If PIP↑ and P<sub>plat</sub>↑</em> → compliance: PTX (auscultate, POCUS — <a class="xref" href="#c19" data-xref-chap="19">§19</a>), atelectasis (mucus plug — bronchoscopy via <a class="xref" href="#c37" data-xref-chap="37">§37.10</a>), pulmonary edema (CXR, BNP), abdominal hypertension (bladder pressure).</li>
+    <li>Address auto-PEEP if flow trace shows expiratory tail not returning to zero (<a class="xref" href="#c17" data-xref-chap="17">§17</a>) — and in obstructive patients with sudden hypotension, default to the disconnect rescue (<a class="xref" href="#c17" data-xref-chap="17">§17.3</a>).</li>
   </ol>
+
+  <div class="pitfall"><strong>The single highest-yield bedside save in obstructive disease</strong>If a COPD or asthma patient becomes hypotensive within minutes of intubation — even if the obvious differential includes PTX or sedation — <em>disconnect the ventilator circuit at the ETT and let the chest passively empty for 20–30 seconds before doing anything else</em>. Most stacked-breaths arrests recover hemodynamics within 1–2 minutes of release. Full discussion of the rescue, the mechanism, and the post-rescue settings is in <a class="xref" href="#c17" data-xref-chap="17">§17.3</a>.</div>
   </details>
   <details class="chap-acc" data-acc-id="c39-h4-2" open>
     <summary>
@@ -10326,8 +10935,9 @@
 
   <ul>
     <li>Circuit disconnect — re-connect; check humidifier, water trap, ETT cuff.</li>
-    <li>Cuff leak — measure pilot pressure; re-inflate or replace tube.</li>
-    <li>Bronchopleural fistula (BPF) — refractory leak despite cuff; chest tube and consider high-frequency oscillatory ventilation (HFOV) / ECMO at center.</li>
+    <li>Cuff leak — measure pilot pressure (target 20–30 cmH₂O); re-inflate or replace tube. Full cuff-leak workup in <a class="xref" href="#c37" data-xref-chap="37">§37.2a</a>.</li>
+    <li>Bronchopleural fistula (BPF) — refractory leak despite intact cuff; chest tube and consider low-V<sub>T</sub> / low-PEEP strategy; ECMO at experienced centers for refractory cases. (HFOV is no longer recommended in adult ARDS — <a class="xref" href="#c20" data-xref-chap="20">§20.9</a>.)</li>
+    <li>Apnea / missed triggers — check trigger sensitivity, sedation depth, respiratory drive. Trigger anomalies in detail at <a class="xref" href="#c18" data-xref-chap="18">§18.3</a>.</li>
   </ul>
   </details>
   <details class="chap-acc" data-acc-id="c39-h4-3" open>
@@ -10335,15 +10945,16 @@
       <h4>39.3 Acute hypoxemia on the vent</h4>
     </summary>
 
-<p>Move quickly. Bedside differential:</p>
+<p>Move quickly. The 2-minute action sequence: <strong>FiO₂ to 1.0 → look at the patient → POCUS (pleural sliding, B-lines, RV) → CXR for ETT depth, PTX, new infiltrate</strong>. Bedside differential while you work:</p>
   <ul>
     <li>Tube — displaced, plugged, mainstem (auscultate, capnography, depth).</li>
-    <li>PTX — sliding lost on PoCUS, hyperresonance, hypotension.</li>
-    <li>Atelectasis — recent left lower-lobe collapse from a mucus plug; bronchoscopy.</li>
-    <li>Pulmonary edema — CXR, BNP, exam.</li>
-    <li>PE — high index of suspicion, especially if PaCO₂↓ and EtCO₂↓ with stable minute ventilation.</li>
+    <li>PTX — sliding lost on POCUS, hyperresonance, hypotension (<a class="xref" href="#c19" data-xref-chap="19">§19</a>).</li>
+    <li>Atelectasis — recent left lower-lobe collapse from a mucus plug; bronchoscopy (<a class="xref" href="#c37" data-xref-chap="37">§37.10</a>).</li>
+    <li>Pulmonary edema — CXR, BNP, exam. Cardiogenic vs ARDS distinction in <a class="xref" href="#c22" data-xref-chap="22">§22</a>.</li>
+    <li>PE — high index of suspicion, especially if PaCO₂↓ and EtCO₂↓ with stable minute ventilation. RV-protective vent strategy in <a class="xref" href="#c25" data-xref-chap="25">§25</a>.</li>
     <li>Right-to-left shunt opening — patent foramen ovale (PFO) from acute right-ventricle (RV) strain in PE / ARDS.</li>
-    <li>Asynchrony / fighting the vent — sedate.</li>
+    <li>Asynchrony / fighting the vent — sedate; or address the asynchrony pattern directly (<a class="xref" href="#c18" data-xref-chap="18">§18</a>).</li>
+    <li><strong>Obstructive crash (asthma / COPD) → disconnect the circuit</strong> as the first move; auto-PEEP is the highest-yield diagnosis (<a class="xref" href="#c17" data-xref-chap="17">§17.3</a>).</li>
   </ul>
   </details>
   <details class="chap-acc" data-acc-id="c39-h4-4" open>
@@ -10351,11 +10962,12 @@
       <h4>39.4 Unexpected hypercapnia</h4>
     </summary>
 
-<ul>
-    <li>↑ CO₂ production: fever, sepsis, shivering, overfeeding (high respiratory quotient [RQ]), seizures.</li>
-    <li>↑ dead space: PE, low cardiac-output state, high PEEP overdistension.</li>
-    <li>↓ alveolar ventilation: auto-PEEP, leak, sedation, neuromuscular weakness, mode change.</li>
-    <li>Acidosis driving compensatory CO₂ retention is rare in mechanical ventilation; check pH and bicarbonate.</li>
+<p>The PaCO₂ ∝ V̇CO₂ / V̇<sub>A</sub> framework (<a class="xref" href="#c4" data-xref-chap="4">§4.1</a>) splits unexpected hypercapnia into three buckets:</p>
+  <ul>
+    <li><strong>↑ V̇CO₂ (production):</strong> fever, sepsis, shivering, overfeeding (high respiratory quotient — see <a class="xref" href="#c36" data-xref-chap="36">§36</a> nutrition discussion), seizures, recent bicarbonate bolus.</li>
+    <li><strong>↑ dead space:</strong> PE, low cardiac-output state, high PEEP overdistension, hyperinflation. Apparatus dead space (HME, Y-piece, catheter mount) contributes 50–100 mL on most circuits — meaningful at low V<sub>T</sub> (<a class="xref" href="#c4" data-xref-chap="4">§4.1</a>).</li>
+    <li><strong>↓ alveolar ventilation:</strong> auto-PEEP (<a class="xref" href="#c17" data-xref-chap="17">§17</a>), circuit leak (<a class="xref" href="#c37" data-xref-chap="37">§37.2a</a>), sedation, neuromuscular weakness, mode change, missed triggers (<a class="xref" href="#c18" data-xref-chap="18">§18.3</a>).</li>
+    <li>Compensatory CO₂ retention for metabolic alkalosis is rare in mechanical ventilation but worth checking pH and bicarbonate before pushing minute ventilation higher.</li>
   </ul>
   </details>
 <div class="takeaways">
@@ -10696,14 +11308,43 @@
       <tr><td><strong>F</strong></td><td>Family engagement</td><td>Open visiting, family on rounds, communication aids</td></tr>
     </tbody>
   </table>
+  <div class="phys"><strong>Two ABCDEF tables in this book — different framing on purpose</strong>The ABCDEF bundle also appears in <a class="xref" href="#c35" data-xref-chap="35">§35.6</a> as part of the sedation chapter, framed around the choice of drugs and the analgosedation philosophy. Here in <a class="xref" href="#c41" data-xref-chap="41">§41.3</a> it is framed around <em>liberation outcomes</em> — vent-free days, ICU mortality, delirium reduction at the unit level. The elements are identical; the lens is different. Use §35.6 when choosing what to write on the sedation order; use §41.3 when evaluating whether your ICU's bundle compliance is moving the unit-level metrics. Both originate in the PADIS guidelines (Devlin 2018<sup class="cite"><a href="#r49">49</a></sup>); both are validated by the ICU Liberation Collaborative (Pun 2019<sup class="cite"><a href="#r22">22</a></sup>) showing benefit only when implemented as a coherent whole rather than letter-by-letter.</div>
   </details>
   <details class="chap-acc" data-acc-id="c41-h4-4" open>
     <summary>
       <h4>41.4 ICU-acquired weakness (ICU-AW)</h4>
     </summary>
 
-<p>Up to 50% of patients ventilated &gt; 7 days develop generalized weakness from disuse atrophy, critical illness myopathy, polyneuropathy, and prolonged NMB. <strong>Diaphragm-specific atrophy</strong> begins within 18 hours of controlled ventilation and is independently associated with prolonged liberation. Mitigation: minimize sedation, avoid unnecessary NMB, mobilize early, and use modes that preserve diaphragmatic activity (PSV, NAVA) where appropriate.</p>
+<p>Up to 50% of patients ventilated &gt; 7 days develop generalized weakness — from disuse atrophy, critical-illness neuromuscular disease, and prolonged neuromuscular blockade. The term ICU-AW is an umbrella covering several distinct entities with overlapping presentations but different prognoses.</p>
+
+  <table>
+    <caption>ICU-AW — the three principal entities</caption>
+    <thead><tr><th>Entity</th><th>Mechanism</th><th>Electrodiagnostics</th><th>Prognosis</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Critical illness myopathy (CIM)</strong></td><td>Direct injury to muscle fibers — sepsis, hyperglycemia, corticosteroids, NMB, immobility. Selective loss of myosin thick filaments.</td><td>EMG: low-amplitude motor units, normal nerve conduction velocity. Muscle biopsy: myosin loss confirms.</td><td><strong>Better than CIP.</strong> Most patients recover meaningful function within 3–6 months if survive ICU.</td></tr>
+      <tr><td><strong>Critical illness polyneuropathy (CIP)</strong></td><td>Axonal sensorimotor polyneuropathy from microcirculatory dysfunction in nerves; sepsis + multi-organ failure are the strongest risk factors.</td><td>EMG/NCS: reduced amplitude with preserved conduction velocity (axonal pattern). Reduced sensory action potentials. Distal &gt; proximal weakness.</td><td><strong>Worse than CIM.</strong> Often residual weakness at 1 year; some never fully recover.</td></tr>
+      <tr><td><strong>Combined CIM + CIP (CIPM)</strong></td><td>Most common in practice — features of both; sepsis is the unifying risk factor.</td><td>Mixed EMG findings.</td><td>Intermediate; the CIP component drives long-term outcomes.</td></tr>
+      <tr><td><strong>Prolonged NMB weakness</strong></td><td>Persistent neuromuscular junction blockade after the drug should have worn off — usually acetylcholine-receptor desensitization in the setting of prolonged infusion + steroids + renal dysfunction. Distinct from CIM/CIP but often coexists.</td><td>TOF abnormal; train-of-four monitoring during NMB infusion catches it early.</td><td>Usually resolves within hours-days once NMB cleared, unless CIM/CIP also present.</td></tr>
+    </tbody>
+  </table>
+
+  <p><strong>Diaphragm-specific atrophy</strong> begins within 18 hours of controlled ventilation and is independently associated with prolonged liberation. The mechanism is disuse — passive ventilation removes the diaphragm's contractile load, mitochondrial protein synthesis falls, and atrophy progresses ~1–6% per day. Diaphragm thickening fraction on ultrasound (<a class="xref" href="#c19" data-xref-chap="19">§19.3</a>) is the bedside surrogate; TF &lt; 30% predicts liberation failure.</p>
+
+  <p><strong>Risk factors</strong> are largely overlapping for the three entities: sepsis, multi-organ failure, prolonged mechanical ventilation, immobility, hyperglycemia, prolonged corticosteroid use, prolonged neuromuscular blockade (especially with concurrent steroids), and total parenteral nutrition.</p>
+
+  <p><strong>Mitigation strategies</strong> (in order of evidence strength):</p>
+  <ol>
+    <li><strong>Minimize sedation depth</strong> — RASS 0 to −1; the single highest-leverage intervention.</li>
+    <li><strong>Avoid unnecessary NMB</strong> — reserve for refractory dyssynchrony or severe ARDS per ROSE-era criteria (<a class="xref" href="#c33" data-xref-chap="33">§33</a>).</li>
+    <li><strong>Early mobility</strong> — passive range of motion within 24 h, sitting at the edge of the bed by day 2 if hemodynamically stable, ambulation as tolerated even on the vent. RCTs show shorter delirium and earlier liberation.</li>
+    <li><strong>Modes that preserve diaphragmatic activity</strong> — PSV, NAVA, PAV+ — once the patient can tolerate them.</li>
+    <li><strong>Glucose control</strong> 140–180 mg/dL (NICE-SUGAR; avoid the lower 80–110 range that increased mortality).</li>
+    <li><strong>Minimize corticosteroid duration</strong> when possible; the combination of steroids + NMB sharply raises CIM risk.</li>
+  </ol>
+
   <div class="pitfall"><strong>Over-sedation kills weeks</strong>The single biggest reversible cause of prolonged ventilation is unnecessary deep sedation. Each day of light, targeted sedation (RASS 0 to −1) versus deep sedation roughly halves the duration of ventilation. Default to "less," not "more."</div>
+
+  <div class="pearl"><strong>Sepsis + steroids + NMB = the perfect storm</strong>The patient at highest risk for severe, prolonged CIPM is the septic ARDS patient on dexamethasone + cisatracurium infusion. Each component independently raises CIPM risk; together they are nearly additive. Hold NMB at the earliest possible point, taper steroids on the protocolized schedule, and consider early diaphragm ultrasound for objective tracking of recovery.</div>
   </details>
 <div class="takeaways">
     <h5>Key takeaways</h5>
@@ -10722,7 +11363,7 @@
 
 <section class="chap" id="c42" data-part="part9">
   <h3><span class="num">42</span>Less common but high-stakes scenarios</h3>
-  <p class="lead">Scenarios that don't fit the standard archetypes but show up often enough that every intensivist should know the strategy: TRALI vs TACO, burn / inhalation injury, diffuse alveolar hemorrhage, bronchopleural fistula, high-frequency ventilation as rescue, drug-induced respiratory failure, and end-of-life ventilator withdrawal.</p>
+  <p class="lead">Scenarios that don't fit the standard archetypes but show up often enough that every intensivist should know the strategy: TRALI vs TACO, burn / inhalation injury, diffuse alveolar hemorrhage, bronchopleural fistula, high-frequency ventilation as rescue, and drug-induced respiratory failure. (End-of-life ventilator withdrawal is covered separately in <a class="xref" href="#c38" data-xref-chap="38">§38</a>.)</p>
 
   
   
@@ -10953,7 +11594,7 @@
   </details>
   <details class="chap-acc" data-acc-id="c43-h4-4" open>
     <summary>
-      <h4>43.4 Mechanical insufflation–exsufflation (MIE / Cough Assist)</h4>
+      <h4>43.4 Mechanical insufflation–exsufflation (MIE)</h4>
     </summary>
 
 <p>MIE simulates a cough by delivering positive pressure (insufflation) to inflate the lung, then rapidly switching to negative pressure (exsufflation) to generate high expiratory flow that propels mucus toward the upper airway. The peak expiratory flow generated is far higher than any patient with weak cough can produce.</p>
@@ -11006,7 +11647,7 @@
       <li>Mucus plugging is the most common cause of acute desaturation in a previously stable vented patient — suction and bronch first, before adjusting the vent.</li>
       <li>Closed (in-line) suction preserves PEEP and oxygenation in ARDS / high-PEEP patients; open suction causes derecruitment.</li>
       <li>Saline lavage with suctioning does not help and can harm — abandon the routine practice.</li>
-      <li>Cough Assist (MIE) at +30 / −30 cmH₂O simulates an effective cough — first-line in neuromuscular patients with peak cough flow &lt; 270 L/min.</li>
+      <li>Mechanical insufflation–exsufflation (MIE) at +30 / −30 cmH₂O simulates an effective cough — first-line in neuromuscular patients with peak cough flow &lt; 270 L/min.</li>
       <li>Vent settings affect the direction mucus moves — bias toward expiratory flow (B/A &gt; 1) to clear, away from inspiratory flow to retain.</li>
       <li>Bronchoscopy is the rescue for refractory lobar atelectasis or persistent plugging.</li>
     </ul>
@@ -11081,7 +11722,7 @@
       <tr><td><strong>Albuterol (neb)</strong></td><td>Bronchospasm; status asthmaticus</td><td>2.5–5 mg q4h or continuous 10–20 mg/h</td><td>Continuous infusion in status — fewer interruptions; check K⁺, troponin</td></tr>
       <tr><td><strong>Ipratropium</strong></td><td>COPD exacerbation</td><td>4 puffs MDI or 0.5 mg neb q6h</td><td>Synergistic with albuterol</td></tr>
       <tr><td><strong>Inhaled corticosteroid (e.g., budesonide)</strong></td><td>Asthma maintenance, post-extubation laryngeal edema</td><td>0.5–1 mg neb q12h</td><td>Limited evidence in acute ICU; mostly maintenance</td></tr>
-      <tr><td><strong>Inhaled epoprostenol (Flolan)</strong></td><td>Refractory hypoxemia (ARDS), pulmonary HTN, RV failure</td><td>10–50 ng/kg/min continuous neb (vibrating mesh preferred)</td><td>Selective pulmonary vasodilator. Cheaper than iNO. Re-titrate q1h. <a class="xref" href="#c20" data-xref-chap="20">§20.7</a>, <a class="xref" href="#c25" data-xref-chap="25">§25</a></td></tr>
+      <tr><td><strong>Inhaled epoprostenol</strong></td><td>Refractory hypoxemia (ARDS), pulmonary HTN, RV failure</td><td>10–50 ng/kg/min continuous neb (vibrating mesh preferred)</td><td>Selective pulmonary vasodilator. Cheaper than iNO. Re-titrate q1h. <a class="xref" href="#c20" data-xref-chap="20">§20.7</a>, <a class="xref" href="#c25" data-xref-chap="25">§25</a></td></tr>
       <tr><td><strong>Inhaled nitric oxide (iNO)</strong></td><td>Refractory hypoxemia, pulmonary HTN, RV failure (PE, post-op)</td><td>5–40 ppm</td><td>Special delivery system; expensive; rebound HTN on weaning. <a class="xref" href="#c3" data-xref-chap="3">§3.2a</a></td></tr>
       <tr><td><strong>Inhaled antibiotics (tobramycin, colistin, amikacin)</strong></td><td>VAP / tracheobronchitis with MDR organisms</td><td>Tobra 300 mg, colistin 75–150 mg, amikacin 400 mg neb q8–12h</td><td>Adjunct to systemic; vibrating-mesh preferred (heat denatures). Pause vent flow during nebulization if possible</td></tr>
       <tr><td><strong>Hypertonic saline</strong></td><td>Mucus retention</td><td>3–7% × 4 mL neb q4–6h</td><td>Pre-treat with bronchodilator (causes bronchospasm)</td></tr>
@@ -11106,7 +11747,7 @@
 <!-- =========================== APPENDIX =========================== -->
 <div class="part" id="appendix"><div class="pno">Appendix</div><h2>Equations, drugs, abbreviations, references</h2><p class="sum">Quick-reference materials: high-yield reference cards (the few tables you'll re-open most often), equation cheat sheet, drug-dosing tables (filterable by class), alarm reference, abbreviations glossary, and citations.</p></div>
 
-<section class="chap" id="reference-cards" data-part="appendix">
+<section class="chap reference-cards" id="reference-cards" data-part="appendix">
   <h3>High-yield reference cards</h3>
   <p class="lead">The tables in this section live here on purpose: each one earns a place because a busy clinician will want to re-open it dozens of times after reading the book once. Cards are added as new ones prove their worth across the rest of the chapters. Each card is printable on its own (use the per-chapter print button at the top of this section).</p>
 
@@ -11199,7 +11840,120 @@
   <div class="pearl"><strong>The single most useful column</strong>"Recruitable lung." It is the question that decides whether PEEP helps or harms. ARDS and edema are recruitable; COPD and asthma are not. Putting more PEEP into a non-recruitable patient just pushes the operating point up the chest-wall curve — more dead space, more hemodynamic compromise, no oxygenation benefit.</div>
   </details>
 
-  <p style="font-size:0.9rem; color:#64748b; font-style:italic; margin-top:1.2rem;">More cards will be added here as the book matures — high-yield bedside tables and decision charts that benefit from a single quick-reference home. Suggested additions: the two-question PIP/P<sub>plat</sub> algorithm (§6.3); the auto-PEEP detection & fix flow (§17); the ARDSnet PEEP/FiO₂ ladder (§13); SBT entry/exit criteria (§36); the asynchrony pattern atlas (§18).</p>
+  <details class="chap-acc" data-acc-id="ref-card-2" open>
+    <summary>
+      <h4>Card 2 — Two-question algorithm: PIP vs P<sub>plat</sub> (from §6.3, §16)</h4>
+    </summary>
+  <p>Every pressure alarm in the ICU triages on two questions and three numbers.</p>
+  <div class="pearl"><strong>Ask in order:</strong> <strong style="color:#9b2c2c;">(1) Is PIP high?</strong>  <strong style="color:#1f5f99;">(2) Is P<sub>plat</sub> high?</strong></div>
+  <table>
+    <caption>The two-question algorithm at a glance</caption>
+    <thead><tr><th>PIP</th><th>P<sub>plat</sub></th><th>Problem</th><th>Common causes</th><th>Fix</th></tr></thead>
+    <tbody>
+      <tr><td>↑</td><td>Normal</td><td><span style="color:#9b2c2c; font-weight:600;">Resistance</span></td><td>Kinked / bitten / plugged ETT · secretions · bronchospasm · water in circuit</td><td>Suction · bite block · bronchodilator · drain water trap</td></tr>
+      <tr><td>↑</td><td>↑</td><td><span style="color:#1f5f99; font-weight:600;">Lung mechanics</span></td><td>PTX · ARDS progression · pulmonary edema · atelectasis · abdominal hypertension</td><td>POCUS for PTX · diuresis · recruit · bladder pressure · esophageal manometry if chest-wall component suspected</td></tr>
+      <tr><td>Normal</td><td>↑</td><td>Stiff lung with high PEEP / chest wall</td><td>Rising auto-PEEP · obesity · ascites · evolving ARDS</td><td>Check auto-PEEP (end-exp hold); consider esophageal manometry</td></tr>
+    </tbody>
+  </table>
+  <p>Driving pressure ΔP = P<sub>plat</sub> − PEEP. Target ≤ 15 cmH₂O across the book (lower is better; Amato 2015). Resistive ΔP = PIP − P<sub>plat</sub>; &gt; 15 cmH₂O suggests significant airway resistance.</p>
+  </details>
+
+  <details class="chap-acc" data-acc-id="ref-card-3" open>
+    <summary>
+      <h4>Card 3 — Auto-PEEP detection &amp; fix flow (from §17)</h4>
+    </summary>
+  <p><strong>Detect:</strong></p>
+  <ol>
+    <li>Look at the flow-time trace — expiratory flow does not return to zero before the next breath.</li>
+    <li>Perform an <em>end-expiratory hold</em> (0.5–1 s, passive patient). Total PEEP − set PEEP = auto-PEEP.</li>
+    <li>Cross-check with an end-inspiratory hold in heterogeneous obstruction; the inspiratory hold may unmask higher regional PEEPi (<a class="xref" href="#c14" data-xref-chap="14">§14.7</a>).</li>
+  </ol>
+  <p><strong>Fix (in priority order):</strong></p>
+  <ol>
+    <li><strong>↓ RR</strong> — single most effective lever; accept permissive hypercapnia (pH ≥ 7.20).</li>
+    <li><strong>↓ V<sub>T</sub></strong> — less air to exhale per breath; couples with ↓ RR for additive effect on minute ventilation.</li>
+    <li><strong>↑ peak inspiratory flow (VC) or ↓ T<sub>i</sub> (PC)</strong> — shortens inspiration to lengthen expiration.</li>
+    <li><strong>Treat the bronchospasm</strong> — aggressive β-agonist + ipratropium + steroid; in severe asthma add IV magnesium, ketamine, heliox; consider NMB.</li>
+    <li><strong>Match ~75–80% of total PEEP</strong> if the patient is triggering against auto-PEEP — reduces trigger work (<a class="xref" href="#c17" data-xref-chap="17">§17.4</a>).</li>
+    <li><strong>If hemodynamic collapse:</strong> <span style="color:#9b2c2c; font-weight:700;">DISCONNECT the circuit</span> and let the chest passively empty for 20–30 s. Resume bagging RR 6–8, slow flow, long T<sub>E</sub>. The post-intubation obstructive crash rescue (<a class="xref" href="#c17" data-xref-chap="17">§17.3</a>).</li>
+  </ol>
+  </details>
+
+  <details class="chap-acc" data-acc-id="ref-card-4" open>
+    <summary>
+      <h4>Card 4 — ARDSnet PEEP / FiO₂ ladders (from §20.3)</h4>
+    </summary>
+  <p>Two ladders. The low-PEEP table (ARMA / ARDSnet) is the day-1 default. The high-PEEP table (ALVEOLI / LOV-eD) is used in moderate-severe ARDS (P/F &lt; 200) with clearly recruitable phenotype. Pick the row matching the patient's current FiO₂; advance <em>down</em> for more support, <em>up</em> as oxygenation improves. Re-check P<sub>plat</sub> ≤ 30 and ΔP ≤ 15 after every step.</p>
+  <table>
+    <caption>Low-PEEP / high-FiO₂ ladder (ARMA / ARDSnet)</caption>
+    <thead><tr><th>Step</th><th>FiO₂</th><th>PEEP (cmH₂O)</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>0.3</td><td>5</td></tr>
+      <tr><td>2</td><td>0.4</td><td>5</td></tr>
+      <tr><td>3</td><td>0.4</td><td>8</td></tr>
+      <tr><td>4</td><td>0.5</td><td>8</td></tr>
+      <tr><td>5</td><td>0.5</td><td>10</td></tr>
+      <tr><td>6</td><td>0.6</td><td>10</td></tr>
+      <tr><td>7</td><td>0.7</td><td>10–14</td></tr>
+      <tr><td>8</td><td>0.8</td><td>14</td></tr>
+      <tr><td>9</td><td>0.9</td><td>14–18</td></tr>
+      <tr><td>10</td><td>1.0</td><td>18–24</td></tr>
+    </tbody>
+  </table>
+  <table>
+    <caption>High-PEEP / low-FiO₂ ladder (ALVEOLI / LOV-eD)</caption>
+    <thead><tr><th>Step</th><th>FiO₂</th><th>PEEP (cmH₂O)</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>0.3</td><td>12</td></tr>
+      <tr><td>2</td><td>0.3</td><td>14</td></tr>
+      <tr><td>3</td><td>0.4</td><td>14–16</td></tr>
+      <tr><td>4</td><td>0.5</td><td>16–18</td></tr>
+      <tr><td>5</td><td>0.5–0.8</td><td>20</td></tr>
+      <tr><td>6</td><td>0.8</td><td>22</td></tr>
+      <tr><td>7</td><td>1.0</td><td>22–24</td></tr>
+    </tbody>
+  </table>
+  <p>Full source tables with explanatory notes and citations: <a class="xref" href="#c20" data-xref-chap="20">§20.3</a>.</p>
+  </details>
+
+  <details class="chap-acc" data-acc-id="ref-card-5" open>
+    <summary>
+      <h4>Card 5 — Daily liberation pathway (from §36)</h4>
+    </summary>
+  <p>Five gates. Failure at any gate routes back to current support with a 24-hour reassessment, not abandonment.</p>
+  <table>
+    <caption>The five liberation gates</caption>
+    <thead><tr><th>Step</th><th>Criteria</th><th>Failure → action</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1. Readiness screen</strong></td><td>Underlying problem improving · SpO₂ ≥ 90% on FiO₂ ≤ 0.4, PEEP ≤ 5–8 · hemodynamically stable · adequate cough, manageable secretions · awake, follows commands (RASS −1 to 0)</td><td>Maintain support, reassess daily</td></tr>
+      <tr><td><strong>2. Spontaneous awakening trial (SAT)</strong></td><td>Hold sedation; if patient remains comfortable, proceed</td><td>Resume prior sedation at 50%; reattempt next day</td></tr>
+      <tr><td><strong>3. Spontaneous breathing trial (SBT)</strong></td><td>PSV 5–8 over PEEP 5 (most common) <em>or</em> PSV 0 + PEEP 0 / T-piece (most rigorous); 30–120 min</td><td>Return to prior support; address cause; retry 24 h</td></tr>
+      <tr><td><strong>4. Tolerance check</strong></td><td>RSBI &lt; 105 · V<sub>T</sub> &gt; 5 mL/kg PBW · RR &lt; 35 · SpO₂ ≥ 90% · pH stable · no agitation/diaphoresis/accessory muscle use · HR &lt; 140 · SBP 90–180</td><td>Return to prior support; investigate failure mode</td></tr>
+      <tr><td><strong>5. Extubation gate</strong></td><td>Cuff leak ≥ 110 mL · secretions manageable (suction &lt; q2h) · GCS ≥ 8, follows commands · adequate cough (white-card test) · post-extubation support planned (HFNC/NIV if high-risk)</td><td>Steroids (cuff leak), suction protocol, trach discussion</td></tr>
+    </tbody>
+  </table>
+  <p>Full pathway with the pre-SBT pearl and the nutrition discussion: <a class="xref" href="#c36" data-xref-chap="36">§36</a>.</p>
+  </details>
+
+  <details class="chap-acc" data-acc-id="ref-card-6" open>
+    <summary>
+      <h4>Card 6 — Bedside troubleshooting flowchart (from §39.1)</h4>
+    </summary>
+  <p>Three branches by what changed, plus the universal first move and the obstructive-crash emergency. Full annotated figure at <a class="xref" href="#c39" data-xref-chap="39">§39.1 (Fig 39.1)</a>; condensed text form below.</p>
+  <div class="pearl"><strong>First move — always, in order:</strong> Look at the patient → FiO₂ to 1.0 → confirm chest rise + EtCO₂ → if no chest rise: <span style="color:#9b2c2c; font-weight:700;">DISCONNECT</span> from vent, bag with PEEP valve at slow rate (RR 6–8).</div>
+  <table>
+    <caption>Triage by what changed</caption>
+    <thead><tr><th>Symptom</th><th>Discriminator</th><th>Causes / next step</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Pressure alarm</strong> (PIP up)</td><td>PIP↑ + P<sub>plat</sub> normal → resistance; PIP↑ + P<sub>plat</sub>↑ → compliance</td><td>Resistance: ETT, secretions, bronchospasm, water. Compliance: PTX, atelectasis, edema, abdominal HTN. Card 2.</td></tr>
+      <tr><td><strong>Volume / flow alarm</strong> (low V<sub>T</sub>, V̇<sub>E</sub>, PIP; apnea)</td><td>Compare V<sub>Ti</sub> vs V<sub>Te</sub>; check pilot pressure</td><td>Circuit disconnect, cuff leak, tube migration, cracked HME, BPF, apnea / failed trigger. Cuff workup at §37.2a; trigger anomalies at §18.3.</td></tr>
+      <tr><td><strong>Gas exchange</strong> (SpO₂ drop, PaCO₂ rising)</td><td>DOPE(S) for hypoxemia; PaCO₂ ∝ V̇CO₂ / V̇<sub>A</sub> for hypercapnia</td><td>Tube, obstruction, PTX, equipment, stacked breaths, PE, atelectasis, PFO, asynchrony. Hypercapnia bucket: ↑VCO₂ vs ↑dead space vs ↓V̇<sub>A</sub>. Card 3 for auto-PEEP rescue.</td></tr>
+    </tbody>
+  </table>
+  <div class="pitfall"><strong>EMERGENCY — Obstructive crash (asthma / COPD):</strong> Sudden post-intubation hypotension or hypoxemia → assume <span style="color:#9b2c2c; font-weight:700;">stacked breaths</span> until proven otherwise. <strong>DISCONNECT</strong> the circuit, let the chest passively empty 20–30 s, resume bagging RR 6–8, slow flow, long T<sub>E</sub>. Full rescue at <a class="xref" href="#c17" data-xref-chap="17">§17.3</a>.</div>
+  </details>
+
+  <p style="font-size:0.9rem; color:#64748b; font-style:italic; margin-top:1.2rem;">More cards will be added as new high-yield tables and decision charts earn their place. Candidate additions for future editions: asynchrony pattern atlas (§18), ECMO criteria (§33.3), NIV failure scores (§27), VAP prevention bundle (§41.2).</p>
 </section>
 
 <section class="chap" id="drugs" data-part="appendix">
@@ -11279,7 +12033,7 @@
     <thead><tr><th>Drug</th><th>Dose</th><th>Notes</th></tr></thead>
     <tbody>
       <tr><td>Inhaled nitric oxide (iNO)</td><td>5–40 ppm (typical start 20)</td><td>Selective; methemoglobinemia (monitor MetHb if &gt; 40 ppm or prolonged); rebound HTN on abrupt withdrawal; expensive</td></tr>
-      <tr><td>Inhaled epoprostenol (Flolan)</td><td>10–50 ng/kg/min (typical start 30–50; titrate q1h)</td><td>Cheaper than iNO; sticky on circuits — change q24h; same physiology</td></tr>
+      <tr><td>Inhaled epoprostenol</td><td>10–50 ng/kg/min (typical start 30–50; titrate q1h)</td><td>Cheaper than iNO; sticky on circuits — change q24h; same physiology</td></tr>
       <tr><td>Inhaled iloprost</td><td>2.5–5 mcg q2–4h</td><td>Intermittent; less continuous coverage</td></tr>
     </tbody>
   </table>
@@ -11434,20 +12188,31 @@
   </table>
   <h4>F.9 Power / battery alarm</h4>
 <p>Vents run on AC power; battery is a 30–60 minute backup. Action: assess battery charge → try a different outlet (breaker may have tripped) → if still failing, switch to backup ventilator or hand-bag while biomed engineering responds. Verify outlet works by plugging in another known device.</p>
-  <h4>F.10 The DOPES &amp; DOTTS mnemonics</h4>
-<p>Two complementary frameworks for any acute deterioration on the vent:</p>
+  <h4>F.10 The DOPE(S) &amp; DOTTS mnemonics</h4>
+<p>Two complementary frameworks for any acute deterioration on the vent. <strong>DOPE(S)</strong> is the differential — what causes might explain this crisis. <strong>DOTTS</strong> is the action sequence — what to do, in order.</p>
   <table>
-    <caption>DOPES vs DOTTS — quick differential</caption>
-    <thead><tr><th>Letter</th><th>DOPES</th><th>DOTTS</th></tr></thead>
+    <caption>DOPE(S) — differential for acute vent deterioration</caption>
+    <thead><tr><th>Letter</th><th>Cause</th></tr></thead>
     <tbody>
-      <tr><td>D</td><td>Displacement (tube)</td><td>Displacement / Drugs (oversedation, NMB residual)</td></tr>
-      <tr><td>O</td><td>Obstruction (mucus, kink, bronchospasm)</td><td>Obstruction</td></tr>
-      <tr><td>P / T</td><td>Pneumothorax</td><td>Tube issues (size, cuff, position)</td></tr>
-      <tr><td>E / T</td><td>Equipment (circuit, cuff, vent)</td><td>Thorax (ARDS, atelectasis, IAH, effusion)</td></tr>
-      <tr><td>S</td><td>Stacked breaths (auto-PEEP) / Splinting (post-op)</td><td>Sepsis / Support (resuscitation adequate?)</td></tr>
+      <tr><td><strong>D</strong></td><td>Displaced ETT (out the cords, mainstem)</td></tr>
+      <tr><td><strong>O</strong></td><td>Obstruction (mucus plug, kink, biting, bronchospasm)</td></tr>
+      <tr><td><strong>P</strong></td><td>Pneumothorax (especially tension)</td></tr>
+      <tr><td><strong>E</strong></td><td>Equipment failure (circuit, cuff, vent malfunction)</td></tr>
+      <tr><td><strong>S</strong></td><td>Stacked breaths / auto-PEEP — added later; the auto-PEEP cause specifically in obstructive disease (asthma, COPD)</td></tr>
     </tbody>
   </table>
-  <p>Run through these systematically when alarms cascade or the patient suddenly deteriorates — they cover &gt; 95% of acute vent crises.</p>
+  <table>
+    <caption>DOTTS — action sequence for acute vent deterioration</caption>
+    <thead><tr><th>Letter</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td><strong>D</strong></td><td><strong>Disconnect</strong> from the ventilator; bag with PEEP valve and FiO₂ 1.0 at slow rate (RR 6–8)</td></tr>
+      <tr><td><strong>O</strong></td><td><strong>Oxygenate</strong> — confirm chest rise, capnography waveform, SpO₂ recovery</td></tr>
+      <tr><td><strong>T</strong></td><td><strong>Tube</strong> position — waveform capnography, bilateral breath sounds, depth at lip (confirm vs CXR)</td></tr>
+      <tr><td><strong>T</strong></td><td><strong>Tweak the vent</strong> (or check it) — review settings, alarm log, recent changes; swap ventilator if hardware suspected</td></tr>
+      <tr><td><strong>S</strong></td><td><strong>Sonography</strong> — POCUS for pneumothorax (pleural sliding, lung point), ETT depth (suprasternal notch view), pleural effusion, RV</td></tr>
+    </tbody>
+  </table>
+  <p>Run through DOPE(S) to enumerate what could be wrong; run DOTTS as the parallel action sequence to actually fix it. Together they cover &gt; 95% of acute vent crises. Full bedside discussion of both at <a class="xref" href="#c39" data-xref-chap="39">§39.1</a>; the obstructive-crash variant (disconnect rescue) at <a class="xref" href="#c17" data-xref-chap="17">§17.3</a>.</p>
 <div class="takeaways">
     <h5>Key takeaways</h5>
     <ul>
@@ -11564,11 +12329,22 @@
     <li id="r46">Plant PK, Owen JL, Elliott MW. Early use of non-invasive ventilation for acute exacerbations of chronic obstructive pulmonary disease on general respiratory wards: a multicentre randomised controlled trial. <em>Lancet</em>. 2000;355(9219):1931-1935. (Established NIV / BiPAP as first-line for acute hypercapnic COPD exacerbation.)</li>
     <li id="r47">Masip J, Roque M, Sánchez B, et al. Noninvasive ventilation in acute cardiogenic pulmonary edema: systematic review and meta-analysis. <em>JAMA</em>. 2005;294(24):3124-3130. (Established NIV / CPAP as first-line for acute cardiogenic pulmonary edema.)</li>
     <li id="r48">Vogelmeier CF, Criner GJ, Martinez FJ, et al. Global Strategy for the Diagnosis, Management, and Prevention of Chronic Obstructive Lung Disease 2023 Report: GOLD Executive Summary. <em>Eur Respir J</em>. 2023;61(4):2300239. (Current GOLD severity staging for COPD.)</li>
+    <li id="r49">Devlin JW, Skrobik Y, Gélinas C, et al. Clinical Practice Guidelines for the Prevention and Management of Pain, Agitation/Sedation, Delirium, Immobility, and Sleep Disruption in Adult Patients in the ICU (PADIS). <em>Crit Care Med</em>. 2018;46(9):e825-e873.</li>
   </ol>
   <p class="footer-note">For clinician education only; not a substitute for institutional protocols, current FDA labeling, or specialist consultation. Verify dosing and ventilator-specific behavior at the bedside. Companion <a href="https://bedsidereference.github.io/medical-education/mechanical-ventilation-bedside-one-pager.html" style="color:var(--accent);">bedside one-pager</a> (single-page rounds reference) · standalone <a href="https://bedsidereference.github.io/medical-education/bedside-calculator.html" style="color:var(--accent);">interactive calculator</a> with threshold-coded outputs, LPV-bundle status row, ARDSnet PEEP/FiO₂ ladder lookup, Vd/Vt, DO₂, OI, transpulmonary pressures, target-PaCO₂ helper, and saveable snapshots.</p>
 </section>
 
 </main>
+
+<footer class="colophon" role="contentinfo">
+  <div class="brand-line">Bedside Reference · Invasive Mechanical Ventilation</div>
+  <div>Version 1.0 · Last reviewed May 2026</div>
+  <div>© 2026 <em>Bedside Reference</em>. Licensed under <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC&nbsp;BY-NC&nbsp;4.0</a> — free to share and adapt with attribution; commercial use prohibited.</div>
+  <div>Errata, corrections, questions: <a href="mailto:bedsidereference@gmail.com">bedsidereference@gmail.com</a></div>
+  <div class="foot-nav">
+    <a href="#disclaimer">Disclaimer</a> · <a href="#how-to-read">How to read</a> · <a href="#refs">References</a> · <a href="#abbr">Abbreviations</a> · <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Back to top</a>
+  </div>
+</footer>
 </div>
 
 <button class="back-top" id="back-top" aria-label="Back to top" title="Back to top (g h)">↑</button>
@@ -12498,11 +13274,18 @@ saveInputs();
   const lb = document.getElementById('lightbox');
   const lbImg = document.getElementById('lb-img');
   const lbSvgHost = document.getElementById('lb-svg-host');
+  const lbTableHost = document.getElementById('lb-table-host');
   const lbClose = document.getElementById('lb-close');
 
-  function showLbImage(img) {
+  function hideAllHosts() {
+    lbImg.style.display = 'none';
+    lbImg.removeAttribute('src');
     lbSvgHost.style.display = 'none';
     lbSvgHost.innerHTML = '';
+    if (lbTableHost) { lbTableHost.style.display = 'none'; lbTableHost.innerHTML = ''; }
+  }
+  function showLbImage(img) {
+    hideAllHosts();
     lbImg.style.display = '';
     lbImg.src = img.src;
     lbImg.alt = img.alt || '';
@@ -12510,8 +13293,7 @@ saveInputs();
     document.body.style.overflow = 'hidden';
   }
   function showLbSvg(srcSvg) {
-    lbImg.style.display = 'none';
-    lbImg.removeAttribute('src');
+    hideAllHosts();
     const clone = srcSvg.cloneNode(true);
     // Strip ids from the clone to avoid duplicates
     if (clone.removeAttribute) clone.removeAttribute('id');
@@ -12524,15 +13306,63 @@ saveInputs();
     lb.classList.add('show');
     document.body.style.overflow = 'hidden';
   }
+  function showLbTable(srcTable) {
+    if (!lbTableHost) return;
+    hideAllHosts();
+    const clone = srcTable.cloneNode(true);
+    if (clone.removeAttribute) clone.removeAttribute('id');
+    clone.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+    // Bigger, more readable typography in the lightbox
+    clone.style.fontSize = '15px';
+    clone.style.lineHeight = '1.5';
+    clone.style.width = '100%';
+    lbTableHost.innerHTML = '';
+    lbTableHost.appendChild(clone);
+    lbTableHost.style.display = 'block';
+    lb.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+  // Helper: mark a .figure container as zoomable so the "click to expand"
+  // badge only shows on figures where the lightbox is actually wired.
+  function markFigureZoomable(el) {
+    const fig = el.closest('.figure');
+    if (fig) fig.classList.add('figure-zoomable');
+  }
   // Attach to <img> figures
   document.querySelectorAll('.figure img').forEach(img => {
     img.style.cursor = 'zoom-in';
     img.addEventListener('click', () => showLbImage(img));
+    markFigureZoomable(img);
   });
-  // Attach to inline animated SVG figures
-  document.querySelectorAll('.figure svg.anim-fig, svg.anim-fig').forEach(svg => {
+  // Attach to ALL inline SVG figures (animated or static). The earlier
+  // version was limited to `.anim-fig`, which left ~7 static SVG figures
+  // un-zoomable. Skip SVGs inside interactive widgets / calculators / iframes
+  // where clicks already have a meaning — those figures keep no badge.
+  document.querySelectorAll('.figure svg, svg.anim-fig').forEach(svg => {
+    if (svg.closest('.calc, .if-controls, .if-stats, .interactive-fig, nav, button, .toolbar')) return;
     svg.style.cursor = 'zoom-in';
-    svg.addEventListener('click', () => showLbSvg(svg));
+    svg.addEventListener('click', (e) => {
+      // Don't intercept clicks on interactive sub-elements inside the figure
+      // (e.g., <a> xrefs, <button>s embedded in flowchart nodes).
+      if (e.target.closest('a, button, input, label, select, textarea')) return;
+      showLbSvg(svg);
+    });
+    markFigureZoomable(svg);
+  });
+  // Attach to tables — click to enlarge in lightbox. Skip tiny tables
+  // (< 3 rows) and tables inside interactive widgets / calculators where
+  // clicks already have a meaning.
+  document.querySelectorAll('table').forEach(table => {
+    if (table.closest('.calc, .if-controls, .if-stats, .interactive-fig, nav, .toc, .drugs-toolbar')) return;
+    const rows = table.querySelectorAll('tr');
+    if (rows.length < 3) return; // tiny key tables aren't worth zooming
+    table.style.cursor = 'zoom-in';
+    table.title = 'Click to enlarge';
+    table.addEventListener('click', (e) => {
+      // Don't intercept clicks on links inside the table (xrefs, citations)
+      if (e.target.closest('a, button, input, label, select, textarea')) return;
+      showLbTable(table);
+    });
   });
   function closeLb() {
     lb.classList.remove('show');
@@ -15027,15 +15857,20 @@ saveInputs();
     window.addEventListener('beforeprint', () => {
       __cheat_state = {
         accs: Array.from(document.querySelectorAll('.cheat-acc')).map(d => ({el: d, open: d.open})),
-        panels: Array.from(document.querySelectorAll('.cheat-tab-panel')).map(p => ({el: p, hidden: p.hidden}))
+        panels: Array.from(document.querySelectorAll('.cheat-tab-panel')).map(p => ({el: p, hidden: p.hidden})),
+        // Also force every chap-acc open for print — especially the
+        // reference cards in the appendix, which must print expanded.
+        chapAccs: Array.from(document.querySelectorAll('details.chap-acc')).map(d => ({el: d, open: d.open}))
       };
       __cheat_state.accs.forEach(s => { s.el.open = true; });
       __cheat_state.panels.forEach(s => { s.el.hidden = false; });
+      __cheat_state.chapAccs.forEach(s => { s.el.open = true; });
     });
     window.addEventListener('afterprint', () => {
       if (!__cheat_state) return;
       __cheat_state.accs.forEach(s => { s.el.open = s.open; });
       __cheat_state.panels.forEach(s => { s.el.hidden = s.hidden; });
+      __cheat_state.chapAccs.forEach(s => { s.el.open = s.open; });
       __cheat_state = null;
     });
   } catch (err) { console.error('[CHEAT TABS] error:', err); }
@@ -15136,13 +15971,6 @@ saveInputs();
           e.preventDefault();
           link.classList.toggle('collapsed');
           writeCollapsed();
-          // Update bulk-button label
-          const bulk = document.getElementById('toc-bulk-btn');
-          if (bulk) {
-            const allLinks = Array.from(document.querySelectorAll('nav.toc a.part-link'));
-            const allCollapsed = allLinks.every(a => a.classList.contains('collapsed'));
-            bulk.textContent = allCollapsed ? 'Expand all' : 'Collapse all';
-          }
         }
         // Otherwise let the link navigate normally.
       });
@@ -15184,6 +16012,60 @@ saveInputs();
       }
     });
   } catch (err) { console.error('[CHAP-ACC] error:', err); }
+
+  // ============== PER-SECTION DOCUMENT TITLE ==============
+  // Update the browser tab title as the reader scrolls through chapters,
+  // so deep links, bookmarks, and tab-switching show the actual location
+  // ("Ch 7 · Pressure-volume curve — Bedside Reference") instead of always
+  // showing the book title.  Uses IntersectionObserver for low overhead.
+  try {
+    const BASE_TITLE = 'Invasive Mechanical Ventilation — Bedside Reference';
+    document.title = BASE_TITLE;
+    const titleEls = Array.from(document.querySelectorAll('section.chap > h3'));
+    if (titleEls.length && 'IntersectionObserver' in window) {
+      // Track which section's h3 most recently entered the upper half of viewport.
+      let current = null;
+      const visible = new Map(); // el → ratio
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) visible.set(e.target, e.intersectionRatio);
+          else visible.delete(e.target);
+        });
+        // Pick the topmost visible h3 (smallest y).
+        let top = null, topY = Infinity;
+        visible.forEach((_ratio, el) => {
+          const y = el.getBoundingClientRect().top;
+          if (y < topY) { topY = y; top = el; }
+        });
+        if (top !== current) {
+          current = top;
+          if (top) {
+            // Extract a clean label (strip the print-button SVG text).
+            const clone = top.cloneNode(true);
+            clone.querySelectorAll('.chap-print-btn, .anchor-link, button').forEach(n => n.remove());
+            const label = clone.textContent.replace(/\s+/g, ' ').trim();
+            // Insert a middle dot between the leading number and the rest if not already.
+            const formatted = label.replace(/^(\d+)\s+/, '$1 · ');
+            document.title = `Ch ${formatted} — Bedside Reference`;
+          } else {
+            document.title = BASE_TITLE;
+          }
+        }
+      }, {
+        // Fire as a section's h3 crosses the top third of the viewport.
+        rootMargin: '-10% 0px -70% 0px',
+        threshold: [0, 1]
+      });
+      titleEls.forEach(el => io.observe(el));
+      // Reset when scrolled back to the very top (hero region).
+      window.addEventListener('scroll', () => {
+        if (window.scrollY < 200 && document.title !== BASE_TITLE) {
+          document.title = BASE_TITLE;
+          current = null;
+        }
+      }, { passive: true });
+    }
+  } catch (err) { console.error('[PER-SECTION TITLE] error:', err); }
 
 })();
 </script>
