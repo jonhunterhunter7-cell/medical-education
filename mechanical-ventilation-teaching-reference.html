@@ -394,15 +394,67 @@
   html[data-theme="dark"] th { background: #232a35; }
   html[data-theme="dark"] code, html[data-theme="dark"] kbd { background: #232a35; }
   html[data-theme="dark"] .eq { background: #232a35; color: var(--ink); }
-  html[data-theme="dark"] .figure img { background: #fff; padding: 8px; border-color: var(--rule); }
   html[data-theme="dark"] .figure { background: var(--surface); }
+  /* Figure artwork — give PNG/SVG a white card so author-baked colors stay legible.
+     Covers static figures (.figure img/svg) and animated figures (svg.anim-fig).
+     Interactive widgets (.if-chart, .bh-stage svg, .bh-card svg) are dark-themed
+     directly below instead of being white-carded. */
+  html[data-theme="dark"] .figure img,
+  html[data-theme="dark"] .figure svg,
+  html[data-theme="dark"] svg.anim-fig {
+    background: #fff; padding: 8px; border-color: var(--rule); border-radius: 6px;
+  }
   html[data-theme="dark"] .pearl { background: var(--good-soft); }
   html[data-theme="dark"] .pitfall { background: var(--danger-soft); }
   html[data-theme="dark"] .note { background: var(--warn-soft); }
   html[data-theme="dark"] .phys { background: var(--accent-soft); }
-  html[data-theme="dark"] svg text { fill: #e6e8eb; }
-  html[data-theme="dark"] svg .ax, html[data-theme="dark"] svg line { stroke: #b8bcc4; }
-  html[data-theme="dark"] svg .grid { stroke: #2a313b; }
+  /* No global svg text/line override here — the previous version relied on `fill: revert`
+     to restore presentation attributes inside white-carded figures, which is unreliable
+     across browsers. Instead, white-carded SVGs keep their author colors untouched, and
+     the interactive widgets below are dark-themed via targeted attribute selectors. */
+
+  /* ---- Interactive SVG widgets: explicit dark-mode color remap ---- */
+  /* if-chart (oxyhemoglobin curve, A-a chart, etc.) — uniform slate palette → dark-friendly greys */
+  html[data-theme="dark"] svg.if-chart g[fill="#475569"],
+  html[data-theme="dark"] svg.if-chart text[fill="#475569"],
+  html[data-theme="dark"] svg.if-chart [fill="#64748b"],
+  html[data-theme="dark"] svg.if-chart [fill="#1f3a5f"] { fill: #b8bcc4; }
+  html[data-theme="dark"] svg.if-chart [fill="#94a3b8"] { fill: #8a9099; }
+  html[data-theme="dark"] svg.if-chart line[stroke="#475569"],
+  html[data-theme="dark"] svg.if-chart [stroke="#1f3a5f"] { stroke: #b8bcc4; }
+  html[data-theme="dark"] svg.if-chart [stroke="#cbd5e1"],
+  html[data-theme="dark"] svg.if-chart [stroke="#e2e8f0"],
+  html[data-theme="dark"] svg.if-chart [stroke="#94a3b8"] { stroke: #2a313b; }
+  /* keep signal colors (#1f5f99 blue, #c4452f red, #f59e0b orange, #5da169 green, #9b2c2c) as-is */
+
+  /* Bohr-Haldane stage + sub-charts — dark text labels, light bg gradients → dark-mode equivalents */
+  html[data-theme="dark"] .bh-stage svg [fill="#0C447C"],
+  html[data-theme="dark"] .bh-stage svg [fill="#185FA5"],
+  html[data-theme="dark"] .bh-card svg [fill="#0C447C"],
+  html[data-theme="dark"] .bh-card svg [fill="#185FA5"] { fill: #7eb8e6; }
+  html[data-theme="dark"] .bh-stage svg [fill="#712B13"],
+  html[data-theme="dark"] .bh-stage svg [fill="#993C1D"],
+  html[data-theme="dark"] .bh-stage svg [fill="#72243E"],
+  html[data-theme="dark"] .bh-card svg [fill="#712B13"],
+  html[data-theme="dark"] .bh-card svg [fill="#993C1D"],
+  html[data-theme="dark"] .bh-card svg [fill="#72243E"] { fill: #f0a09a; }
+  html[data-theme="dark"] .bh-stage svg [fill="#5F5E5A"],
+  html[data-theme="dark"] .bh-stage svg [fill="#888780"],
+  html[data-theme="dark"] .bh-stage svg [fill="#1F1F1C"],
+  html[data-theme="dark"] .bh-card svg [fill="#5F5E5A"],
+  html[data-theme="dark"] .bh-card svg [fill="#888780"],
+  html[data-theme="dark"] .bh-card svg [fill="#1F1F1C"] { fill: #b8bcc4; }
+  html[data-theme="dark"] .bh-stage svg [stroke="#5F5E5A"],
+  html[data-theme="dark"] .bh-stage svg [stroke="#888780"],
+  html[data-theme="dark"] .bh-card svg [stroke="#5F5E5A"],
+  html[data-theme="dark"] .bh-card svg [stroke="#888780"] { stroke: #2a313b; }
+  /* Gradient-tinted zone backgrounds (alveolus/tissue/vessel) keep their light pastel
+     fills — at stop-opacity 0.15–0.7 they read as faint zone markers on dark bg. */
+
+  /* Chapter icons — bump dark navy fills/strokes so the molecule shapes don't disappear */
+  html[data-theme="dark"] svg.chap-icon [fill="#1f3a5f"],
+  html[data-theme="dark"] svg.chap-icon [fill="#0b2342"] { fill: #4a6a99; }
+  html[data-theme="dark"] svg.chap-icon [stroke="#0b2342"] { stroke: #7eb8e6; }
 
   /* ========== READING PROGRESS BAR ========== */
   .progress-bar {
