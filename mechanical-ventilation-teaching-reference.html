@@ -224,7 +224,16 @@
   nav.toc a.part-link { display: block; text-decoration: none; color: inherit; margin: 14px 0 6px; }
   nav.toc a.part-link:first-child { margin-top: 0; }
   nav.toc a.part-link:hover h4 { color: var(--accent); background: var(--accent-soft); }
-  html { scroll-behavior: smooth; }
+  html {
+    scroll-behavior: smooth;
+    /* Global scroll offset so anchor/TOC jumps land BELOW the sticky toolbar
+       + chip nav. Per-element scroll-margin-top doesn't cover every target
+       (h5s, generated heading anchors, .part jumps), so we set it once on
+       the scroll container. JS updates --scroll-pad-top at runtime to
+       match the actual rendered sticky chrome (reader mode hides it, etc). */
+    scroll-padding-top: var(--scroll-pad-top, 110px);
+  }
+  body.reader-mode { --scroll-pad-top: 28px; }
   nav.toc ol { list-style: none; padding: 0; margin: 0; }
   nav.toc ol li { margin: 0 0 2px; }
   nav.toc ol li a {
@@ -233,20 +242,32 @@
   }
   nav.toc ol li a:hover { background: var(--accent-soft); color: var(--accent); }
   main { min-width: 0; }
+  /* Belt-and-suspenders sticky offset. scroll-padding-top on <html> covers
+     hash navigation in modern browsers, but Safari historically ignores it
+     for smooth scrollIntoView. Setting scroll-margin-top on every plausible
+     scroll target — sections, headings, anything with an id — guarantees the
+     target lands below the sticky toolbar + chip nav in every browser. */
+  section.chap,
+  section.chap > h3,
+  section.chap > h4,
+  section.chap > h5,
+  section.chap > h6,
+  main h3, main h4, main h5, main h6,
+  .part,
+  main [id] {
+    scroll-margin-top: var(--scroll-pad-top, 110px);
+  }
   .part {
     grid-column: 1/-1;
     border-top: 2px solid var(--accent);
     padding-top: 14px;
     margin: 26px 0 6px;
-    scroll-margin-top: 24px;
   }
   .part .pno { color: var(--accent); font-weight: 700; letter-spacing: 0.12em; font-size: 12px; text-transform: uppercase; }
   .part h2 { font-size: 24px; margin: 4px 0 4px; letter-spacing: -0.005em; }
   .part .sum { color: var(--ink-soft); font-size: 14.5px; margin: 0; }
-  /* scroll-margin-top accounts for the always-sticky toolbar (~50 px) plus
-     the in-chapter chip nav (~40 px) and a small buffer. */
-  section.chap { margin-bottom: 30px; scroll-margin-top: 110px; }
-  section.chap h4 { scroll-margin-top: 110px; }
+  /* scroll-margin-top is set globally above via --scroll-pad-top. */
+  section.chap { margin-bottom: 30px; }
   section.chap h3 {
     font-size: 19px; margin: 18px 0 6px;
     letter-spacing: -0.005em;
@@ -15834,6 +15855,40 @@ saveInputs();
     setStat('hs-figures', document.querySelectorAll('.figure').length);
   } catch (err) { console.error('[READING TIME / STATS] error:', err); }
 
+  // ============== STICKY-CHROME SCROLL OFFSET ==============
+  // Measure the actual height of sticky elements at the top of the viewport
+  // (toolbar + chip nav) and expose it as --scroll-pad-top so anchor jumps
+  // and TOC clicks land below them instead of being covered. Recomputed on
+  // resize, on reader-mode/TOC toggles (those callers call updateScrollPad
+  // directly), and once when the chip nav swaps in for a new chapter.
+  window.__updateScrollPad = function () {
+    try {
+      let pad = 0;
+      const tb = document.querySelector('.toolbar');
+      if (tb && getComputedStyle(tb).display !== 'none') {
+        pad += tb.getBoundingClientRect().height;
+      }
+      // Visible chip nav (only one is rendered sticky at a time, but be safe)
+      const chips = document.querySelectorAll('.chip-nav-bar');
+      let maxChip = 0;
+      chips.forEach(c => {
+        if (getComputedStyle(c).display === 'none') return;
+        const h = c.getBoundingClientRect().height;
+        if (h > maxChip) maxChip = h;
+      });
+      pad += maxChip;
+      pad += 12; // breathing room
+      document.documentElement.style.setProperty('--scroll-pad-top', pad + 'px');
+    } catch (e) {}
+  };
+  // Initial + on resize. The reader-mode and TOC-collapse handlers call this
+  // again after toggling so the offset re-syncs immediately.
+  window.__updateScrollPad();
+  window.addEventListener('resize', () => window.__updateScrollPad());
+  // Run again after fonts/layout settle (some sticky heights depend on font load).
+  setTimeout(() => window.__updateScrollPad(), 250);
+  setTimeout(() => window.__updateScrollPad(), 1200);
+
   // ============== SCROLL-PRESERVING LAYOUT TOGGLE ==============
   // Layout toggles (reader mode, TOC collapse) reflow the page and shift the
   // user's reading position. preserveScrollAround() pins the topmost visible
@@ -15841,39 +15896,85 @@ saveInputs();
   // keeps the same viewport offset — so the user stays on the same paragraph.
   // Smooth-scroll is suppressed during the restore so it feels instant, not
   // like a glide.
-  window.__preserveScrollAround = function (fn, opts) {
-    const duration = (opts && opts.duration) || 260; // ms — covers CSS reflow transitions
+  window.__preserveScrollAround = function (fn) {
+    // Pick a SMALL element (paragraph, list item, heading) that is visible
+    // in the viewport as the anchor. Chapter sections are too large — pinning
+    // a chapter's top doesn't pin the user's reading position, because text
+    // inside the chapter reflows independently when the layout changes (e.g.
+    // narrower column in reader mode pushes paragraphs further down within
+    // their parent chapter). A paragraph-level anchor stays where the user
+    // is actually reading.
     let anchor = null, anchorOffset = 0;
     try {
-      const candidates = document.querySelectorAll(
-        'main section.chap, main .part, main section.chap h3, main section.chap h4, main p'
+      const small = document.querySelectorAll(
+        'main p, main li, main section.chap h3, main section.chap h4, main section.chap h5'
       );
-      for (const el of candidates) {
+      const vh = window.innerHeight;
+      const padTop = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--scroll-pad-top')) || 110;
+      // Pass 1: fully-visible element nearest the top of the content area.
+      for (const el of small) {
         const r = el.getBoundingClientRect();
-        if (r.bottom > 0 && r.top < window.innerHeight) {
+        if (r.height === 0) continue;
+        if (r.top >= padTop - 4 && r.bottom <= vh) {
           anchor = el; anchorOffset = r.top; break;
         }
       }
-    } catch (e) {}
-    try { fn(); } catch (e) { console.error('[preserveScrollAround fn]', e); }
-    if (!anchor) return;
-    const html = document.documentElement;
-    const prev = html.style.scrollBehavior;
-    html.style.scrollBehavior = 'auto';
-    const start = performance.now();
-    function pin() {
-      try {
-        const r = anchor.getBoundingClientRect();
-        const delta = r.top - anchorOffset;
-        if (Math.abs(delta) > 0.5) window.scrollBy(0, delta);
-      } catch (e) {}
-      if (performance.now() - start < duration) {
-        requestAnimationFrame(pin);
-      } else {
-        html.style.scrollBehavior = prev;
+      // Pass 2: any small element whose top straddles the upper portion of
+      // the viewport — user is likely reading near it.
+      if (!anchor) {
+        for (const el of small) {
+          const r = el.getBoundingClientRect();
+          if (r.height === 0) continue;
+          if (r.top >= -8 && r.top < vh * 0.6) {
+            anchor = el; anchorOffset = r.top; break;
+          }
+        }
       }
+      // Pass 3: fall back to whatever's in view — last resort, includes
+      // .part/section.chap so we don't bail entirely.
+      if (!anchor) {
+        const any = document.querySelectorAll('main section.chap, main .part');
+        for (const el of any) {
+          const r = el.getBoundingClientRect();
+          if (r.height > 0 && r.bottom > 60 && r.top < vh - 40) {
+            anchor = el; anchorOffset = r.top; break;
+          }
+        }
+      }
+    } catch (e) {}
+
+    // Suppress smooth-scroll AND the .layout CSS transition for the duration
+    // of the toggle so reflow happens instantly and we can pin the anchor in
+    // one shot. Without this, the anchor is a moving target during the 180 ms
+    // grid-template-columns/max-width animation.
+    const html = document.documentElement;
+    const prevScrollBehavior = html.style.scrollBehavior;
+    html.style.scrollBehavior = 'auto';
+    const layout = document.querySelector('.layout');
+    const prevTransition = layout ? layout.style.transition : '';
+    if (layout) layout.style.transition = 'none';
+
+    try { fn(); } catch (e) { console.error('[preserveScrollAround fn]', e); }
+
+    if (anchor) {
+      // Force synchronous layout, then snap scroll so anchor stays put.
+      const r = anchor.getBoundingClientRect();
+      const delta = r.top - anchorOffset;
+      if (Math.abs(delta) > 0.5) window.scrollBy(0, delta);
     }
-    requestAnimationFrame(pin);
+
+    // Restore transition + smooth-scroll on next frame so subsequent
+    // interactions (anchor links, etc.) animate normally again.
+    requestAnimationFrame(() => {
+      if (layout) {
+        // Force a reflow before re-enabling transition so the just-applied
+        // styles don't animate retroactively.
+        // eslint-disable-next-line no-unused-expressions
+        layout.offsetHeight;
+        layout.style.transition = prevTransition;
+      }
+      html.style.scrollBehavior = prevScrollBehavior;
+    });
   };
 
   // ============== READER MODE ==============
@@ -15887,10 +15988,16 @@ saveInputs();
       try { localStorage.setItem('mv-reader-mode', on ? '1' : ''); } catch (e) {}
     }
     if (readBtn) readBtn.addEventListener('click', () => {
-      window.__preserveScrollAround(() => setReaderMode(!document.body.classList.contains('reader-mode')));
+      window.__preserveScrollAround(() => {
+        setReaderMode(!document.body.classList.contains('reader-mode'));
+        if (window.__updateScrollPad) window.__updateScrollPad();
+      });
     });
     if (readExit) readExit.addEventListener('click', () => {
-      window.__preserveScrollAround(() => setReaderMode(false));
+      window.__preserveScrollAround(() => {
+        setReaderMode(false);
+        if (window.__updateScrollPad) window.__updateScrollPad();
+      });
     });
     // Restore from localStorage (page just loaded — no scroll to preserve)
     try {
@@ -16716,7 +16823,10 @@ saveInputs();
     applyTocState(saved);
     if (btn) btn.addEventListener('click', () => {
       const next = !document.body.classList.contains('toc-hidden');
-      const apply = () => applyTocState(next);
+      const apply = () => {
+        applyTocState(next);
+        if (window.__updateScrollPad) window.__updateScrollPad();
+      };
       if (window.__preserveScrollAround) window.__preserveScrollAround(apply);
       else apply();
       try { localStorage.setItem(TOC_KEY, next ? '1' : '0'); } catch (e) {}
